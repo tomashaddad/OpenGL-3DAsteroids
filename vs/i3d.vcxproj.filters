@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Asteroids">
+      <UniqueIdentifier>{2c957ba9-7348-4829-b9e3-ce1559ab1bcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World">
+      <UniqueIdentifier>{5248a449-04aa-410a-9d87-7fbd8ac270be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware">
+      <UniqueIdentifier>{4a6a170c-c0a5-41fc-bd93-c59587d9b9b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{0da5bce9-e76c-4494-a2dc-f24f9fe7ba42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ship">
+      <UniqueIdentifier>{0268605b-4404-43ee-a38c-adabc3f10fb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BlackHole">
+      <UniqueIdentifier>{a28fc590-ab4f-4e65-98db-9c90cb945ea6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ship\Bullets">
+      <UniqueIdentifier>{5a42fa42-8294-4c21-80df-86bd8a0f2057}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ship\Exhaust">
+      <UniqueIdentifier>{fced7366-0345-4ae4-abe2-59edcd251df0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asteroids\Explosion">
+      <UniqueIdentifier>{17b41991-1d47-42c2-9b2c-d5ca10739c7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Constants">
+      <UniqueIdentifier>{755b3cc3-54cd-4d11-9b97-2ef8c91bce53}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Hardware\Keyboard.cpp">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="Hardware\Mouse.cpp">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="World\Window.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vector.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="ECS\Systems\RenderSystem.cpp" />
+    <ClCompile Include="ECS\Systems\PhysicsSystem.cpp" />
+    <ClCompile Include="ECS\ECSCoordinator.cpp" />
+    <ClCompile Include="ECS\EntityManager.cpp" />
+    <ClCompile Include="ECS\ContainerInterface.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GlutHeaders.h">
+      <Filter>Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="Hardware\Keyboard.h">
+      <Filter>Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="Hardware\Mouse.h">
+      <Filter>Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="World\Window.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\Components\Physics.h" />
+    <ClInclude Include="ECS\Components\Renderable.h" />
+    <ClInclude Include="ECS\Systems\RenderSystem.h" />
+    <ClInclude Include="ECS\Systems\PhysicsSystem.h" />
+    <ClInclude Include="ECS\ECSCoordinator.h" />
+    <ClInclude Include="ECS\EntityManager.h" />
+    <ClInclude Include="ECS\Entity.h" />
+    <ClInclude Include="ECS\ComponentContainer.h" />
+    <ClInclude Include="ECS\ContainerInterface.h" />
+  </ItemGroup>
+</Project>
