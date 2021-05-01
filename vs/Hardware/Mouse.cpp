@@ -1,17 +1,16 @@
 #include "Mouse.h"
 
 Mouse::Mouse()
-	: mouse_coords_{ 0, 0 },
-	  left_clicking_(false),
-	  right_clicking_(false){}
+	: X(0), Y(0),
+	  left_clicking_(false), right_clicking_(false){}
 
-Vector Mouse::getMouseCoords() const {
-	return mouse_coords_;
+std::pair<unsigned int, unsigned int> Mouse::getMouseCoords() const {
+	return std::make_pair(X, Y);
 }
 
 void Mouse::setMouseCoords(double x, double y) {
-	mouse_coords_.x = x;
-	mouse_coords_.y = y;
+	X = x;
+	Y = y;
 }
 
 bool Mouse::isHoldingLeftClick() const {

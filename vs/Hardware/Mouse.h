@@ -1,13 +1,13 @@
 #ifndef I3D_MOUSE_H
 #define I3D_MOUSE_H
 
-#include "Math/Vector.h"
+#include <utility>
 
 class Mouse {
 public:
 	Mouse();
 
-	Vector getMouseCoords() const;
+	std::pair<unsigned int, unsigned int> getMouseCoords() const;
 	void setMouseCoords(double x, double y);
 
 	bool isHoldingLeftClick() const;
@@ -17,7 +17,9 @@ public:
 	void setHoldingRightClick(bool state);
 
 private:
-	Vector mouse_coords_;
+	unsigned int X;
+	unsigned int Y;
+
 	bool left_clicking_;
 	bool right_clicking_;
 };

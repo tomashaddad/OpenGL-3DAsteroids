@@ -5,6 +5,8 @@
 #include "Hardware/Mouse.h"
 #include "World/Window.h"
 
+#include "Asteroids/Asteroid.h"
+
 class GameManager {
 public:
 	GameManager();
@@ -32,11 +34,11 @@ public:
 	void resetGame();
 
 private:
-	Keyboard keyboard_;
-	Mouse mouse_;
-	Window win_;
-	double dt_;
-	double last_time_;
+	Keyboard keyboard;
+	Mouse mouse;
+	Window win;
+	double dt;
+	double last_time;
 };
 
 #endif // I3D_GAMEMANAGER_H

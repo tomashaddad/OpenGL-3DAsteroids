@@ -4,8 +4,7 @@
 #include <iostream>
 #include <memory>
 
-#include "ECS/Entity.h"
-#include "ECS/ECSCoordinator.h"
+std::unique_ptr<GameManager> game = std::make_unique<GameManager>();
 
 void reshape_callback(int w, int h);
 void keyboard_down_callback(unsigned char key, int x, int y);
@@ -15,55 +14,27 @@ void mousedrag_callback(int x, int y);
 void display_callback();
 void idle_callback();
 
-std::unique_ptr<GameManager> game = std::make_unique<GameManager>();
+int main(int argc, char** argv)
+{
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+	glutCreateWindow("Asteroid Arena");
 
-class Animal {
-public:
-	std::string name;
-	Animal(const char* str) : name(str) {};
+	glutReshapeFunc(reshape_callback);
+	glutKeyboardFunc(keyboard_down_callback);
+	glutKeyboardUpFunc(keyboard_up_callback);
+	glutMouseFunc(mouseclick_callback);
+	glutMotionFunc(mousedrag_callback);
+	glutDisplayFunc(display_callback);
+	glutIdleFunc(idle_callback);
 
-	void speak() {
-		std::cout << "I am an animal!" << std::endl;
-	}
-};
+	glutFullScreen();
 
-class WaterAnimal {
-public:
-	float swim_speed = 3;
+	glutIgnoreKeyRepeat(GLUT_KEY_REPEAT_OFF);
+	game->startGameLoop();
 
-	void speak() {
-		std::cout << "I am a water animal!" << std::endl;
-	}
-};
-
-int main(void) {
-	std::unique_ptr<ECSCoordinator> coordinator = std::make_unique<ECSCoordinator>();
-
-	// Create an entity
-	Entity ship = coordinator->create_entity();
+	return EXIT_SUCCESS;
 }
-
-//int main(int argc, char** argv)
-//{
-//	glutInit(&argc, argv);
-//	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-//	glutCreateWindow("Asteroid Arena");
-//
-//	glutReshapeFunc(reshape_callback);
-//	glutKeyboardFunc(keyboard_down_callback);
-//	glutKeyboardUpFunc(keyboard_up_callback);
-//	glutMouseFunc(mouseclick_callback);
-//	glutMotionFunc(mousedrag_callback);
-//	glutDisplayFunc(display_callback);
-//	glutIdleFunc(idle_callback);
-//
-//	glutFullScreen();
-//
-//	glutIgnoreKeyRepeat(GLUT_KEY_REPEAT_OFF);
-//	game->startGameLoop();
-//
-//	return EXIT_SUCCESS;
-//}
 
 void reshape_callback(int w, int h) {
 	game->onReshape(w, h);

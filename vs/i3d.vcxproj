@@ -110,7 +110,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\libs\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);..\libs\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -155,33 +155,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ECS\ContainerInterface.cpp" />
-    <ClCompile Include="ECS\ECSCoordinator.cpp" />
-    <ClCompile Include="ECS\EntityManager.cpp" />
-    <ClCompile Include="ECS\Systems\PhysicsSystem.cpp" />
-    <ClCompile Include="ECS\Systems\RenderSystem.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Hardware\Keyboard.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Hardware\Mouse.cpp" />
-    <ClCompile Include="Math\Vector.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Math\Vector3D.cpp" />
     <ClCompile Include="World\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ECS\ComponentContainer.h" />
-    <ClInclude Include="ECS\Components\Physics.h" />
-    <ClInclude Include="ECS\Components\Renderable.h" />
-    <ClInclude Include="ECS\ContainerInterface.h" />
-    <ClInclude Include="ECS\ECSCoordinator.h" />
-    <ClInclude Include="ECS\Entity.h" />
-    <ClInclude Include="ECS\EntityManager.h" />
-    <ClInclude Include="ECS\Systems\PhysicsSystem.h" />
-    <ClInclude Include="ECS\Systems\RenderSystem.h" />
+    <ClInclude Include="Asteroids\Asteroid.h" />
     <ClInclude Include="GlutHeaders.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Hardware\Keyboard.h" />
+    <ClInclude Include="Asteroids\Asteroid.cpp" />
     <ClInclude Include="Hardware\Mouse.h" />
-    <ClInclude Include="Math\Vector.h" />
+    <ClInclude Include="Math\Vector3D.h" />
     <ClInclude Include="World\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

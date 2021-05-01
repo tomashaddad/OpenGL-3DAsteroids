@@ -5,10 +5,10 @@ class Window {
 public:
 	Window();
 
-	double win_width_, win_height_;
-	double arena_width_, arena_height_;
-	double plane_lim_;
-	double xmin_, ymin_, xmax_, ymax_;
+	double width, height;
+	double arena_width, arena_height;
+	double plane_lim;
+	double xmin, ymin, xmax, ymax;
 };
 
 

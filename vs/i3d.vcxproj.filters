@@ -38,20 +38,13 @@
     <ClCompile Include="Hardware\Keyboard.cpp">
       <Filter>Hardware</Filter>
     </ClCompile>
-    <ClCompile Include="Hardware\Mouse.cpp">
-      <Filter>Hardware</Filter>
-    </ClCompile>
     <ClCompile Include="World\Window.cpp">
       <Filter>World</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Vector.cpp">
+    <ClCompile Include="Math\Vector3D.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="ECS\Systems\RenderSystem.cpp" />
-    <ClCompile Include="ECS\Systems\PhysicsSystem.cpp" />
-    <ClCompile Include="ECS\ECSCoordinator.cpp" />
-    <ClCompile Include="ECS\EntityManager.cpp" />
-    <ClCompile Include="ECS\ContainerInterface.cpp" />
+    <ClCompile Include="Hardware\Mouse.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h" />
@@ -61,23 +54,14 @@
     <ClInclude Include="Hardware\Keyboard.h">
       <Filter>Hardware</Filter>
     </ClInclude>
-    <ClInclude Include="Hardware\Mouse.h">
-      <Filter>Hardware</Filter>
-    </ClInclude>
     <ClInclude Include="World\Window.h">
       <Filter>World</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Vector.h">
+    <ClInclude Include="Math\Vector3D.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="ECS\Components\Physics.h" />
-    <ClInclude Include="ECS\Components\Renderable.h" />
-    <ClInclude Include="ECS\Systems\RenderSystem.h" />
-    <ClInclude Include="ECS\Systems\PhysicsSystem.h" />
-    <ClInclude Include="ECS\ECSCoordinator.h" />
-    <ClInclude Include="ECS\EntityManager.h" />
-    <ClInclude Include="ECS\Entity.h" />
-    <ClInclude Include="ECS\ComponentContainer.h" />
-    <ClInclude Include="ECS\ContainerInterface.h" />
+    <ClInclude Include="Hardware\Mouse.h" />
+    <ClInclude Include="Asteroids\Asteroid.h" />
+    <ClInclude Include="Asteroids\Asteroid.cpp" />
   </ItemGroup>
 </Project>
