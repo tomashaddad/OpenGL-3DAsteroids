@@ -4,11 +4,7 @@ Mouse::Mouse()
 	: X(0), Y(0),
 	  left_clicking_(false), right_clicking_(false){}
 
-std::pair<unsigned int, unsigned int> Mouse::getMouseCoords() const {
-	return std::make_pair(X, Y);
-}
-
-void Mouse::setMouseCoords(double x, double y) {
+void Mouse::setMouseCoords(float x, float y) {
 	X = x;
 	Y = y;
 }

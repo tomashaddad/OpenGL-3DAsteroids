@@ -4,12 +4,16 @@
 #include "Hardware/Keyboard.h"
 #include "Hardware/Mouse.h"
 #include "World/Window.h"
-
+#include "World/Camera.h"
 #include "Asteroids/Asteroid.h"
+
+#include <memory>
 
 class GameManager {
 public:
 	GameManager();
+
+	static void initLights();
 	static void startGameLoop();
 	void onReshape(int w, int h);
 
@@ -23,6 +27,8 @@ public:
 	void onMouseClickDrag(int x, int y);
 	void onDisplay();
 
+	void update_camera();
+
 	// Calculates time difference between frames
 	void calculateTimeDelta();
 
@@ -34,11 +40,14 @@ public:
 	void resetGame();
 
 private:
-	Keyboard keyboard;
-	Mouse mouse;
-	Window win;
 	double dt;
 	double last_time;
+
+	std::unique_ptr<Asteroid> asteroid;
+	std::unique_ptr<Keyboard> keyboard;
+	std::unique_ptr<Mouse> mouse;
+	std::unique_ptr<Window> window;
+	std::unique_ptr<Camera> camera;
 };
 
 #endif // I3D_GAMEMANAGER_H

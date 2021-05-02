@@ -158,8 +158,10 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Hardware\Keyboard.cpp" />
     <ClCompile Include="Hardware\Mouse.cpp" />
+    <ClCompile Include="Asteroids\Asteroid.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\Vector3D.cpp" />
+    <ClCompile Include="World\Camera.cpp" />
     <ClCompile Include="World\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -167,9 +169,9 @@
     <ClInclude Include="GlutHeaders.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Hardware\Keyboard.h" />
-    <ClInclude Include="Asteroids\Asteroid.cpp" />
     <ClInclude Include="Hardware\Mouse.h" />
     <ClInclude Include="Math\Vector3D.h" />
+    <ClInclude Include="World\Camera.h" />
     <ClInclude Include="World\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

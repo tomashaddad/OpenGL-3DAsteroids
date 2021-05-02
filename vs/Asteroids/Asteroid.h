@@ -5,11 +5,9 @@
 
 class Asteroid {
 public:
-	Asteroid(float radius = 1.0f, int sector_count = 36, int stack_count = 18);
-
+	Asteroid(float radius, int sector_count, int stack_count);
 	void build_vertices();
 	void draw();
-
 
 private:
 	void add_vertex(float x, float y, float z);
