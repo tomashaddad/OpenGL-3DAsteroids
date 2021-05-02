@@ -47,6 +47,7 @@
     <ClCompile Include="Hardware\Mouse.cpp" />
     <ClCompile Include="Asteroids\Asteroid.cpp" />
     <ClCompile Include="World\Camera.cpp" />
+    <ClCompile Include="Math\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h" />
@@ -65,5 +66,6 @@
     <ClInclude Include="Hardware\Mouse.h" />
     <ClInclude Include="Asteroids\Asteroid.h" />
     <ClInclude Include="World\Camera.h" />
+    <ClInclude Include="Math\Utility.h" />
   </ItemGroup>
 </Project>

@@ -5,7 +5,7 @@ class Mouse {
 public:
 	Mouse();
 
-	void setMouseCoords(float x, float y);
+	void setPosition(float x, float y);
 
 	bool isHoldingLeftClick() const;
 	void setHoldingLeftClick(bool state);
@@ -17,8 +17,8 @@ public:
 	unsigned int Y;
 
 private:
-	bool left_clicking_;
-	bool right_clicking_;
+	bool left_clicking;
+	bool right_clicking;
 };
 
 #endif // I3D_MOUSE_H

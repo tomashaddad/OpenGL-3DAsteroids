@@ -34,7 +34,6 @@ public:
 
 	// Executes functions based on keys set to True in the Keyboard object
 	void handleKeyboardInput();
-	void handleMouseInput();
 
 	// Clears all asteroids, resets the ship position
 	void resetGame();

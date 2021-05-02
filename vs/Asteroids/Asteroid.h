@@ -6,14 +6,14 @@
 class Asteroid {
 public:
 	Asteroid(float radius, int sector_count, int stack_count);
-	void build_vertices();
+	void buildVertices();
 	void draw();
 
 private:
-	void add_vertex(float x, float y, float z);
-	void add_normal(float nx, float ny, float nz);
-	void add_indices(unsigned int i1, unsigned int i2, unsigned int i3);
-	void build_interleaved_vertices();
+	void addVertex(float x, float y, float z);
+	void addNormal(float nx, float ny, float nz);
+	void addIndices(unsigned int i1, unsigned int i2, unsigned int i3);
+	void buildInterleavedIndices();
 
 	float radius;
 	int sector_count;
@@ -22,7 +22,6 @@ private:
 	std::vector<float> vertices;
 	std::vector<float> normals;
 	std::vector<unsigned int> indices;
-	std::vector<unsigned int> line_indices;
 
 	std::vector<float> interleaved_vertices;
 
@@ -30,8 +29,6 @@ private:
 	// Interleaved vertices have 3 vertices, 3 normals, so 6 * 4 = 24 bytes per 3 + 3 vertices
 	// If you had 2 more floats for texture you would want 32 as in original Sphere.cpp
 	int interleaved_stride;
-
-
 };
 
 #endif // I3D_ASTEROID_H

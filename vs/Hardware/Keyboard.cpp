@@ -7,21 +7,21 @@
  */
 
 Keyboard::Keyboard()
-	: key_states_{ false } {}
+	: state_of{ false } {}
 
 // Max value of an unsigned char is 255 so no if check needed
-void Keyboard::setKeyState(unsigned char key, bool state) {
+void Keyboard::setPressed(unsigned char key, bool state) {
 	key = std::toupper(key);
-	key_states_[key] = state;
+	state_of[key] = state;
 }
 
-bool Keyboard::getKeyState(unsigned char key) {
+bool Keyboard::isPressed(unsigned char key) {
 	key = std::toupper(key);
-	return key_states_[key];
+	return state_of[key];
 }
 
-bool Keyboard::anyKeyIsPressed() {
-	for (auto &key : key_states_) {
+bool Keyboard::isAnyKeyPressed() {
+	for (auto &key : state_of) {
 		if (key) {
 			return true;
 		}

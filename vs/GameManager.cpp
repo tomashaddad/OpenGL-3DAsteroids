@@ -10,11 +10,11 @@
 GameManager::GameManager() :
 	dt(0),
 	last_time(0),
-	asteroid(std::make_unique<Asteroid>(1.0f, 36, 18)),
+	asteroid(std::make_unique<Asteroid>(4.0f, 36, 18)),
 	keyboard(std::make_unique<Keyboard>()),
 	mouse(std::make_unique<Mouse>()),
 	window(std::make_unique<Window>()),
-	camera(std::make_unique<Camera>()) {}
+	camera(std::make_unique<Camera>(0, 0, 30)) {}
 
 // TODO: Separate/refactor
 void GameManager::startGameLoop() {
@@ -52,6 +52,8 @@ void GameManager::onDisplay() {
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
 	glMaterialf(GL_FRONT, GL_SHININESS, shininess);
+	
+	glutWireSphere(20, 10, 10);
 
 	glPushMatrix();
 		asteroid->draw();
@@ -92,17 +94,13 @@ void GameManager::onDisplay() {
 }
 
 void GameManager::update_camera() {
+	glLoadIdentity();
+	
 	// position
 	// what you're looking at
 	// up vector
 
-	glLoadIdentity();
-
-	float x = 30.0;
-	float y = 30.0;
-	float z = 30.0;
-
-	gluLookAt(x, y, z,
+	gluLookAt(camera->X, camera->Y, camera->Z,
 		0, 0, 0,
 		0, 1, 0);
 }
@@ -124,11 +122,11 @@ void GameManager::onReshape(const int w, const int h) {
 }
 
 void GameManager::onKeyDown(const unsigned char key, int x, int y) {
-	keyboard->setKeyState(key, true);
+	keyboard->setPressed(key, true);
 }
 
 void GameManager::onKeyUp(const unsigned char key, int x, int y) {
-	keyboard->setKeyState(key, false);
+	keyboard->setPressed(key, false);
 }
 
 void GameManager::onMouseClick(int button, int state, int x, int y) {
@@ -153,7 +151,7 @@ void GameManager::onMouseClick(int button, int state, int x, int y) {
 		break;
 	}
 
-	mouse->setMouseCoords(x, y);
+	mouse->setPosition(x, y);
 
 	glutPostRedisplay();
 }
@@ -161,16 +159,12 @@ void GameManager::onMouseClick(int button, int state, int x, int y) {
 // Converts between window and world coordinates for moving the ship with mouse
 void GameManager::onMouseClickDrag(const int x, const int y)
 {
-	/*const float xmouse =
-		window->xmin + static_cast<double>(x) / window->width * (window->xmax - window->xmin);
-	const float ymouse =
-		window->ymax + static_cast<double>(y) / window->height * (window->ymin - window->ymax);*/
-	
 	if (mouse->isHoldingLeftClick()) {
-		camera->X += (x - mouse->X);
-		camera->Y += (y - mouse->Y);
-		mouse->X = x;
-		mouse->Y = y;
+
+	}
+
+	if (mouse->isHoldingRightClick()) {
+
 	}
 }
 
@@ -181,11 +175,32 @@ void GameManager::calculateTimeDelta() {
 	last_time = cur_time;
 }
 
-void GameManager::handleKeyboardInput() { }
-
-void GameManager::handleMouseInput() {
-	if (mouse->isHoldingLeftClick()) {
+void GameManager::handleKeyboardInput() {
+	if (keyboard->isPressed('w')) {
+		camera->changePhiBy(-0.1);
 	}
+
+	if (keyboard->isPressed('s')) {
+		camera->changePhiBy(0.1);
+	}
+
+	if (keyboard->isPressed('a')) {
+		camera->changeThetaBy(0.1);
+	}
+
+	if (keyboard->isPressed('d')) {
+		camera->changeThetaBy(-0.1);
+	}
+
+	if (keyboard->isPressed('>')) {
+		camera->changeZoomBy(-0.1);
+	}
+
+	if (keyboard->isPressed('<')) {
+		camera->changeZoomBy(0.1);
+	}
+
+	glutPostRedisplay();
 }
 
 void GameManager::resetGame() { }

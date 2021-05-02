@@ -160,6 +160,7 @@
     <ClCompile Include="Hardware\Mouse.cpp" />
     <ClCompile Include="Asteroids\Asteroid.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Math\Utility.cpp" />
     <ClCompile Include="Math\Vector3D.cpp" />
     <ClCompile Include="World\Camera.cpp" />
     <ClCompile Include="World\Window.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Hardware\Keyboard.h" />
     <ClInclude Include="Hardware\Mouse.h" />
+    <ClInclude Include="Math\Utility.h" />
     <ClInclude Include="Math\Vector3D.h" />
     <ClInclude Include="World\Camera.h" />
     <ClInclude Include="World\Window.h" />
