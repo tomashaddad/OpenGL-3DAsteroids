@@ -1,6 +1,9 @@
 #include "GlutHeaders.h"
 #include "GameManager.h"
 
+#include "Math/Quaternion.h"
+#include "Math/Vector3D.h"
+
 #include <iostream>
 #include <memory>
 

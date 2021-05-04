@@ -10,11 +10,12 @@
 GameManager::GameManager() :
 	dt(0),
 	last_time(0),
-	asteroid(std::make_unique<Asteroid>(4.0f, 36, 18)),
 	keyboard(std::make_unique<Keyboard>()),
 	mouse(std::make_unique<Mouse>()),
 	window(std::make_unique<Window>()),
-	camera(std::make_unique<Camera>(0, 0, 30)) {}
+	camera(std::make_unique<Camera>(0, 0, 30)),
+	arena(std::unique_ptr<Arena>()),
+	world(std::make_unique<World>(40, 10, 1000)) {}
 
 // TODO: Separate/refactor
 void GameManager::startGameLoop() {
@@ -54,10 +55,6 @@ void GameManager::onDisplay() {
 	glMaterialf(GL_FRONT, GL_SHININESS, shininess);
 	
 	glutWireSphere(20, 10, 10);
-
-	glPushMatrix();
-		asteroid->draw();
-	glPopMatrix();
 
 	glDisable(GL_LIGHTING);
 
@@ -115,7 +112,7 @@ void GameManager::onReshape(const int w, const int h) {
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(40.0, aspect_ratio, 1.0f, 1000.0f);
+	gluPerspective(world->fov, aspect_ratio, world->z_near, world->z_far);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

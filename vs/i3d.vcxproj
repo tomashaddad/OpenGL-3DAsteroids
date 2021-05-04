@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -155,26 +155,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Arena\Arena.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Hardware\Keyboard.cpp" />
     <ClCompile Include="Hardware\Mouse.cpp" />
     <ClCompile Include="Asteroids\Asteroid.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Math\Utility.cpp" />
     <ClCompile Include="Math\Vector3D.cpp" />
+    <ClCompile Include="Ship\Ship.cpp" />
     <ClCompile Include="World\Camera.cpp" />
     <ClCompile Include="World\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Arena\Arena.h" />
     <ClInclude Include="Asteroids\Asteroid.h" />
     <ClInclude Include="GlutHeaders.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Hardware\Keyboard.h" />
     <ClInclude Include="Hardware\Mouse.h" />
+    <ClInclude Include="Math\Quaternion.h" />
     <ClInclude Include="Math\Utility.h" />
     <ClInclude Include="Math\Vector3D.h" />
+    <ClInclude Include="Ship\Ship.h" />
     <ClInclude Include="World\Camera.h" />
     <ClInclude Include="World\Window.h" />
+    <ClInclude Include="World\World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

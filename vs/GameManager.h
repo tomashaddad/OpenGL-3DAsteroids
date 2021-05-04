@@ -5,7 +5,9 @@
 #include "Hardware/Mouse.h"
 #include "World/Window.h"
 #include "World/Camera.h"
+#include "World/World.h"
 #include "Asteroids/Asteroid.h"
+#include "Arena/Arena.h"
 
 #include <memory>
 
@@ -41,12 +43,13 @@ public:
 private:
 	double dt;
 	double last_time;
-
-	std::unique_ptr<Asteroid> asteroid;
+	
 	std::unique_ptr<Keyboard> keyboard;
 	std::unique_ptr<Mouse> mouse;
 	std::unique_ptr<Window> window;
 	std::unique_ptr<Camera> camera;
+	std::unique_ptr<Arena> arena;
+	std::unique_ptr<World> world;
 };
 
 #endif // I3D_GAMEMANAGER_H

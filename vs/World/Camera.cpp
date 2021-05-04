@@ -38,6 +38,4 @@ void Camera::computeCoordinates() {
 	X = XY * cosf(theta_rad);
 	Y = XY * sinf(theta_rad);
 	Z = radius * sinf(phi_rad);
-
-	std::cout << X << " " << Y << " " << Z << std::endl;
 }

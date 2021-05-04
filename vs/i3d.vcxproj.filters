@@ -48,6 +48,9 @@
     <ClCompile Include="Asteroids\Asteroid.cpp" />
     <ClCompile Include="World\Camera.cpp" />
     <ClCompile Include="Math\Utility.cpp" />
+    <ClCompile Include="Ship\Ship.cpp" />
+    <ClCompile Include="Arena\Arena.cpp" />
+    <ClCompile Include="Math\Quaternion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h" />
@@ -67,5 +70,9 @@
     <ClInclude Include="Asteroids\Asteroid.h" />
     <ClInclude Include="World\Camera.h" />
     <ClInclude Include="Math\Utility.h" />
+    <ClInclude Include="Ship\Ship.h" />
+    <ClInclude Include="Arena\Arena.h" />
+    <ClInclude Include="World\World.h" />
+    <ClInclude Include="Math\Quaternion.h" />
   </ItemGroup>
 </Project>
