@@ -7,34 +7,36 @@
 Quaternion::Quaternion() : X(0), Y(0), Z(0), W(1) {}
 
 Quaternion::Quaternion(Vector3D axis, float angle) {
+	float mag = Vector3D::magnitude(axis);
 	angle = Utility::toRadians(angle);
 	float sine = sinf(angle * 0.5);
 
-	X = axis.X * sine;
-	Y = axis.Y * sine;
-	Z = axis.Z * sine;
+	// Divide by magnitude for pure quaternion
+	X = axis.X * sine / mag;
+	Y = axis.Y * sine / mag;
+	Z = axis.Z * sine / mag;
 	W = cosf(angle * 0.5f);
-
-	normalise();
 }
 
 Quaternion::Quaternion(float x, float y, float z, float w) :
 	X(x), Y(y), Z(z), W(w) {}
 
-float Quaternion::magnitude() const {
-	return sqrtf(X * X + Y * Y + Z * Z + W * W);
+float Quaternion::magnitude(const Quaternion &q) {
+	return sqrtf(q.X * q.X + q.Y * q.Y + q.Z * q.Z + q.W * q.W);
 }
 
-void Quaternion::normalise() {
-	float mag = magnitude();
+Quaternion Quaternion::normalise(const Quaternion &q) {
+	float mag = magnitude(q);
 
-	X /= mag;
-	Y /= mag;
-	Z /= mag;
-	W /= mag;
+	return Quaternion(q.X / mag, q.Y / mag, q.Z / mag, q.W / mag);
 }
 
-std::array<float, 16> Quaternion::toMatrix() const {
+std::array<float, 16> Quaternion::toMatrix(const Quaternion& q) {
+	float X = q.X;
+	float Y = q.Y;
+	float Z = q.Z;
+	float W = q.W;
+
 	return {
 		1 - 2*(Z*Z + Y*Y),	2*(X*Y - W*Z),		2*(Z*X + W*Y),		0,
 		2*(X*Y + W*Z),		1 - 2*(X*X + Z*Z),	2*(Y*Z - W*X),		0,
@@ -43,24 +45,31 @@ std::array<float, 16> Quaternion::toMatrix() const {
 	};
 }
 
-Quaternion Quaternion::conjugate() const {
-	return Quaternion(-X, -Y, -Z, W);
+Quaternion Quaternion::conjugate(const Quaternion& q) {
+	return Quaternion(-q.X, -q.Y, -q.Z, q.W);
 }
 
-Quaternion Quaternion::operator*(const Quaternion& rhs) const {
+Quaternion operator*(const Quaternion& lhs, const Quaternion& rhs) {
+	float lhsX = lhs.getX(), lhsY = lhs.getY(),
+		  lhsZ = lhs.getZ(), lhsW = lhs.getW();
+
+	float rhsX = rhs.getX(), rhsY = rhs.getY(),
+		  rhsZ = rhs.getZ(), rhsW = rhs.getW();
+
 	return Quaternion(
-		W * rhs.getX() + X * rhs.getW() + Y * rhs.getZ() - Z * rhs.getY(),
-		W * rhs.getY() - X * rhs.getZ() + Y * rhs.getW() + Z * rhs.getX(),
-		W * rhs.getZ() + X * rhs.getY() - Y * rhs.getX() + Z * rhs.getW(),
-		W * rhs.getW() - X * rhs.getX() - Y * rhs.getY() - Z * rhs.getZ()
+		lhsW * rhsX + lhsX * rhsW + lhsY * rhsZ - lhsZ * rhsY,
+		lhsW * rhsY - lhsX * rhsZ + lhsY * rhsW + lhsZ * rhsX,
+		lhsW * rhsZ + lhsX * rhsY - lhsY * rhsX + lhsZ * rhsW,
+		lhsW * rhsW - lhsX * rhsX - lhsY * rhsY - lhsZ * rhsZ
 	);
 }
 
-Vector3D Quaternion::operator*(const Vector3D& rhs) const {
+// Quaternion->Vector multiplication is not commutiative, must be Q*V
+Vector3D operator*(const Quaternion& lhs, const Vector3D& rhs) {
 	Quaternion pure = Quaternion(rhs.X, rhs.Y, rhs.Z, 0);
-	Quaternion right = pure * conjugate();
-	Quaternion left = *this * right;
-	return Vector3D(left.X, left.Y, left.Z);
+	Quaternion right = pure * Quaternion::conjugate(lhs); // v * q-1
+	Quaternion left = lhs * right; // q * (v * q-1)
+	return Vector3D(left.getX(), left.getY(), left.getZ());
 }
 
 float Quaternion::getX() const { return X; }

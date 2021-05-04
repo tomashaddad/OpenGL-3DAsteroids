@@ -11,13 +11,10 @@ public:
 	Quaternion(Vector3D axis, float angle);
 	Quaternion(float x, float y, float z, float w);
 
-	float magnitude() const;
-	void normalise();
-	std::array<float, 16> toMatrix() const;
-
-	Quaternion conjugate() const;
-	Quaternion operator*(const Quaternion& rhs) const;
-	Vector3D operator*(const Vector3D& rhs) const;
+	static float magnitude(const Quaternion& q);
+	static Quaternion normalise(const Quaternion& q);
+	static std::array<float, 16> toMatrix(const Quaternion& q);
+	static Quaternion conjugate(const Quaternion& q);
 
 	float getX() const;
 	float getY() const;
@@ -32,5 +29,8 @@ private:
 	float Z;
 	float W;
 };
+
+Quaternion operator*(const Quaternion& lhs, const Quaternion& rhs);
+Vector3D operator*(const Quaternion& lhs, const Vector3D& rhs);
 
 #endif
