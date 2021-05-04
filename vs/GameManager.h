@@ -8,6 +8,7 @@
 #include "World/World.h"
 #include "Asteroids/Asteroid.h"
 #include "Arena/Arena.h"
+#include "Ship/Ship.h"
 
 #include <memory>
 
@@ -43,6 +44,8 @@ public:
 private:
 	double dt;
 	double last_time;
+
+	std::unique_ptr<Ship> ship;
 	
 	std::unique_ptr<Keyboard> keyboard;
 	std::unique_ptr<Mouse> mouse;

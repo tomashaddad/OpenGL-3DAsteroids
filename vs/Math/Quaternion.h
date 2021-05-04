@@ -21,6 +21,8 @@ public:
 	float getZ() const;
 	float getW() const;
 
+	Quaternion& operator*=(const Quaternion& rhs);
+
 	friend std::ostream& operator<<(std::ostream& ostream, Quaternion& q);
 
 private:
@@ -30,7 +32,7 @@ private:
 	float W;
 };
 
-Quaternion operator*(const Quaternion& lhs, const Quaternion& rhs);
-Vector3D operator*(const Quaternion& lhs, const Vector3D& rhs);
+Quaternion operator*(Quaternion lhs, Quaternion rhs);
+Vector3D operator*(Quaternion lhs, Vector3D rhs);
 
 #endif

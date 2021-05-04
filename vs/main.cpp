@@ -24,19 +24,11 @@ void displayCallback();
 void idleCallback();
 
 int main(int argc, char** argv) {
+	initGlut(argc, argv);
+	initCallbacks();
+	initFeatures();
 
-	Quaternion q1{ 4,5,9,7 };
-	Quaternion q2{ 2,3,4,1 };
-
-	Quaternion q1q2 = q1 * q2;
-
-	std::cout << q1q2 << std::endl;
-
-	//initGlut(argc, argv);
-	//initCallbacks();
-	//initFeatures();
-
-	//game->startGameLoop();
+	game->startGameLoop();
 
 	return EXIT_SUCCESS;
 }

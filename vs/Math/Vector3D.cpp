@@ -5,6 +5,10 @@
 Vector3D::Vector3D() : X(0), Y(0), Z(0) {}
 Vector3D::Vector3D(float x, float y, float z) : X(x), Y(y), Z(z) {}
 
+Vector3D Vector3D::up() { return Vector3D(0, 1, 0); }
+Vector3D Vector3D::right() { return Vector3D(1, 0, 0); }
+Vector3D Vector3D::backward() { return Vector3D(0, 0, -1); }
+
 // Returns the dot product of two 3D vectors
 float Vector3D::dot(Vector3D lhs, Vector3D rhs) {
 	return (lhs.X * rhs.X) + (lhs.Y * rhs.Y) + (lhs.Z * rhs.Z);

@@ -10,11 +10,12 @@
 GameManager::GameManager() :
 	dt(0),
 	last_time(0),
+	ship(std::make_unique<Ship>()),
 	keyboard(std::make_unique<Keyboard>()),
 	mouse(std::make_unique<Mouse>()),
 	window(std::make_unique<Window>()),
 	camera(std::make_unique<Camera>(0, 0, 30)),
-	arena(std::unique_ptr<Arena>()),
+	arena(std::make_unique<Arena>()),
 	world(std::make_unique<World>(40, 10, 1000)) {}
 
 // TODO: Separate/refactor
@@ -53,16 +54,14 @@ void GameManager::onDisplay() {
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
 	glMaterialf(GL_FRONT, GL_SHININESS, shininess);
-	
-	glutWireSphere(20, 10, 10);
+
+	ship->draw();
 
 	glDisable(GL_LIGHTING);
 
-	// positive x: red
-	// positive y: green
-	// positive z: blue
 	glPushMatrix();
 		glBegin(GL_LINES);
+			// positive x: red, y: green, z: blue
 			glColor3f(0.0, 0.0, 0.0);
 			glVertex3f(-10.0, 0.0, 0.0);
 			glColor3f(1.0, 0.0, 0.0);
@@ -97,9 +96,16 @@ void GameManager::update_camera() {
 	// what you're looking at
 	// up vector
 
-	gluLookAt(camera->X, camera->Y, camera->Z,
-		0, 0, 0,
-		0, 1, 0);
+	//gluLookAt(camera->X, camera->Y, camera->Z,
+	//	0, 0, 0,
+	//	0, 1, 0);
+
+	Vector3D ship_pos = ship->getPosition();
+	gluLookAt(
+		ship_pos.X, ship_pos.Y + 10.0f, ship_pos.Z - 20.0f,
+		ship_pos.X, ship_pos.Y, ship_pos.Z,
+		0, 1, 0
+	);
 }
 
 void GameManager::onReshape(const int w, const int h) {
@@ -174,27 +180,27 @@ void GameManager::calculateTimeDelta() {
 
 void GameManager::handleKeyboardInput() {
 	if (keyboard->isPressed('w')) {
-		camera->changePhiBy(-0.1);
+		ship->move(Move::up, dt);
 	}
 
 	if (keyboard->isPressed('s')) {
-		camera->changePhiBy(0.1);
+		ship->move(Move::down, dt);
 	}
 
 	if (keyboard->isPressed('a')) {
-		camera->changeThetaBy(0.1);
+		ship->move(Move::left, dt);
 	}
 
 	if (keyboard->isPressed('d')) {
-		camera->changeThetaBy(-0.1);
+		ship->move(Move::right, dt);
 	}
 
-	if (keyboard->isPressed('>')) {
-		camera->changeZoomBy(-0.1);
+	if (keyboard->isPressed('r')) {
+		ship->move(Move::forward, dt);
 	}
 
-	if (keyboard->isPressed('<')) {
-		camera->changeZoomBy(0.1);
+	if (keyboard->isPressed('f')) {
+		ship->move(Move::backward, dt);
 	}
 
 	glutPostRedisplay();

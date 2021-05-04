@@ -12,6 +12,10 @@ public:
 	Vector3D();
 	Vector3D(float x, float y, float z);
 
+	static Vector3D up();
+	static Vector3D right();
+	static Vector3D backward();
+
 	static float dot(Vector3D lhs, Vector3D rhs);
 
 	static Vector3D from_angles(float alpha, float beta, float magnitude = 1);

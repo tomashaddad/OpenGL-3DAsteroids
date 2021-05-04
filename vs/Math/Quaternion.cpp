@@ -9,7 +9,7 @@ Quaternion::Quaternion() : X(0), Y(0), Z(0), W(1) {}
 Quaternion::Quaternion(Vector3D axis, float angle) {
 	float mag = Vector3D::magnitude(axis);
 	angle = Utility::toRadians(angle);
-	float sine = sinf(angle * 0.5);
+	float sine = sinf(angle * 0.5f);
 
 	// Divide by magnitude for pure quaternion
 	X = axis.X * sine / mag;
@@ -49,23 +49,29 @@ Quaternion Quaternion::conjugate(const Quaternion& q) {
 	return Quaternion(-q.X, -q.Y, -q.Z, q.W);
 }
 
-Quaternion operator*(const Quaternion& lhs, const Quaternion& rhs) {
-	float lhsX = lhs.getX(), lhsY = lhs.getY(),
-		  lhsZ = lhs.getZ(), lhsW = lhs.getW();
-
-	float rhsX = rhs.getX(), rhsY = rhs.getY(),
-		  rhsZ = rhs.getZ(), rhsW = rhs.getW();
-
-	return Quaternion(
-		lhsW * rhsX + lhsX * rhsW + lhsY * rhsZ - lhsZ * rhsY,
-		lhsW * rhsY - lhsX * rhsZ + lhsY * rhsW + lhsZ * rhsX,
-		lhsW * rhsZ + lhsX * rhsY - lhsY * rhsX + lhsZ * rhsW,
-		lhsW * rhsW - lhsX * rhsX - lhsY * rhsY - lhsZ * rhsZ
-	);
+Quaternion operator*(Quaternion lhs, Quaternion rhs) {
+	return lhs *= rhs;
 }
 
+Quaternion& Quaternion::operator*=(const Quaternion& rhs) {
+	float rhsX = rhs.getX(), rhsY = rhs.getY(),
+		rhsZ = rhs.getZ(), rhsW = rhs.getW();
+
+	Quaternion q;
+
+	q.X = W * rhsX + X * rhsW + Y * rhsZ - Z * rhsY;
+	q.Y = W * rhsY - X * rhsZ + Y * rhsW + Z * rhsX;
+	q.Z = W * rhsZ + X * rhsY - Y * rhsX + Z * rhsW;
+	q.W = W * rhsW - X * rhsX - Y * rhsY - Z * rhsZ;
+
+	*this = q;
+
+	return *this;
+}
+
+
 // Quaternion->Vector multiplication is not commutiative, must be Q*V
-Vector3D operator*(const Quaternion& lhs, const Vector3D& rhs) {
+Vector3D operator*(Quaternion lhs, Vector3D rhs) {
 	Quaternion pure = Quaternion(rhs.X, rhs.Y, rhs.Z, 0);
 	Quaternion right = pure * Quaternion::conjugate(lhs); // v * q-1
 	Quaternion left = lhs * right; // q * (v * q-1)

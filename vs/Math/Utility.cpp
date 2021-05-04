@@ -14,9 +14,9 @@ float Utility::getRandomFloatBetween(float a, float b) {
 }
 
 float Utility::toRadians(float angle) {
-	return angle * pi / static_cast<float>(180);
+	return angle * pi / 180.0f;
 }
 
 float Utility::toDegrees(float angle) {
-	return angle * static_cast<float>(180) / pi;
+	return angle * 180.0f / pi;
 }
