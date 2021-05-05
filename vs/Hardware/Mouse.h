@@ -13,8 +13,8 @@ public:
 	bool isHoldingRightClick() const;
 	void setHoldingRightClick(bool state);
 
-	unsigned int X;
-	unsigned int Y;
+	int X;
+	int Y;
 
 private:
 	bool left_clicking;

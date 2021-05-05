@@ -5,7 +5,6 @@
 #include "Hardware/Mouse.h"
 #include "World/Window.h"
 #include "World/Camera.h"
-#include "World/World.h"
 #include "Asteroids/Asteroid.h"
 #include "Arena/Arena.h"
 #include "Ship/Ship.h"
@@ -27,6 +26,7 @@ public:
 	void onKeyUp(unsigned char key, int x, int y);
 
 	void onMouseClick(int button, int state, int x, int y);
+	void onMouseMovement(int x, int y);
 	void onMouseClickDrag(int x, int y);
 	void onDisplay();
 
@@ -37,6 +37,7 @@ public:
 
 	// Executes functions based on keys set to True in the Keyboard object
 	void handleKeyboardInput();
+	void handleMouseInput();
 
 	// Clears all asteroids, resets the ship position
 	void resetGame();
@@ -52,7 +53,6 @@ private:
 	std::unique_ptr<Window> window;
 	std::unique_ptr<Camera> camera;
 	std::unique_ptr<Arena> arena;
-	std::unique_ptr<World> world;
 };
 
 #endif // I3D_GAMEMANAGER_H

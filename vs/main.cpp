@@ -16,12 +16,15 @@ void initFeatures();
 
 // Callback functions
 void reshapeCallback(int w, int h);
-void keyboardDownCallback(unsigned char key, int x, int y);
-void keyboardUpCallback(unsigned char key, int x, int y);
-void mouseClickCallback(int button, int state, int x, int y);
-void mouseDragCallback(int x, int y);
 void displayCallback();
 void idleCallback();
+
+void keyboardDownCallback(unsigned char key, int x, int y);
+void keyboardUpCallback(unsigned char key, int x, int y);
+
+void mouseMovementCallback(int x, int y);
+void mouseClickDragCallback(int x, int y);
+void mouseClickCallback(int button, int state, int x, int y);
 
 int main(int argc, char** argv) {
 	initGlut(argc, argv);
@@ -47,7 +50,8 @@ void initCallbacks() {
 	glutKeyboardFunc(keyboardDownCallback);
 	glutKeyboardUpFunc(keyboardUpCallback);
 	glutMouseFunc(mouseClickCallback);
-	glutMotionFunc(mouseDragCallback);
+	glutMotionFunc(mouseClickDragCallback);
+	glutPassiveMotionFunc(mouseMovementCallback);
 	glutDisplayFunc(displayCallback);
 	glutIdleFunc(idleCallback);
 }
@@ -78,7 +82,11 @@ void mouseClickCallback(int button, int state, int x, int y) {
 	game->onMouseClick(button, state, x, y);
 }
 
-void mouseDragCallback(int x, int y) {
+void mouseMovementCallback(int x, int y) {
+	game->onMouseMovement(x, y);
+}
+
+void mouseClickDragCallback(int x, int y) {
 	game->onMouseClickDrag(x, y);
 }
 
@@ -89,4 +97,5 @@ void displayCallback() {
 void idleCallback() {
 	game->calculateTimeDelta();
 	game->handleKeyboardInput();
+	game->handleMouseInput();
 }

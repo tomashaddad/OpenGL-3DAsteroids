@@ -171,6 +171,7 @@
   <ItemGroup>
     <ClInclude Include="Arena\Arena.h" />
     <ClInclude Include="Asteroids\Asteroid.h" />
+    <ClInclude Include="Constants\ShipConstants.h" />
     <ClInclude Include="GlutHeaders.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Hardware\Keyboard.h" />
@@ -181,7 +182,6 @@
     <ClInclude Include="Ship\Ship.h" />
     <ClInclude Include="World\Camera.h" />
     <ClInclude Include="World\Window.h" />
-    <ClInclude Include="World\World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,6 +3,7 @@
 
 #include "GameManager.h"
 #include "GlutHeaders.h"
+#include "Math/Utility.h"
 
 #include <iostream>
 #include <memory>
@@ -14,9 +15,8 @@ GameManager::GameManager() :
 	keyboard(std::make_unique<Keyboard>()),
 	mouse(std::make_unique<Mouse>()),
 	window(std::make_unique<Window>()),
-	camera(std::make_unique<Camera>(0, 0, 30)),
-	arena(std::make_unique<Arena>()),
-	world(std::make_unique<World>(40, 10, 1000)) {}
+	camera(std::make_unique<Camera>(40, 10, 1000)),
+	arena(std::make_unique<Arena>()) {}
 
 // TODO: Separate/refactor
 void GameManager::startGameLoop() {
@@ -89,20 +89,27 @@ void GameManager::onDisplay() {
 	glutSwapBuffers();
 }
 
+float timer = 0;
 void GameManager::update_camera() {
 	glLoadIdentity();
 	
-	// position
-	// what you're looking at
-	// up vector
-
-	//gluLookAt(camera->X, camera->Y, camera->Z,
-	//	0, 0, 0,
-	//	0, 1, 0);
-
 	Vector3D ship_pos = ship->getPosition();
+	Vector3D ship_forward = ship->getRotation() * Vector3D::forward();
+	Vector3D camera_pos = ship_pos - 30 * ship_forward;
+
+	if (timer > 1) {
+		timer = 0;
+	}
+	timer += dt;
+
+	//gluLookAt(
+	//	camera_pos.X, camera_pos.Y, camera_pos.Z,
+	//	ship_pos.X, ship_pos.Y, ship_pos.Z,
+	//	0, 1, 0
+	//);
+
 	gluLookAt(
-		ship_pos.X, ship_pos.Y + 10.0f, ship_pos.Z - 20.0f,
+		20, 20, -20,
 		ship_pos.X, ship_pos.Y, ship_pos.Z,
 		0, 1, 0
 	);
@@ -114,11 +121,13 @@ void GameManager::onReshape(const int w, const int h) {
 
 	const float aspect_ratio = static_cast<float>(w) / static_cast<float>(h);
 
+	camera->setAspect(aspect_ratio);
+
 	glViewport(0, 0, w, h);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(world->fov, aspect_ratio, world->z_near, world->z_far);
+	gluPerspective(camera->getFov(), aspect_ratio, camera->getZNear(), camera->getZFar());
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -155,20 +164,16 @@ void GameManager::onMouseClick(int button, int state, int x, int y) {
 	}
 
 	mouse->setPosition(x, y);
-
 	glutPostRedisplay();
 }
 
-// Converts between window and world coordinates for moving the ship with mouse
-void GameManager::onMouseClickDrag(const int x, const int y)
-{
-	if (mouse->isHoldingLeftClick()) {
+void GameManager::onMouseMovement(int x, int y) {
+	mouse->X = x;
+	mouse->Y = y;
+}
 
-	}
-
-	if (mouse->isHoldingRightClick()) {
-
-	}
+void GameManager::onMouseClickDrag(int x, int y) {
+	onMouseMovement(x, y);
 }
 
 void GameManager::calculateTimeDelta() {
@@ -180,30 +185,48 @@ void GameManager::calculateTimeDelta() {
 
 void GameManager::handleKeyboardInput() {
 	if (keyboard->isPressed('w')) {
-		ship->move(Move::up, dt);
+		ship->rotate(Axis::x, Direction::negative, dt);
 	}
 
 	if (keyboard->isPressed('s')) {
-		ship->move(Move::down, dt);
+		ship->rotate(Axis::x, Direction::positive, dt);
 	}
 
 	if (keyboard->isPressed('a')) {
-		ship->move(Move::left, dt);
+		ship->rotate(Axis::y, Direction::positive, dt);
 	}
 
 	if (keyboard->isPressed('d')) {
-		ship->move(Move::right, dt);
+		ship->rotate(Axis::y, Direction::negative, dt);
+	}
+
+	if (keyboard->isPressed('q')) {
+		ship->rotate(Axis::z, Direction::negative, dt);
+	}
+
+	if (keyboard->isPressed('e')) {
+		ship->rotate(Axis::z, Direction::positive, dt);
 	}
 
 	if (keyboard->isPressed('r')) {
-		ship->move(Move::forward, dt);
-	}
-
-	if (keyboard->isPressed('f')) {
-		ship->move(Move::backward, dt);
+		ship->reset();
 	}
 
 	glutPostRedisplay();
+}
+
+void GameManager::handleMouseInput() {
+	if (mouse->isHoldingLeftClick()) {
+		ship->yaw(utility::mapToRange(
+			mouse->X,
+			0, window->width,
+			-camera->getAspect(), camera->getAspect()), dt);
+
+		ship->pitch(utility::mapToRange(
+			mouse->Y,
+			0, window->height,
+			camera->getAspect(), -camera->getAspect()), dt);
+	}
 }
 
 void GameManager::resetGame() { }

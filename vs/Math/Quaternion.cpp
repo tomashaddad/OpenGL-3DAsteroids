@@ -8,7 +8,7 @@ Quaternion::Quaternion() : X(0), Y(0), Z(0), W(1) {}
 
 Quaternion::Quaternion(Vector3D axis, float angle) {
 	float mag = Vector3D::magnitude(axis);
-	angle = Utility::toRadians(angle);
+	angle = utility::toRadians(angle);
 	float sine = sinf(angle * 0.5f);
 
 	// Divide by magnitude for pure quaternion
@@ -41,7 +41,7 @@ std::array<float, 16> Quaternion::toMatrix(const Quaternion& q) {
 		1 - 2*(Z*Z + Y*Y),	2*(X*Y - W*Z),		2*(Z*X + W*Y),		0,
 		2*(X*Y + W*Z),		1 - 2*(X*X + Z*Z),	2*(Y*Z - W*X),		0,
 		2*(Z*X - W*Y),		2*(Y*Z + W*X),		1 - 2*(X*X + Y*Y),	0,
-		0,					0,					0,					X*X + Y*Y + Z*Z + W*W
+		0,					0,					0,					1
 	};
 }
 
@@ -68,7 +68,6 @@ Quaternion& Quaternion::operator*=(const Quaternion& rhs) {
 
 	return *this;
 }
-
 
 // Quaternion->Vector multiplication is not commutiative, must be Q*V
 Vector3D operator*(Quaternion lhs, Vector3D rhs) {

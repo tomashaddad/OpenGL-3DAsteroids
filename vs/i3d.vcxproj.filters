@@ -72,7 +72,7 @@
     <ClInclude Include="Math\Utility.h" />
     <ClInclude Include="Ship\Ship.h" />
     <ClInclude Include="Arena\Arena.h" />
-    <ClInclude Include="World\World.h" />
     <ClInclude Include="Math\Quaternion.h" />
+    <ClInclude Include="Constants\ShipConstants.h" />
   </ItemGroup>
 </Project>

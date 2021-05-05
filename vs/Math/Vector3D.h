@@ -14,7 +14,7 @@ public:
 
 	static Vector3D up();
 	static Vector3D right();
-	static Vector3D backward();
+	static Vector3D forward();
 
 	static float dot(Vector3D lhs, Vector3D rhs);
 

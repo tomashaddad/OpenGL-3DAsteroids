@@ -3,39 +3,15 @@
 
 #include "Camera.h"
 
-#include <iostream>
+Camera::Camera(float fov, float znear, float zfar) :
+	fov(fov), znear(znear), zfar(zfar), aspect(0) {}
 
-Camera::Camera(float theta, float phi, float r) :
-	theta(theta),
-	phi(phi),
-	radius(r)
-{
-	computeCoordinates();
-}
+Vector3D Camera::getPosition() const { return position; }
+Quaternion Camera::getRotation() const { return rotation; }
 
-void Camera::changeZoomBy(float zoom) {
-	radius += zoom;
-	computeCoordinates();
-}
+const float& Camera::getFov() const { return fov; }
+const float& Camera::getZNear() const { return znear; }
+const float& Camera::getZFar() const { return zfar; }
 
-void Camera::changePhiBy(float angle) {
-	phi += angle;
-	computeCoordinates();
-}
-
-void Camera::changeThetaBy(float angle) {
-	theta += angle;
-	computeCoordinates();
-}
-
-void Camera::computeCoordinates() {
-	float conversion = M_PI / 180;
-
-	float phi_rad = phi * conversion;
-	float theta_rad = theta * conversion;
-
-	const float XY = radius * cosf(phi_rad);
-	X = XY * cosf(theta_rad);
-	Y = XY * sinf(theta_rad);
-	Z = radius * sinf(phi_rad);
-}
+const float& Camera::getAspect() const { return aspect; };
+void Camera::setAspect(const float& aspect) { this->aspect = aspect; }

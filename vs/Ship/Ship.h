@@ -4,18 +4,15 @@
 #include "Math/Vector3D.h"
 #include "Math/Quaternion.h"
 
-enum class Move {
-	up,
-	down,
-	left,
-	right,
-	forward,
-	backward
+enum class Axis {
+	x,
+	y,
+	z
 };
 
-enum class Rotate {
-	left,
-	right
+enum class Direction {
+	positive,
+	negative
 };
 
 class Ship {
@@ -26,9 +23,16 @@ public:
 
 	void draw() const;
 
-	void move(const Move movement, const float dt);
+	void rotate(const Axis movement, const Direction direction, const float dt);
+
+	void yaw(float angle, float dt);
+	void pitch(float angle, float dt);
+	void roll(float angle, float dt);
 
 	const Vector3D& getPosition() const;
+	const Quaternion& getRotation() const;
+
+	void reset();
 
 private:
 	Vector3D position;
