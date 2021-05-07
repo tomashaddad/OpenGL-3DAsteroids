@@ -7,7 +7,7 @@ Camera::Camera(float fov, float znear, float zfar) :
 	fov(fov), znear(znear), zfar(zfar), aspect(0) {}
 
 Vector3D Camera::getPosition() const { return position; }
-Quaternion Camera::getRotation() const { return rotation; }
+//Quaternion Camera::getRotation() const { return rotation; }
 
 const float& Camera::getFov() const { return fov; }
 const float& Camera::getZNear() const { return znear; }

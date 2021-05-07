@@ -4,6 +4,7 @@
 #include "GameManager.h"
 #include "GlutHeaders.h"
 #include "Math/Utility.h"
+#include "Constants/ShipConstants.h"
 
 #include <iostream>
 #include <memory>
@@ -81,7 +82,6 @@ void GameManager::onDisplay() {
 
 	glEnable(GL_LIGHTING);
 
-
 	int err;
 	while ((err = glGetError()) != GL_NO_ERROR)
 		printf("display: %s\n", gluErrorString(err));
@@ -89,29 +89,17 @@ void GameManager::onDisplay() {
 	glutSwapBuffers();
 }
 
-float timer = 0;
 void GameManager::update_camera() {
 	glLoadIdentity();
 	
-	Vector3D ship_pos = ship->getPosition();
 	Vector3D ship_forward = ship->getRotation() * Vector3D::forward();
-	Vector3D camera_pos = ship_pos - 30 * ship_forward;
-
-	if (timer > 1) {
-		timer = 0;
-	}
-	timer += dt;
-
-	//gluLookAt(
-	//	camera_pos.X, camera_pos.Y, camera_pos.Z,
-	//	ship_pos.X, ship_pos.Y, ship_pos.Z,
-	//	0, 1, 0
-	//);
+	Vector3D ship_up = ship->getRotation() * Vector3D::up();
+	Vector3D camera_pos = ship->getPosition() - 50 * ship_forward + 10 * ship_up;
 
 	gluLookAt(
-		20, 20, -20,
-		ship_pos.X, ship_pos.Y, ship_pos.Z,
-		0, 1, 0
+		camera_pos.X, camera_pos.Y, camera_pos.Z,
+		ship->getPosition().X, ship->getPosition().Y, ship->getPosition().Z,
+		ship_up.X, ship_up.Y, ship_up.Z
 	);
 }
 
@@ -164,7 +152,6 @@ void GameManager::onMouseClick(int button, int state, int x, int y) {
 	}
 
 	mouse->setPosition(x, y);
-	glutPostRedisplay();
 }
 
 void GameManager::onMouseMovement(int x, int y) {
@@ -184,48 +171,75 @@ void GameManager::calculateTimeDelta() {
 }
 
 void GameManager::handleKeyboardInput() {
+
 	if (keyboard->isPressed('w')) {
-		ship->rotate(Axis::x, Direction::negative, dt);
+		ship->move(Direction::forward, 20* dt);
 	}
 
 	if (keyboard->isPressed('s')) {
-		ship->rotate(Axis::x, Direction::positive, dt);
+		ship->move(Direction::backward, 20*dt);
 	}
 
 	if (keyboard->isPressed('a')) {
-		ship->rotate(Axis::y, Direction::positive, dt);
+		ship->rotate(Axis::z, -ROTATION_SPEED * dt);
 	}
 
 	if (keyboard->isPressed('d')) {
-		ship->rotate(Axis::y, Direction::negative, dt);
+
+		ship->rotate(Axis::z, ROTATION_SPEED * dt);
 	}
 
-	if (keyboard->isPressed('q')) {
-		ship->rotate(Axis::z, Direction::negative, dt);
-	}
+	// KEYBOARD ROTATIONS
 
-	if (keyboard->isPressed('e')) {
-		ship->rotate(Axis::z, Direction::positive, dt);
-	}
+	//if (keyboard->isPressed('w')) {
+	//	ship->rotate(Axis::x, -ROTATION_SPEED * dt);
+	//}
+
+	//if (keyboard->isPressed('s')) {
+	//	ship->rotate(Axis::x, ROTATION_SPEED * dt);
+	//}
+
+	//if (keyboard->isPressed('a')) {
+	//	ship->rotate(Axis::y, ROTATION_SPEED * dt);
+	//}
+
+	//if (keyboard->isPressed('d')) {
+	//	ship->rotate(Axis::y, -ROTATION_SPEED * dt);
+	//}
+
+	//if (keyboard->isPressed('q')) {
+	//	ship->rotate(Axis::z, -ROTATION_SPEED * dt);
+	//}
+
+	//if (keyboard->isPressed('e')) {
+	//	ship->rotate(Axis::z, ROTATION_SPEED * dt);
+	//}
 
 	if (keyboard->isPressed('r')) {
 		ship->reset();
 	}
 
-	glutPostRedisplay();
+	if (keyboard->isAnyKeyPressed()) {
+		glutPostRedisplay();
+	}
 }
 
 void GameManager::handleMouseInput() {
 	if (mouse->isHoldingLeftClick()) {
-		ship->yaw(utility::mapToRange(
+		float map_x = utility::mapToRange(
 			mouse->X,
 			0, window->width,
-			-camera->getAspect(), camera->getAspect()), dt);
+			camera->getAspect(), -camera->getAspect());
 
-		ship->pitch(utility::mapToRange(
+		float map_y = utility::mapToRange(
 			mouse->Y,
 			0, window->height,
-			camera->getAspect(), -camera->getAspect()), dt);
+			-camera->getAspect(), camera->getAspect());
+
+		ship->rotate(Axis::y, map_x * 20 * dt);
+		ship->rotate(Axis::x, map_y * 20 * dt);
+
+		glutPostRedisplay();
 	}
 }
 

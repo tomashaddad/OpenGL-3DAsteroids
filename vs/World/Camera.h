@@ -19,7 +19,7 @@ public:
 	void setAspect(const float& aspect);
 
 private:
-	Quaternion rotation;
+	//Quaternion rotation;
 	Vector3D position;
 
 	float fov;

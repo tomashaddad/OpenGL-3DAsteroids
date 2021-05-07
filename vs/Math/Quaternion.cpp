@@ -38,10 +38,10 @@ std::array<float, 16> Quaternion::toMatrix(const Quaternion& q) {
 	float W = q.W;
 
 	return {
-		1 - 2*(Z*Z + Y*Y),	2*(X*Y - W*Z),		2*(Z*X + W*Y),		0,
-		2*(X*Y + W*Z),		1 - 2*(X*X + Z*Z),	2*(Y*Z - W*X),		0,
-		2*(Z*X - W*Y),		2*(Y*Z + W*X),		1 - 2*(X*X + Y*Y),	0,
-		0,					0,					0,					1
+		1 - 2 * (Z * Z + Y * Y),	2 * (X * Y + W * Z),		2 * (Z * X - W * Y),		0,
+		2 * (X * Y - W * Z),		1 - 2 * (X * X + Z * Z),	2 * (Y * Z + W * X),		0,
+		2 * (Z * X + W * Y),		2 * (Y * Z - W * X),		1 - 2 * (X * X + Y * Y),	0,
+		0,							0,							0,							1
 	};
 }
 
