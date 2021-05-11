@@ -30,7 +30,7 @@ public:
 	void onMouseClickDrag(int x, int y);
 	void onDisplay();
 
-	void update_camera();
+	void updateCamera();
 
 	// Calculates time difference between frames
 	void calculateTimeDelta();

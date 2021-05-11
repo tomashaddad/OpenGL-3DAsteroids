@@ -16,15 +16,20 @@ public:
 	static Vector3D right();
 	static Vector3D forward();
 
-	static float dot(Vector3D lhs, Vector3D rhs);
-
-	static Vector3D from_angles(float alpha, float beta, float magnitude = 1);
-
 	static float components_squared(Vector3D v);
+	static Vector3D cross(const Vector3D &lhs, const Vector3D &rhs);
+	static float dot(const Vector3D &lhs, const Vector3D &rhs);
 
+	// LERP a->b
+	static Vector3D lerp(const Vector3D &a, const Vector3D &b, const float t);
+	static Vector3D normalise(Vector3D v);
 	static float magnitude(Vector3D v);
 
-	static Vector3D normalise(Vector3D v);
+	// SLERP a->b
+	// Returns a normalised vector some point between the spherical interpolation
+	// between a and b given by the percentage t
+	// e.g. slerp[(1 0 0), (0 1 0), 0.33] would return a unit vector 33% between a and b
+	static Vector3D slerp(const Vector3D &a, const Vector3D &b, const float t);
 
 	Vector3D& operator+=(const Vector3D& rhs); // Add vector to this vector
 	Vector3D& operator-=(const Vector3D& rhs); // Subtract vector from this vector

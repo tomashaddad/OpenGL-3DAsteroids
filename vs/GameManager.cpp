@@ -43,8 +43,6 @@ void GameManager::initLights() {
 void GameManager::onDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	update_camera();
-
 	float ambient[] = { 0.5f, 0.5f, 0.5f, 1 };
 	float diffuse[] = { 0.7f, 0.7f, 0.7f, 1 };
 	float specular[] = { 1.0f, 1.0f, 1.0f, 1 };
@@ -89,18 +87,23 @@ void GameManager::onDisplay() {
 	glutSwapBuffers();
 }
 
-void GameManager::update_camera() {
+void GameManager::updateCamera() {
 	glLoadIdentity();
 	
 	Vector3D ship_forward = ship->getRotation() * Vector3D::forward();
 	Vector3D ship_up = ship->getRotation() * Vector3D::up();
 	Vector3D camera_pos = ship->getPosition() - 50 * ship_forward + 10 * ship_up;
 
+	camera->lerpPositionTo(camera_pos, 2 * dt);
+	camera->lerpUpTo(ship_up, 5 * dt);
+
 	gluLookAt(
-		camera_pos.X, camera_pos.Y, camera_pos.Z,
+		camera->getPosition().X, camera->getPosition().Y, camera->getPosition().Z,
 		ship->getPosition().X, ship->getPosition().Y, ship->getPosition().Z,
-		ship_up.X, ship_up.Y, ship_up.Z
+		camera->getUp().X, camera->getUp().Y, camera->getUp().Z
 	);
+
+	glutPostRedisplay();
 }
 
 void GameManager::onReshape(const int w, const int h) {

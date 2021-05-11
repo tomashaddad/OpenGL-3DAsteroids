@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Arena\Arena.cpp" />
+    <ClCompile Include="Arena\Wall.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Hardware\Keyboard.cpp" />
     <ClCompile Include="Hardware\Mouse.cpp" />
@@ -170,7 +171,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Arena\Arena.h" />
+    <ClInclude Include="Arena\Wall.h" />
     <ClInclude Include="Asteroids\Asteroid.h" />
+    <ClInclude Include="Collisions\Collidable.h" />
     <ClInclude Include="Constants\ShipConstants.h" />
     <ClInclude Include="GlutHeaders.h" />
     <ClInclude Include="GameManager.h" />

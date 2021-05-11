@@ -70,11 +70,17 @@ Quaternion& Quaternion::operator*=(const Quaternion& rhs) {
 }
 
 // Quaternion->Vector multiplication is not commutiative, must be Q*V
+// See: https://gamedev.stackexchange.com/questions/28395/rotating-vector3-by-a-quaternion
 Vector3D operator*(Quaternion lhs, Vector3D rhs) {
-	Quaternion pure = Quaternion(rhs.X, rhs.Y, rhs.Z, 0);
-	Quaternion right = pure * Quaternion::conjugate(lhs); // v * q-1
-	Quaternion left = lhs * right; // q * (v * q-1)
-	return Vector3D(left.getX(), left.getY(), left.getZ());
+	Vector3D v{ lhs.getX(), lhs.getY(), lhs.getZ() };
+	float w = lhs.getW();
+
+	float dot = Vector3D::dot(v, rhs);
+	Vector3D cross = Vector3D::cross(v, rhs);
+
+	return 2.0f * dot * v
+		+ (w * w - Vector3D::dot(v, v)) * rhs
+		+ 2.0f * w * cross;
 }
 
 float Quaternion::getX() const { return X; }

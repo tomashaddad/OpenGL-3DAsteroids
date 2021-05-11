@@ -98,4 +98,5 @@ void idleCallback() {
 	game->calculateTimeDelta();
 	game->handleKeyboardInput();
 	game->handleMouseInput();
+	game->updateCamera();
 }

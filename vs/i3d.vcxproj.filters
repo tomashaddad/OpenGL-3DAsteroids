@@ -51,6 +51,7 @@
     <ClCompile Include="Ship\Ship.cpp" />
     <ClCompile Include="Arena\Arena.cpp" />
     <ClCompile Include="Math\Quaternion.cpp" />
+    <ClCompile Include="Arena\Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h" />
@@ -74,5 +75,7 @@
     <ClInclude Include="Arena\Arena.h" />
     <ClInclude Include="Math\Quaternion.h" />
     <ClInclude Include="Constants\ShipConstants.h" />
+    <ClInclude Include="Arena\Wall.h" />
+    <ClInclude Include="Collisions\Collidable.h" />
   </ItemGroup>
 </Project>

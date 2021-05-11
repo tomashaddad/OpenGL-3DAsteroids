@@ -8,9 +8,11 @@ class Camera {
 public:
 	Camera(float fov, float znear, float zfar);
 
-	Vector3D getPosition() const;
-	Quaternion getRotation() const;
+	void lerpPositionTo(Vector3D new_position, float t);
+	void lerpUpTo(Vector3D new_up, float t);
 
+	Vector3D getPosition() const;
+	Vector3D getUp() const;
 	const float& getFov() const;
 	const float& getZNear() const;
 	const float& getZFar() const;
@@ -19,8 +21,11 @@ public:
 	void setAspect(const float& aspect);
 
 private:
-	//Quaternion rotation;
-	Vector3D position;
+	Vector3D current_position;
+	Vector3D previous_position;
+
+	Vector3D current_up;
+	Vector3D previous_up;
 
 	float fov;
 	float znear;
