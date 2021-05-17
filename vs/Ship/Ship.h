@@ -3,7 +3,8 @@
 
 #include "Math/Vector3D.h"
 #include "Math/Quaternion.h"
-#include "Collisions/Collidable.h"
+
+#include "Arena/Wall.h"
 
 enum class Axis {
 	x,
@@ -16,7 +17,7 @@ enum class Direction {
 	backward
 };
 
-class Ship : public Collidable {
+class Ship {
 public:
 	Ship();
 	Ship(float x, float y, float z);
@@ -29,16 +30,17 @@ public:
 
 	const Vector3D& getPosition() const;
 	const Quaternion& getRotation() const;
+	const float& getWarningRadius() const;
+	const float& getCollisionRadius() const;
 
 	void reset();
-
-	bool collidesWith(Collidable &other, Type type) override;
-	void handleCollision(Collidable &other, Type type) override;
-	void reactToCollision(Collidable &other, Type type) override;
 
 private:
 	Vector3D position;
 	Quaternion rotation;
+
+	float warning_radius;
+	float collision_radius;
 };
 
 #endif // I3D_SHIP_H

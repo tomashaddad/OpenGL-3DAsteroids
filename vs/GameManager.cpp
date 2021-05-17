@@ -6,6 +6,8 @@
 #include "Math/Utility.h"
 #include "Constants/ShipConstants.h"
 
+#include "Collisions/Collision.h"
+
 #include <iostream>
 #include <memory>
 
@@ -16,7 +18,7 @@ GameManager::GameManager() :
 	keyboard(std::make_unique<Keyboard>()),
 	mouse(std::make_unique<Mouse>()),
 	window(std::make_unique<Window>()),
-	camera(std::make_unique<Camera>(40, 10, 1000)),
+	camera(std::make_unique<Camera>(60, 10, 10000)),
 	arena(std::make_unique<Arena>()) {}
 
 // TODO: Separate/refactor
@@ -55,8 +57,9 @@ void GameManager::onDisplay() {
 	glMaterialf(GL_FRONT, GL_SHININESS, shininess);
 
 	ship->draw();
-
 	glDisable(GL_LIGHTING);
+	arena->draw();
+
 
 	glPushMatrix();
 		glBegin(GL_LINES);
@@ -92,7 +95,7 @@ void GameManager::updateCamera() {
 	
 	Vector3D ship_forward = ship->getRotation() * Vector3D::forward();
 	Vector3D ship_up = ship->getRotation() * Vector3D::up();
-	Vector3D camera_pos = ship->getPosition() - 50 * ship_forward + 10 * ship_up;
+	Vector3D camera_pos = ship->getPosition() - 50 * ship_forward + 0 * ship_up;
 
 	camera->lerpPositionTo(camera_pos, 2 * dt);
 	camera->lerpUpTo(ship_up, 5 * dt);
@@ -124,12 +127,72 @@ void GameManager::onReshape(const int w, const int h) {
 	glLoadIdentity();
 }
 
+void GameManager::handleCollisions() {
+	handleShipCollisions();
+	handleBulletCollisions();
+	handleAsteroidCollisions();
+}
+
+void GameManager::handleShipCollisions() {
+	for (std::unique_ptr<Wall>& wall : arena->getWalls()) {
+		if (Collision::shipWithWall(ship, wall, CollisionType::WARNING)) {
+			std::cout << "Warning!" << std::endl;
+			wall->setColour(Colour::RED);
+		}
+		else {
+			wall->setColour(Colour::WHITE);
+		}
+
+		if (Collision::shipWithWall(ship, wall, CollisionType::COLLISION)) {
+			std::cout << "Collision!" << std::endl;
+			resetGame();
+			break;
+		}
+	}
+}
+
+void GameManager::handleBulletCollisions() {
+
+}
+
+void GameManager::handleAsteroidCollisions() {
+
+}
+
 void GameManager::onKeyDown(const unsigned char key, int x, int y) {
 	keyboard->setPressed(key, true);
 }
 
 void GameManager::onKeyUp(const unsigned char key, int x, int y) {
 	keyboard->setPressed(key, false);
+}
+
+void GameManager::handleKeyboardInput() {
+
+	if (keyboard->isPressed('w')) {
+		ship->move(Direction::forward, 100 * dt);
+	}
+
+	if (keyboard->isPressed('s')) {
+		ship->move(Direction::backward, 100 * dt);
+	}
+
+	if (keyboard->isPressed('a')) {
+		ship->rotate(Axis::z, -ROTATION_SPEED * dt);
+	}
+
+	if (keyboard->isPressed('d')) {
+
+		ship->rotate(Axis::z, ROTATION_SPEED * dt);
+	}
+
+	if (keyboard->isPressed('r')) {
+		ship->reset();
+	}
+
+	if (keyboard->isAnyKeyPressed()) {
+		glutPostRedisplay();
+	}
 }
 
 void GameManager::onMouseClick(int button, int state, int x, int y) {
@@ -166,67 +229,6 @@ void GameManager::onMouseClickDrag(int x, int y) {
 	onMouseMovement(x, y);
 }
 
-void GameManager::calculateTimeDelta() {
-	// gives delta time in seconds
-	const double cur_time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
-	dt = cur_time - last_time;
-	last_time = cur_time;
-}
-
-void GameManager::handleKeyboardInput() {
-
-	if (keyboard->isPressed('w')) {
-		ship->move(Direction::forward, 20* dt);
-	}
-
-	if (keyboard->isPressed('s')) {
-		ship->move(Direction::backward, 20*dt);
-	}
-
-	if (keyboard->isPressed('a')) {
-		ship->rotate(Axis::z, -ROTATION_SPEED * dt);
-	}
-
-	if (keyboard->isPressed('d')) {
-
-		ship->rotate(Axis::z, ROTATION_SPEED * dt);
-	}
-
-	// KEYBOARD ROTATIONS
-
-	//if (keyboard->isPressed('w')) {
-	//	ship->rotate(Axis::x, -ROTATION_SPEED * dt);
-	//}
-
-	//if (keyboard->isPressed('s')) {
-	//	ship->rotate(Axis::x, ROTATION_SPEED * dt);
-	//}
-
-	//if (keyboard->isPressed('a')) {
-	//	ship->rotate(Axis::y, ROTATION_SPEED * dt);
-	//}
-
-	//if (keyboard->isPressed('d')) {
-	//	ship->rotate(Axis::y, -ROTATION_SPEED * dt);
-	//}
-
-	//if (keyboard->isPressed('q')) {
-	//	ship->rotate(Axis::z, -ROTATION_SPEED * dt);
-	//}
-
-	//if (keyboard->isPressed('e')) {
-	//	ship->rotate(Axis::z, ROTATION_SPEED * dt);
-	//}
-
-	if (keyboard->isPressed('r')) {
-		ship->reset();
-	}
-
-	if (keyboard->isAnyKeyPressed()) {
-		glutPostRedisplay();
-	}
-}
-
 void GameManager::handleMouseInput() {
 	if (mouse->isHoldingLeftClick()) {
 		float map_x = utility::mapToRange(
@@ -244,6 +246,13 @@ void GameManager::handleMouseInput() {
 
 		glutPostRedisplay();
 	}
+}
+
+void GameManager::calculateTimeDelta() {
+	// gives delta time in seconds
+	const double cur_time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
+	dt = cur_time - last_time;
+	last_time = cur_time;
 }
 
 void GameManager::resetGame() { }

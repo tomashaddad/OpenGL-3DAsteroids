@@ -15,31 +15,29 @@ class GameManager {
 public:
 	GameManager();
 
-	static void initLights();
 	static void startGameLoop();
+	static void initLights();
+
+	void onDisplay();
+	void updateCamera();
 	void onReshape(int w, int h);
 
-	// Sets the keystate in the Keyboard object to True for the pressed key
-	void onKeyDown(unsigned char key, int x, int y);
+	void handleCollisions();
+	void handleShipCollisions();
+	void handleBulletCollisions();
+	void handleAsteroidCollisions();
 
-	// Sets the keystate in the Keyboard object to False for the pressed key
+	void onKeyDown(unsigned char key, int x, int y);
 	void onKeyUp(unsigned char key, int x, int y);
+	void handleKeyboardInput();
 
 	void onMouseClick(int button, int state, int x, int y);
 	void onMouseMovement(int x, int y);
 	void onMouseClickDrag(int x, int y);
-	void onDisplay();
-
-	void updateCamera();
-
-	// Calculates time difference between frames
-	void calculateTimeDelta();
-
-	// Executes functions based on keys set to True in the Keyboard object
-	void handleKeyboardInput();
 	void handleMouseInput();
 
-	// Clears all asteroids, resets the ship position
+	void calculateTimeDelta();
+
 	void resetGame();
 
 private:

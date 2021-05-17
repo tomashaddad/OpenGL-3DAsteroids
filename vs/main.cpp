@@ -99,4 +99,5 @@ void idleCallback() {
 	game->handleKeyboardInput();
 	game->handleMouseInput();
 	game->updateCamera();
+	game->handleCollisions();
 }

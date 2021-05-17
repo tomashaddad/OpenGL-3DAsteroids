@@ -5,13 +5,16 @@
 #include <iostream>
 
 Ship::Ship() :
-	position(Vector3D{ 0, 0, 0 }) {}
+	warning_radius(WARNING_RADIUS),
+	collision_radius(COLLISION_RADIUS) {}
 
-Ship::Ship(float x, float y, float z) :
-	position(Vector3D{ x, y, z }) {}
+Ship::Ship(float x, float y, float z) : Ship() {
+	position = Vector3D{ x, y, z };
+}
 
-Ship::Ship(Vector3D position) :
-	position(position) {}
+Ship::Ship(Vector3D position) : Ship() {
+	position = position;
+}
 
 void Ship::draw() const {
 	glDisable(GL_LIGHTING);
@@ -79,38 +82,14 @@ void Ship::rotate(const Axis axis, const float angle) {
 	else if (axis == Axis::z) {
 		rotation *= Quaternion(Vector3D::forward(), angle);
 	}
-
-	std::cout << rotation << std::endl;
-	std::cout << Quaternion::magnitude(rotation) << std::endl;
 }
 
-const Vector3D& Ship::getPosition() const {
-	return position;
-}
-
-const Quaternion& Ship::getRotation() const {
-	return rotation;
-}
+const Vector3D& Ship::getPosition() const { return position; }
+const Quaternion& Ship::getRotation() const { return rotation; }
+const float& Ship::getWarningRadius() const { return warning_radius; }
+const float& Ship::getCollisionRadius() const { return collision_radius; }
 
 void Ship::reset() {
 	position = Vector3D();
 	rotation = Quaternion();
-}
-
-bool Ship::collidesWith(Collidable& other, Type type) {
-	return false;
-}
-
-void Ship::handleCollision(Collidable &other, Type type) {
-	if (type == Type::meteor) {
-
-	}
-
-	if (type == Type::wall) {
-
-	}
-}
-
-void Ship::reactToCollision(Collidable& other, Type type) {
-
 }
