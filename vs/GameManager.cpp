@@ -18,7 +18,7 @@ GameManager::GameManager() :
 	keyboard(std::make_unique<Keyboard>()),
 	mouse(std::make_unique<Mouse>()),
 	window(std::make_unique<Window>()),
-	camera(std::make_unique<Camera>(60, 10, 10000)),
+	camera(std::make_unique<Camera>(45, 10, 10000)),
 	arena(std::make_unique<Arena>()) {}
 
 // TODO: Separate/refactor
@@ -95,14 +95,16 @@ void GameManager::updateCamera() {
 	
 	Vector3D ship_forward = ship->getRotation() * Vector3D::forward();
 	Vector3D ship_up = ship->getRotation() * Vector3D::up();
-	Vector3D camera_pos = ship->getPosition() - 50 * ship_forward + 0 * ship_up;
+	Vector3D camera_pos = ship->getPosition() - 30 * ship_forward + 20 * ship_up;
+
+	Vector3D look_at = ship->getPosition() + 10 * ship_forward;
 
 	camera->lerpPositionTo(camera_pos, 2 * dt);
 	camera->lerpUpTo(ship_up, 5 * dt);
 
 	gluLookAt(
 		camera->getPosition().X, camera->getPosition().Y, camera->getPosition().Z,
-		ship->getPosition().X, ship->getPosition().Y, ship->getPosition().Z,
+		look_at.X, look_at.Y, look_at.Z,
 		camera->getUp().X, camera->getUp().Y, camera->getUp().Z
 	);
 
@@ -136,7 +138,6 @@ void GameManager::handleCollisions() {
 void GameManager::handleShipCollisions() {
 	for (std::unique_ptr<Wall>& wall : arena->getWalls()) {
 		if (Collision::shipWithWall(ship, wall, CollisionType::WARNING)) {
-			std::cout << "Warning!" << std::endl;
 			wall->setColour(Colour::RED);
 		}
 		else {
@@ -144,7 +145,6 @@ void GameManager::handleShipCollisions() {
 		}
 
 		if (Collision::shipWithWall(ship, wall, CollisionType::COLLISION)) {
-			std::cout << "Collision!" << std::endl;
 			resetGame();
 			break;
 		}
@@ -170,11 +170,11 @@ void GameManager::onKeyUp(const unsigned char key, int x, int y) {
 void GameManager::handleKeyboardInput() {
 
 	if (keyboard->isPressed('w')) {
-		ship->move(Direction::forward, 100 * dt);
+		ship->move(Direction::forward, 50 * dt);
 	}
 
 	if (keyboard->isPressed('s')) {
-		ship->move(Direction::backward, 100 * dt);
+		ship->move(Direction::backward, 50 * dt);
 	}
 
 	if (keyboard->isPressed('a')) {

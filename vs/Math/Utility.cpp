@@ -1,7 +1,5 @@
-#define _USE_MATH_DEFINES
-#include <cmath>
-
 #include "Utility.h"
+#include "GlutHeaders.h"
 
 #include <random>
 
@@ -25,4 +23,28 @@ float utility::mapToRange(float value, float old_min, float old_max, float new_m
 	const float old_range = old_max - old_min;
 	const float new_range = new_max - new_min;
 	return (value - old_min) * new_range / old_range + new_min;
+}
+
+void utility::drawAxes(float size) {
+	glPushMatrix();
+		glScalef(size, size, size);
+		glBegin(GL_LINES);
+			// positive x: red, y: green, z: blue
+			glColor3f(0.0, 0.0, 0.0);
+			glVertex3f(-1.0, 0.0, 0.0);
+			glColor3f(1.0, 0.0, 0.0);
+			glVertex3f(1.0, 0.0, 0.0);
+
+			glColor3f(0.0, 0.0, 0.0);
+			glVertex3f(0.0, -1.0, 0.0);
+			glColor3f(0.0, 1.0, 0.0);
+			glVertex3f(0.0, 1.0, 0.0);
+
+			glColor3f(0.0, 0.0, 0.0);
+			glVertex3f(0.0, 0.0, -1.0);
+			glColor3f(0.0, 0.0, 1.0);
+			glVertex3f(0.0, 0.0, 1.0);
+		glEnd();
+	glPopMatrix();
+
 }

@@ -6,6 +6,8 @@
 
 #include "Arena/Wall.h"
 
+#include <vector>
+
 enum class Axis {
 	x,
 	y,
@@ -41,6 +43,10 @@ private:
 
 	float warning_radius;
 	float collision_radius;
+
+	std::vector<unsigned int> faces;
+	std::vector<Vector3D> vertices;
+	std::vector<Vector3D> normals;
 };
 
 #endif // I3D_SHIP_H

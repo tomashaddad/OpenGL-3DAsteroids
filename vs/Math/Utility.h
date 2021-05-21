@@ -5,7 +5,7 @@
 #include <cmath>
 
 namespace utility {
-	const float pi = static_cast<float>(M_PI);
+	const float pi = std::acosf(-1.0);
 
 	float getRandomFloatBetween(float a, float b);
 	
@@ -13,6 +13,8 @@ namespace utility {
 	float toDegrees(float angle);
 
 	float mapToRange(float value, float old_min, float old_max, float new_min, float new_max);
+
+	void drawAxes(float size);
 }
 
 #endif
