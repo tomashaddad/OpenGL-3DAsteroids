@@ -3,6 +3,7 @@
 
 #include "Constants/ArenaConstants.h"
 #include "Wall.h"
+#include "Skybox/Skybox.h"
 
 #include <array>
 #include <memory>
@@ -10,11 +11,15 @@
 class Arena {
 public:
 	Arena();
-	void draw() const;
+	void drawArena() const;
+	void drawSkybox() const;
+
+	void loadTextures();
 
 	std::array<std::unique_ptr<Wall>, 6>& getWalls();
 
 private:
+	Skybox skybox;
 	std::array<std::unique_ptr<Wall>, 6> walls;
 };
 

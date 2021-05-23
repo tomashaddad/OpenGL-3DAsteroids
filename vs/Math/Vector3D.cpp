@@ -7,7 +7,7 @@ Vector3D::Vector3D(float x, float y, float z) : X(x), Y(y), Z(z) {}
 
 Vector3D Vector3D::up() { return Vector3D(0, 1, 0); }
 Vector3D Vector3D::right() { return Vector3D(1, 0, 0); }
-Vector3D Vector3D::forward() { return Vector3D(0, 0, 1); }
+Vector3D Vector3D::forward() { return Vector3D(0, 0, -1); }
 
 float Vector3D::components_squared(Vector3D v) {
 	return (v.X * v.X) + (v.Y * v.Y) + (v.Z * v.Z);

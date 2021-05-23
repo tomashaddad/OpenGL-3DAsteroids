@@ -8,6 +8,10 @@
 
 #include <vector>
 
+#include "Model/Triangle.h"
+
+#include "Model/Model.h"
+
 enum class Axis {
 	x,
 	y,
@@ -22,8 +26,8 @@ enum class Direction {
 class Ship {
 public:
 	Ship();
-	Ship(float x, float y, float z);
-	Ship(Vector3D position);
+
+	void loadModel(std::string filename);
 
 	void draw() const;
 
@@ -44,7 +48,7 @@ private:
 	float warning_radius;
 	float collision_radius;
 
-	std::vector<unsigned int> faces;
+	std::vector<Triangle> triangles;
 	std::vector<Vector3D> vertices;
 	std::vector<Vector3D> normals;
 };

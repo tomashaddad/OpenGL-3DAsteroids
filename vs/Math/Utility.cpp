@@ -25,7 +25,9 @@ float utility::mapToRange(float value, float old_min, float old_max, float new_m
 	return (value - old_min) * new_range / old_range + new_min;
 }
 
+// TODO: This probably doesn't belong here
 void utility::drawAxes(float size) {
+	glDisable(GL_LIGHTING);
 	glPushMatrix();
 		glScalef(size, size, size);
 		glBegin(GL_LINES);
@@ -46,5 +48,5 @@ void utility::drawAxes(float size) {
 			glVertex3f(0.0, 0.0, 1.0);
 		glEnd();
 	glPopMatrix();
-
+	glEnable(GL_LIGHTING);
 }

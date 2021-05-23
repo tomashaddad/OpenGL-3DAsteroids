@@ -2,8 +2,6 @@
 #include "Wall.h"
 #include "Constants/ArenaConstants.h"
 
-#include <iostream>
-
 Wall::Wall(Side side) : side(side), colour(Colour::WHITE) {
 	// minimum two outside edges per face
 	this->segments = WALL_SEGMENTS < 2 ? 2 : WALL_SEGMENTS;
@@ -32,6 +30,8 @@ void Wall::draw() const {
 			glVertex3f(1, -1 + spacing * i, 0);
 		}
 	glEnd();
+
+	glColor3f(1.0, 1.0, 1.0);
 }
 
 Side Wall::getSide() const { return side; }

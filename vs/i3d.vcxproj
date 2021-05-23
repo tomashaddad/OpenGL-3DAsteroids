@@ -156,7 +156,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Arena\Arena.cpp" />
+    <ClCompile Include="Arena\Skybox\Skybox.cpp" />
     <ClCompile Include="Arena\Wall.cpp" />
+    <ClCompile Include="Texture\Texture.cpp" />
     <ClCompile Include="Collisions\Collision.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Hardware\Keyboard.cpp" />
@@ -166,13 +168,18 @@
     <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Math\Utility.cpp" />
     <ClCompile Include="Math\Vector3D.cpp" />
+    <ClCompile Include="Ship\Model\Model.cpp" />
     <ClCompile Include="Ship\Ship.cpp" />
+    <ClCompile Include="Ship\Model\Triangle.cpp" />
     <ClCompile Include="World\Camera.cpp" />
     <ClCompile Include="World\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Arena\Arena.h" />
+    <ClInclude Include="Arena\Skybox\Skybox.h" />
     <ClInclude Include="Arena\Wall.h" />
+    <ClInclude Include="Texture\stb_image.h" />
+    <ClInclude Include="Texture\Texture.h" />
     <ClInclude Include="Asteroids\Asteroid.h" />
     <ClInclude Include="Collisions\Collision.h" />
     <ClInclude Include="Constants\ArenaConstants.h" />
@@ -186,7 +193,9 @@
     <ClInclude Include="Math\Quaternion.h" />
     <ClInclude Include="Math\Utility.h" />
     <ClInclude Include="Math\Vector3D.h" />
+    <ClInclude Include="Ship\Model\Model.h" />
     <ClInclude Include="Ship\Ship.h" />
+    <ClInclude Include="Ship\Model\Triangle.h" />
     <ClInclude Include="World\Camera.h" />
     <ClInclude Include="World\Window.h" />
   </ItemGroup>

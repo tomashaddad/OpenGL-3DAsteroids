@@ -15,8 +15,8 @@ class GameManager {
 public:
 	GameManager();
 
-	static void startGameLoop();
-	static void initLights();
+	void startGameLoop();
+	void init();
 
 	void onDisplay();
 	void updateCamera();

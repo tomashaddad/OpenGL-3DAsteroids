@@ -11,7 +11,8 @@ Arena::Arena() {
 	walls[5] = std::make_unique<Wall>(Side::BACK);
 }
 
-void Arena::draw() const {
+void Arena::drawArena() const {
+	glDisable(GL_LIGHTING);
 	glPushMatrix();
 	for (const std::unique_ptr<Wall>& wall : walls) {
 		glPushMatrix();
@@ -44,6 +45,15 @@ void Arena::draw() const {
 		glPopMatrix();
 	}
 	glPopMatrix();
+	glEnable(GL_LIGHTING);
+}
+
+void Arena::loadTextures() {
+	skybox.loadTextures();
+}
+
+void Arena::drawSkybox() const {
+	skybox.draw();
 }
 
 std::array<std::unique_ptr<Wall>, 6>& Arena::getWalls() { return walls; }

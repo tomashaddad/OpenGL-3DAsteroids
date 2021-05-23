@@ -9,10 +9,9 @@ public:
 	Camera(float fov, float znear, float zfar);
 
 	void lerpPositionTo(Vector3D new_position, float t);
-	void lerpUpTo(Vector3D new_up, float t);
+	void lerpRotationTo(Quaternion new_rotation, float t);
 
 	Vector3D getPosition() const;
-	Vector3D getUp() const;
 	const float& getFov() const;
 	const float& getZNear() const;
 	const float& getZFar() const;
@@ -20,12 +19,12 @@ public:
 	const float& getAspect() const;
 	void setAspect(const float& aspect);
 
-private:
-	Vector3D current_position;
-	Vector3D previous_position;
+	void translate();
+	void rotate();
 
-	Vector3D current_up;
-	Vector3D previous_up;
+private:
+	Quaternion rotation;
+	Vector3D position;
 
 	float fov;
 	float znear;

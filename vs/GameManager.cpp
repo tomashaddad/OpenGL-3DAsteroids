@@ -18,70 +18,49 @@ GameManager::GameManager() :
 	keyboard(std::make_unique<Keyboard>()),
 	mouse(std::make_unique<Mouse>()),
 	window(std::make_unique<Window>()),
-	camera(std::make_unique<Camera>(45, 10, 10000)),
+	camera(std::make_unique<Camera>(45, 0.1f, 10000)),
 	arena(std::make_unique<Arena>()) {}
 
 // TODO: Separate/refactor
 void GameManager::startGameLoop() {
-	initLights();
+	init();
 	glutMainLoop();
 }
 
-void GameManager::initLights() {
-	float lightKa[] = { .3f, .3f, .3f, 1.0f };
-	float lightKd[] = { .7f, .7f, .7f, 1.0f };
-	float lightKs[] = { 1, 1, 1, 1};
-	
-	glLightfv(GL_LIGHT0, GL_AMBIENT, lightKa);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightKd);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, lightKs);
-
-	float lightPos[4] = { 1, 1, 0, 0 };
-	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
-
+void GameManager::init() {
 	glEnable(GL_LIGHT0);
+	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+	arena->loadTextures();
 }
 
 void GameManager::onDisplay() {
+	updateCamera();
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+	glMatrixMode(GL_MODELVIEW);
 
-	float ambient[] = { 0.5f, 0.5f, 0.5f, 1 };
-	float diffuse[] = { 0.7f, 0.7f, 0.7f, 1 };
-	float specular[] = { 1.0f, 1.0f, 1.0f, 1 };
-	float emission[] = { 1, 0, 0, 1 };
-	float shininess = 128;
+	glLoadIdentity();
+	camera->rotate();
 
-	glMaterialfv(GL_FRONT, GL_AMBIENT, ambient);
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
-	glMaterialf(GL_FRONT, GL_SHININESS, shininess);
+	arena->drawSkybox();
 
-	ship->draw();
-	glDisable(GL_LIGHTING);
-	arena->draw();
-
-
-	glPushMatrix();
-		glBegin(GL_LINES);
-			// positive x: red, y: green, z: blue
-			glColor3f(0.0, 0.0, 0.0);
-			glVertex3f(-10.0, 0.0, 0.0);
-			glColor3f(1.0, 0.0, 0.0);
-			glVertex3f(10.0, 0.0, 0.0);
-
-			glColor3f(0.0, 0.0, 0.0);
-			glVertex3f(0.0, -10.0, 0.0);
-			glColor3f(0.0, 1.0, 0.0);
-			glVertex3f(0.0, 10.0, 0.0);
-
-			glColor3f(0.0, 0.0, 0.0);
-			glVertex3f(0.0, 0.0, -10.0);
-			glColor3f(0.0, 0.0, 1.0);
-			glVertex3f(0.0, 0.0, 10.0);
-		glEnd();
-	glPopMatrix();
+	camera->translate();
 
 	glEnable(GL_LIGHTING);
+
+	float ambient[] = { 0.0, 0.0, 0.0, 1.0 };
+	float diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+	float specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	float position[] = { 5.0, 5.0, 5.0, 0.0 };
+
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+	glLightfv(GL_LIGHT0, GL_POSITION, position);
+
+	ship->draw();
+	arena->drawArena();
 
 	int err;
 	while ((err = glGetError()) != GL_NO_ERROR)
@@ -91,22 +70,12 @@ void GameManager::onDisplay() {
 }
 
 void GameManager::updateCamera() {
-	glLoadIdentity();
-	
 	Vector3D ship_forward = ship->getRotation() * Vector3D::forward();
 	Vector3D ship_up = ship->getRotation() * Vector3D::up();
-	Vector3D camera_pos = ship->getPosition() - 30 * ship_forward + 20 * ship_up;
+	Vector3D camera_pos = ship->getPosition() - 50 * ship_forward + 5 * ship_up;
 
-	Vector3D look_at = ship->getPosition() + 10 * ship_forward;
-
-	camera->lerpPositionTo(camera_pos, 2 * dt);
-	camera->lerpUpTo(ship_up, 5 * dt);
-
-	gluLookAt(
-		camera->getPosition().X, camera->getPosition().Y, camera->getPosition().Z,
-		look_at.X, look_at.Y, look_at.Z,
-		camera->getUp().X, camera->getUp().Y, camera->getUp().Z
-	);
+	camera->lerpPositionTo(camera_pos, 5 * dt);
+	camera->lerpRotationTo(ship->getRotation(), 10 * dt);
 
 	glutPostRedisplay();
 }
@@ -170,11 +139,11 @@ void GameManager::onKeyUp(const unsigned char key, int x, int y) {
 void GameManager::handleKeyboardInput() {
 
 	if (keyboard->isPressed('w')) {
-		ship->move(Direction::forward, 50 * dt);
+		ship->move(Direction::forward, 100 * dt);
 	}
 
 	if (keyboard->isPressed('s')) {
-		ship->move(Direction::backward, 50 * dt);
+		ship->move(Direction::backward, 100 * dt);
 	}
 
 	if (keyboard->isPressed('a')) {
@@ -239,10 +208,10 @@ void GameManager::handleMouseInput() {
 		float map_y = utility::mapToRange(
 			mouse->Y,
 			0, window->height,
-			-camera->getAspect(), camera->getAspect());
+			camera->getAspect(), -camera->getAspect());
 
-		ship->rotate(Axis::y, map_x * 20 * dt);
-		ship->rotate(Axis::x, map_y * 20 * dt);
+		ship->rotate(Axis::y, map_x * 40 * dt);
+		ship->rotate(Axis::x, map_y * 40 * dt);
 
 		glutPostRedisplay();
 	}

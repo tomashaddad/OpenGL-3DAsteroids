@@ -4,6 +4,9 @@
 #include "Quaternion.h"
 #include "Utility.h"
 
+// While I sort of understand some of this code I basically picked the stuff I needed from
+// https://github.com/YclepticStudios/gmath/blob/master/src/Quaternion.hpp
+
 Quaternion::Quaternion() : X(0), Y(0), Z(0), W(1) {}
 
 Quaternion::Quaternion(Vector3D axis, float angle) {
@@ -20,6 +23,15 @@ Quaternion::Quaternion(Vector3D axis, float angle) {
 
 Quaternion::Quaternion(float x, float y, float z, float w) :
 	X(x), Y(y), Z(z), W(w) {}
+
+float Quaternion::dot(Quaternion lhs, Quaternion rhs) {
+	return lhs.X * rhs.X + lhs.Y * rhs.Y + lhs.Z * rhs.Z + lhs.W * rhs.W;
+}
+
+Quaternion Quaternion::inverse(const Quaternion& q) {
+	float mag = magnitude(q);
+	return conjugate(q) / (mag * mag);
+}
 
 float Quaternion::magnitude(const Quaternion &q) {
 	return sqrtf(q.X * q.X + q.Y * q.Y + q.Z * q.Z + q.W * q.W);
@@ -45,12 +57,63 @@ std::array<float, 16> Quaternion::toMatrix(const Quaternion& q) {
 	};
 }
 
+Quaternion Quaternion::slerp(Quaternion a, Quaternion b, double t)
+{
+	if (t < 0) return normalise(a);
+	else if (t > 1) return normalise(b);
+	return slerpUnclamped(a, b, t);
+}
+
+Quaternion Quaternion::slerpUnclamped(Quaternion a, Quaternion b, double t)
+{
+	double n1;
+	double n2;
+	double n3 = dot(a, b);
+	bool flag = false;
+	if (n3 < 0)
+	{
+		flag = true;
+		n3 = -n3;
+	}
+	if (n3 > 0.999999)
+	{
+		n2 = 1 - t;
+		n1 = flag ? -t : t;
+	}
+	else
+	{
+		double n4 = acos(n3);
+		double n5 = 1 / sin(n4);
+		n2 = sin((1 - t) * n4) * n5;
+		n1 = flag ? -sin(t * n4) * n5 : sin(t * n4) * n5;
+	}
+	Quaternion quaternion;
+	quaternion.X = (n2 * a.X) + (n1 * b.X);
+	quaternion.Y = (n2 * a.Y) + (n1 * b.Y);
+	quaternion.Z = (n2 * a.Z) + (n1 * b.Z);
+	quaternion.W = (n2 * a.W) + (n1 * b.W);
+	return normalise(quaternion);
+}
+
 Quaternion Quaternion::conjugate(const Quaternion& q) {
 	return Quaternion(-q.X, -q.Y, -q.Z, q.W);
 }
 
 Quaternion operator*(Quaternion lhs, Quaternion rhs) {
 	return lhs *= rhs;
+}
+
+Quaternion& Quaternion::operator/=(const float rhs) {
+	X /= rhs;
+	Y /= rhs;
+	Z /= rhs;
+	W /= rhs;
+	return *this;
+}
+
+Quaternion operator/(Quaternion lhs, const float rhs)
+{
+	return lhs /= rhs;
 }
 
 Quaternion& Quaternion::operator*=(const Quaternion& rhs) {
