@@ -57,6 +57,7 @@
     <ClCompile Include="Ship\Model\Model.cpp" />
     <ClCompile Include="Arena\Skybox\Skybox.cpp" />
     <ClCompile Include="Texture\Texture.cpp" />
+    <ClCompile Include="Ship\Model\Material.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h" />
@@ -90,5 +91,6 @@
     <ClInclude Include="Arena\Skybox\Skybox.h" />
     <ClInclude Include="Texture\Texture.h" />
     <ClInclude Include="Texture\stb_image.h" />
+    <ClInclude Include="Ship\Model\Material.h" />
   </ItemGroup>
 </Project>

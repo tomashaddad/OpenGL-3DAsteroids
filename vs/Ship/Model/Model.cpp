@@ -3,7 +3,13 @@
 #define TINYOBJLOADER_IMPLEMENTATION // define this in only *one* .cc
 #include "Includes/tiny_obj_loader.h"
 
-Model::Model(std::string filename) {
+// Most of how I learned to use tinyobjloader was via this repository:
+// https://github.com/canmom/rasteriser/
+// Specifically fileloader.cpp:
+// https://github.com/canmom/rasteriser/blob/master/fileloader.cpp
+
+void Model::loadOBJ(std::string filename, std::vector<Vector3D>& vertices, std::vector<Vector3D>& uvs,
+std::vector<Vector3D>& normals, std::vector<Triangle>& triangles, std::vector<Material>& objmats) {
 	tinyobj::ObjReaderConfig reader_config;
 	reader_config.mtl_search_path = "./Assets/Ship"; // Path to material files
 	reader_config.triangulate = false;
@@ -61,6 +67,7 @@ Model::Model(std::string filename) {
 	}
 
 	flatten3(attrib.vertices, vertices);
+	flatten2(attrib.texcoords, uvs);
 	flatten3(attrib.normals, normals);
 
 	for (auto shape = shapes.begin(); shape < shapes.end(); ++shape) {
@@ -78,11 +85,21 @@ void Model::flatten3(std::vector<float> collection, std::vector<Vector3D> &vecto
 	}
 }
 
+void Model::flatten2(std::vector<float> collection, std::vector<Vector3D>& vector) {
+	for (size_t vec_start = 0; vec_start < collection.size(); vec_start += 2) {
+		vector.emplace_back(
+			collection[vec_start],
+			collection[vec_start + 1],
+			0);
+	}
+}
+
 void Model::processTriangles(const tinyobj::shape_t& shape, std::vector<Triangle>& triangles) {
 		const std::vector<tinyobj::index_t>& indices = shape.mesh.indices;
 		const std::vector<int>& material_ids = shape.mesh.material_ids;
 
 		for (size_t index = 0; index < material_ids.size(); ++index) {
+
 			// offset by 3 because values are grouped as vertex/normal/texture
 			triangles.push_back(Triangle(
 				{ indices[3 * index].vertex_index, indices[3 * index + 1].vertex_index, indices[3 * index + 2].vertex_index },
@@ -90,8 +107,3 @@ void Model::processTriangles(const tinyobj::shape_t& shape, std::vector<Triangle
 			);
 		}
 }
-
-const std::vector<Triangle>& Model::getTriangles() const { return triangles; }
-const std::vector<Vector3D>& Model::getVertices() const { return vertices; }
-const std::vector<Vector3D>& Model::getTextureCoords() const { return textures; }
-const std::vector<Vector3D>& Model::getNormals() const { return normals;}

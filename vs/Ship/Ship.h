@@ -9,8 +9,8 @@
 #include <vector>
 
 #include "Model/Triangle.h"
-
 #include "Model/Model.h"
+#include "Model/Material.h"
 
 enum class Axis {
 	x,
@@ -48,9 +48,11 @@ private:
 	float warning_radius;
 	float collision_radius;
 
-	std::vector<Triangle> triangles;
 	std::vector<Vector3D> vertices;
+	std::vector<Vector3D> uvs;
 	std::vector<Vector3D> normals;
+	std::vector<Triangle> triangles;
+	std::vector<Material> materials;
 };
 
 #endif // I3D_SHIP_H

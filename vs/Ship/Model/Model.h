@@ -5,27 +5,19 @@
 
 #include "Math/Vector3D.h"
 #include "Triangle.h"
+#include "Material.h"
 
 #include <vector>
 
 class Model {
 public:
-	Model() = default;
-	Model(std::string filename);
-	
-	const std::vector<Triangle>& getTriangles() const;
-	const std::vector<Vector3D>& getVertices() const;
-	const std::vector<Vector3D>& getTextureCoords() const;
-	const std::vector<Vector3D>& getNormals() const;
+	static void loadOBJ(std::string filename, std::vector<Vector3D>& vertices, std::vector<Vector3D>& uvs,
+		std::vector<Vector3D>& normals, std::vector<Triangle>& triangles, std::vector<Material>& objmats);
 
 private:
-	void flatten3(std::vector<float> collection, std::vector<Vector3D> &vector);
-	void processTriangles(const tinyobj::shape_t& shape, std::vector<Triangle>& triangles);
-
-	std::vector<Triangle> triangles;
-	std::vector<Vector3D> vertices;
-	std::vector<Vector3D> textures;
-	std::vector<Vector3D> normals;
+	static void flatten3(std::vector<float> collection, std::vector<Vector3D>& vector);
+	static void flatten2(std::vector<float> collection, std::vector<Vector3D>& vector);
+	static void processTriangles(const tinyobj::shape_t& shape, std::vector<Triangle>& triangles);
 };
 
 #endif // I3D_MODEL_H

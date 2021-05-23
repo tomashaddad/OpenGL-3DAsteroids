@@ -15,11 +15,8 @@ Ship::Ship() :
 	warning_radius(WARNING_RADIUS),
 	collision_radius(COLLISION_RADIUS) {
 	std::string obj = "./Assets/Ship/airwing_triangulated_centered_scaled.obj";
-	Model model = Model(obj);
-
-	vertices = model.getVertices();
-	normals = model.getNormals();
-	triangles = model.getTriangles();
+	
+	Model::loadOBJ(obj, vertices, uvs, normals, triangles, materials); // vectors passed by reference
 }
 
 void Ship::loadModel(std::string filename) {

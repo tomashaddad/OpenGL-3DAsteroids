@@ -158,6 +158,7 @@
     <ClCompile Include="Arena\Arena.cpp" />
     <ClCompile Include="Arena\Skybox\Skybox.cpp" />
     <ClCompile Include="Arena\Wall.cpp" />
+    <ClCompile Include="Ship\Model\Material.cpp" />
     <ClCompile Include="Texture\Texture.cpp" />
     <ClCompile Include="Collisions\Collision.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Arena\Arena.h" />
     <ClInclude Include="Arena\Skybox\Skybox.h" />
     <ClInclude Include="Arena\Wall.h" />
+    <ClInclude Include="Ship\Model\Material.h" />
     <ClInclude Include="Texture\stb_image.h" />
     <ClInclude Include="Texture\Texture.h" />
     <ClInclude Include="Asteroids\Asteroid.h" />
