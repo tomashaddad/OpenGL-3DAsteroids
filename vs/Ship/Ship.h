@@ -1,6 +1,8 @@
 #ifndef I3D_SHIP_H
 #define I3D_SHIP_H
 
+#include "Constants/ShipConstants.h"
+
 #include "Math/Vector3D.h"
 #include "Math/Quaternion.h"
 
@@ -27,10 +29,14 @@ class Ship {
 public:
 	Ship();
 
+	void loadTextures();
+
 	void draw() const;
 
 	void move(Direction direction, float dt);
-	void rotate(const Axis axis, const float angle);
+	void roll(const Axis axis, const float dt);
+	void rotate(const Axis axis, const float dt,
+		 const float map, const float speed = MOUSE_ROTATION_SPEED);
 
 	const Vector3D& getPosition() const;
 	const Quaternion& getRotation() const;
@@ -46,6 +52,7 @@ private:
 	float warning_radius;
 	float collision_radius;
 
+	unsigned int logo;
 	std::vector<Vector3D> vertices;
 	std::vector<Vector3D> uvs;
 	std::vector<Vector3D> normals;

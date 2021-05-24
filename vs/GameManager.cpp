@@ -22,7 +22,7 @@ GameManager::GameManager() :
 	arena(std::make_unique<Arena>()) {}
 
 // TODO: Separate/refactor
-void GameManager::startGameLoop() {
+void GameManager::start() {
 	init();
 	glutMainLoop();
 }
@@ -36,6 +36,7 @@ void GameManager::init() {
 
 	glEnable(GL_NORMALIZE);
 	arena->loadTextures();
+	ship->loadTextures();
 }
 
 void GameManager::onDisplay() {
@@ -75,12 +76,44 @@ void GameManager::onDisplay() {
 }
 
 void GameManager::updateCamera() {
-	Vector3D ship_forward = ship->getRotation() * Vector3D::forward();
-	Vector3D ship_up = ship->getRotation() * Vector3D::up();
-	Vector3D camera_pos = ship->getPosition() - 50 * ship_forward + 5 * ship_up;
+	Vector3D position;
+	Quaternion rotation;
 
-	camera->lerpPositionTo(camera_pos, 3 * dt);
-	camera->lerpRotationTo(ship->getRotation(), 5 * dt);
+	if (camera->look_at == Look::AHEAD) {
+		rotation = ship->getRotation();
+		position = ship->getPosition() + camera->distanceFromShip() * (ship->getRotation() * Vector3D::forward());
+	}
+	else if (camera->look_at == Look::LEFT) {
+		rotation = ship->getRotation() * Quaternion(Vector3D::up(), 90);
+		position = ship->getPosition() - camera->distanceFromShip() * (ship->getRotation() * Vector3D::right());
+	}
+	else if (camera->look_at == Look::RIGHT) {
+		rotation = ship->getRotation() * Quaternion(Vector3D::up(), -90);
+		position = ship->getPosition() + camera->distanceFromShip() * (ship->getRotation() * Vector3D::right());
+	}
+	else if (camera->look_at == Look::BEHIND) {
+		rotation = ship->getRotation() * Quaternion(Vector3D::up(), 180);
+		position = ship->getPosition() - camera->distanceFromShip() * (ship->getRotation() * Vector3D::forward());
+	}
+	else if (camera->look_at == Look::ABOVE) {
+		rotation = ship->getRotation() * Quaternion(Vector3D::right(), -90);
+		position = ship->getPosition() - camera->distanceFromShip() * (ship->getRotation() * Vector3D::up());
+	}
+	else if (camera->look_at == Look::BELOW) {
+		rotation = ship->getRotation() * Quaternion(Vector3D::right(), 90);
+		position = ship->getPosition() + camera->distanceFromShip() * (ship->getRotation() * Vector3D::up());
+	}
+
+	// turn off lerping if looking
+	// TODO: There's probably a better way to organise this
+	if (camera->look_at != Look::AHEAD) {
+		camera->lerpPositionTo(position, 1);
+		camera->lerpRotationTo(rotation, 1);
+	}
+	else {
+		camera->lerpPositionTo(position, 3 * dt);
+		camera->lerpRotationTo(rotation, 5 * dt);
+	}
 
 	glutPostRedisplay();
 }
@@ -152,16 +185,34 @@ void GameManager::handleKeyboardInput() {
 	}
 
 	if (keyboard->isPressed('a')) {
-		ship->rotate(Axis::z, -ROTATION_SPEED * dt);
+		ship->roll(Axis::z, -dt);
 	}
 
 	if (keyboard->isPressed('d')) {
-
-		ship->rotate(Axis::z, ROTATION_SPEED * dt);
+		ship->roll(Axis::z, dt);
 	}
 
 	if (keyboard->isPressed('r')) {
 		ship->reset();
+	}
+
+	if (keyboard->isPressed('i')) {
+		camera->look(Look::ABOVE);
+	}
+	else if (keyboard->isPressed('m')) {
+		camera->look(Look::BELOW);
+	}
+	else if (keyboard->isPressed('j')) {
+		camera->look(Look::LEFT);
+	}
+	else if (keyboard->isPressed('l')) {
+		camera->look(Look::RIGHT);
+	}
+	else if (keyboard->isPressed('k')) {
+		camera->look(Look::BEHIND);
+	}
+	else {
+		camera->look(Look::AHEAD);
 	}
 
 	if (keyboard->isAnyKeyPressed()) {
@@ -215,8 +266,8 @@ void GameManager::handleMouseInput() {
 			0, window->height,
 			camera->getAspect(), -camera->getAspect());
 
-		ship->rotate(Axis::y, map_x * 40 * dt);
-		ship->rotate(Axis::x, map_y * 40 * dt);
+		ship->rotate(Axis::y, dt, map_x);
+		ship->rotate(Axis::x, dt, map_y);
 
 		glutPostRedisplay();
 	}

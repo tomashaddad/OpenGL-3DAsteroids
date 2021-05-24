@@ -1,0 +1,6 @@
+#ifndef I3D_CAMERACONSTANTS_H
+#define I3D_CAMERACONSTANTS_H
+
+float constexpr CAMERA_OFFSET_SPEED = 40;
+
+#endif

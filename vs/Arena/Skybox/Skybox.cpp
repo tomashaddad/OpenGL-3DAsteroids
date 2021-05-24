@@ -18,9 +18,6 @@ void Skybox::draw() const {
 	glEnable(GL_TEXTURE_2D);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_LIGHTING);
-
-	
-
 	glDisable(GL_BLEND);
 
 	glPushMatrix();
@@ -73,9 +70,9 @@ void Skybox::draw() const {
 		glEnd();
 	glPopMatrix();
 
-	glPopAttrib();
-	glDisable(GL_TEXTURE_2D);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHTING);
 	glEnable(GL_BLEND);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_TEXTURE_2D);
+	glPopAttrib();
 }

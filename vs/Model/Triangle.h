@@ -14,7 +14,6 @@ public:
 	std::array<int, 3> normals;
 	unsigned int material_id;
 
-	friend std::ostream& operator<<(std::ostream& ostream, Triangle& v);
 	friend std::ostream& operator<<(std::ostream& ostream, const Triangle& v);
 };
 

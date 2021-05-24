@@ -92,5 +92,6 @@
     <ClInclude Include="Texture\Texture.h" />
     <ClInclude Include="Texture\stb_image.h" />
     <ClInclude Include="Model\Material.h" />
+    <ClInclude Include="Constants\CameraConstants.h" />
   </ItemGroup>
 </Project>

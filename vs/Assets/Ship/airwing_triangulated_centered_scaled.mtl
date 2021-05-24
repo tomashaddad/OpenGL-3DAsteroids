@@ -160,7 +160,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 3
-map_Kd C:\\Users\\tomas\\Desktop\\Star_Fox_logo_2015.jpg
+map_Kd .\\Assets\\Ship\\Star_Fox_logo_2015.jpeg
 
 newmtl phongE9
 Ns 179.999996

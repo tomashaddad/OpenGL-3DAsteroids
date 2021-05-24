@@ -1,12 +1,16 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
+#include "Math/Vector3D.h"
+#include "Math/Quaternion.h"
+
 #include "Camera.h"
+#include "Constants/CameraConstants.h"
 
 #include "GlutHeaders.h"
 
 Camera::Camera(float fov, float znear, float zfar) :
-	fov(fov), znear(znear), zfar(zfar), aspect(0) {}
+	look_at(Look::AHEAD), z_offset(-50), fov(fov), znear(znear), zfar(zfar), aspect(0) {}
 
 void Camera::lerpPositionTo(Vector3D new_position, float t) {
 	position = Vector3D::lerp(position, new_position, t);
@@ -16,8 +20,11 @@ void Camera::lerpRotationTo(Quaternion new_rotation, float t) {
 	rotation = Quaternion::slerp(rotation, new_rotation, t);
 }
 
+void Camera::look(const Look& look) { look_at = look; }
+
 Vector3D Camera::getPosition() const { return position; }
 
+const float& Camera::distanceFromShip() const { return z_offset; }
 const float& Camera::getFov() const { return fov; }
 const float& Camera::getZNear() const { return znear; }
 const float& Camera::getZFar() const { return zfar; }

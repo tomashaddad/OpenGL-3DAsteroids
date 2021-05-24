@@ -15,7 +15,7 @@ class GameManager {
 public:
 	GameManager();
 
-	void startGameLoop();
+	void start();
 	void init();
 
 	void onDisplay();

@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
 	initCallbacks();
 	initFeatures();
 
-	game->startGameLoop();
+	game->start();
 
 	return EXIT_SUCCESS;
 }

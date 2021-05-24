@@ -20,4 +20,13 @@ enum class CollisionType {
 	COLLISION
 };
 
+enum class Look {
+	ABOVE,
+	BELOW,
+	LEFT,
+	RIGHT,
+	AHEAD,
+	BEHIND,
+};
+
 #endif
