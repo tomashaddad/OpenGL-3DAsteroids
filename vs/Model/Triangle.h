@@ -6,9 +6,13 @@
 
 class Triangle {
 public:
-	Triangle(std::array<int, 3> vertices, std::array<int, 3> normals) : vertices(vertices), normals(normals) {}
+	Triangle(std::array<int, 3> vertices, std::array<int, 3> uvs, std::array<int, 3> normals, unsigned int material_id) :
+		vertices(vertices), uvs(uvs), normals(normals), material_id(material_id) {}
+
 	std::array<int, 3> vertices;
+	std::array<int, 3> uvs;
 	std::array<int, 3> normals;
+	unsigned int material_id;
 
 	friend std::ostream& operator<<(std::ostream& ostream, Triangle& v);
 	friend std::ostream& operator<<(std::ostream& ostream, const Triangle& v);

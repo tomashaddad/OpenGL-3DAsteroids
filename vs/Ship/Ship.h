@@ -27,8 +27,6 @@ class Ship {
 public:
 	Ship();
 
-	void loadModel(std::string filename);
-
 	void draw() const;
 
 	void move(Direction direction, float dt);

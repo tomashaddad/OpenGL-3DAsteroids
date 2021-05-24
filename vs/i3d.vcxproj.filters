@@ -53,11 +53,11 @@
     <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Arena\Wall.cpp" />
     <ClCompile Include="Collisions\Collision.cpp" />
-    <ClCompile Include="Ship\Model\Triangle.cpp" />
-    <ClCompile Include="Ship\Model\Model.cpp" />
+    <ClCompile Include="Model\Triangle.cpp" />
+    <ClCompile Include="Model\Model.cpp" />
     <ClCompile Include="Arena\Skybox\Skybox.cpp" />
     <ClCompile Include="Texture\Texture.cpp" />
-    <ClCompile Include="Ship\Model\Material.cpp" />
+    <ClCompile Include="Model\Material.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h" />
@@ -86,11 +86,11 @@
     <ClInclude Include="Collisions\Collision.h" />
     <ClInclude Include="Enums\Enum.h" />
     <ClInclude Include="Includes\tiny_obj_loader.h" />
-    <ClInclude Include="Ship\Model\Triangle.h" />
-    <ClInclude Include="Ship\Model\Model.h" />
+    <ClInclude Include="Model\Triangle.h" />
+    <ClInclude Include="Model\Model.h" />
     <ClInclude Include="Arena\Skybox\Skybox.h" />
     <ClInclude Include="Texture\Texture.h" />
     <ClInclude Include="Texture\stb_image.h" />
-    <ClInclude Include="Ship\Model\Material.h" />
+    <ClInclude Include="Model\Material.h" />
   </ItemGroup>
 </Project>

@@ -29,7 +29,12 @@ void GameManager::startGameLoop() {
 
 void GameManager::init() {
 	glEnable(GL_LIGHT0);
-	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+
+	glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // TURNS EVERYTHING HALF TRANSPARENT?
+
+	glEnable(GL_NORMALIZE);
 	arena->loadTextures();
 }
 
@@ -74,8 +79,8 @@ void GameManager::updateCamera() {
 	Vector3D ship_up = ship->getRotation() * Vector3D::up();
 	Vector3D camera_pos = ship->getPosition() - 50 * ship_forward + 5 * ship_up;
 
-	camera->lerpPositionTo(camera_pos, 5 * dt);
-	camera->lerpRotationTo(ship->getRotation(), 10 * dt);
+	camera->lerpPositionTo(camera_pos, 3 * dt);
+	camera->lerpRotationTo(ship->getRotation(), 5 * dt);
 
 	glutPostRedisplay();
 }
