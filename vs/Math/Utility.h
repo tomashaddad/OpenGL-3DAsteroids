@@ -4,6 +4,8 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
+#include "Vector3D.h"
+
 namespace utility {
 	const float pi = std::acosf(-1.0);
 
@@ -15,6 +17,8 @@ namespace utility {
 	float mapToRange(float value, float old_min, float old_max, float new_min, float new_max);
 
 	void drawAxes(float size);
+
+	Vector3D getRandomPointOnSphere(float radius);
 }
 
 #endif

@@ -19,7 +19,8 @@ GameManager::GameManager() :
 	mouse(std::make_unique<Mouse>()),
 	window(std::make_unique<Window>()),
 	camera(std::make_unique<Camera>(45, 0.1f, 10000)),
-	arena(std::make_unique<Arena>()) {}
+	arena(std::make_unique<Arena>()),
+	asteroid_field(std::make_unique<AsteroidField>(ARENA_DIM)) {}
 
 // TODO: Separate/refactor
 void GameManager::start() {
@@ -46,11 +47,10 @@ void GameManager::onDisplay() {
 	glEnable(GL_DEPTH_TEST);
 	glMatrixMode(GL_MODELVIEW);
 
+	// Update camera and draw skybox
 	glLoadIdentity();
 	camera->rotate();
-
 	arena->drawSkybox();
-
 	camera->translate();
 
 	glEnable(GL_LIGHTING);
@@ -58,7 +58,7 @@ void GameManager::onDisplay() {
 	float ambient[] = { 0.0, 0.0, 0.0, 1.0 };
 	float diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
 	float specular[] = { 1.0, 1.0, 1.0, 1.0 };
-	float position[] = { 5.0, 5.0, 5.0, 0.0 };
+	float position[] = { 1000.0, 0.0, 0.0, 0.0 };
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
@@ -67,6 +67,12 @@ void GameManager::onDisplay() {
 
 	ship->draw();
 	arena->drawArena();
+	asteroid_field->drawAsteroids();
+	asteroid_field->updateAsteroids(dt);
+
+	if (asteroid_field->isEmpty()) {
+		asteroid_field->launchAsteroidAtShip(ship->getPosition());
+	}
 
 	int err;
 	while ((err = glGetError()) != GL_NO_ERROR)
@@ -104,16 +110,8 @@ void GameManager::updateCamera() {
 		position = ship->getPosition() + camera->distanceFromShip() * (ship->getRotation() * Vector3D::up());
 	}
 
-	// turn off lerping if looking
-	// TODO: There's probably a better way to organise this
-	if (camera->look_at != Look::AHEAD) {
-		camera->lerpPositionTo(position, 1);
-		camera->lerpRotationTo(rotation, 1);
-	}
-	else {
-		camera->lerpPositionTo(position, 3 * dt);
-		camera->lerpRotationTo(rotation, 5 * dt);
-	}
+	camera->lerpPositionTo(position, 3 * dt);
+	camera->lerpRotationTo(rotation, 5 * dt);
 
 	glutPostRedisplay();
 }

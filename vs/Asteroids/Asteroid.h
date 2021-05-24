@@ -1,26 +1,30 @@
 #ifndef I3D_ASTEROID_H
 #define I3D_ASTEROID_H
 
+#include "Math/Vector3D.h"
 #include <vector>
 
 class Asteroid {
 public:
-	Asteroid(float radius, int sector_count, int stack_count);
+	Asteroid(Vector3D position, Vector3D velocity);
 	void buildVertices();
 	void draw();
+	void update(float dt);
 
 private:
 	void addVertex(float x, float y, float z);
 	void addNormal(float nx, float ny, float nz);
 	void addIndices(unsigned int i1, unsigned int i2, unsigned int i3);
-	void buildInterleavedIndices();
+
+	Vector3D position;
+	Vector3D velocity;
 
 	float radius;
 	int sector_count;
 	int stack_count;
 
-	std::vector<float> vertices;
-	std::vector<float> normals;
+	std::vector<Vector3D> vertices;
+	std::vector<Vector3D> normals;
 	std::vector<unsigned int> indices;
 
 	std::vector<float> interleaved_vertices;

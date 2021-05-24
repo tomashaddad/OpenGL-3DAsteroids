@@ -1,22 +1,40 @@
-#define _USE_MATH_DEFINES
 #include <cmath>
 
 #include "Asteroid.h"
 #include "GlutHeaders.h"
 #include "Math/Utility.h"
 
+#include "Constants/AsteroidConstants.h"
+
 #include <iostream>
 
-Asteroid::Asteroid(float radius, int sector_count, int stack_count) : interleaved_stride(24) {
-	this->radius = radius;
-	this->sector_count = sector_count;
-	this->stack_count = stack_count;
-	
+Asteroid::Asteroid(Vector3D position, Vector3D velocity) :
+	position(position),
+	velocity(velocity),
+	interleaved_stride(24),
+	radius(utility::getRandomFloatBetween(ASTEROID_MIN_SIZE, ASTEROID_MAX_SIZE)),
+	sector_count(ASTEROID_SECTOR_COUNT),
+	stack_count(ASTEROID_STACK_COUNT) {	
+	std::cout << "Asteroid spawned at: " << position << " with velocity " << velocity << std::endl;
 	buildVertices();
 }
 
+void Asteroid::draw() {
+	glDisable(GL_LIGHTING);
+	glPushMatrix();
+	glTranslatef(position.X, position.Y, position.Z);
+		glColor3f(1.0, 1.0, 1.0);
+		glutWireSphere(200, 20, 20);
+	glPopMatrix();
+	glEnable(GL_LIGHTING);
+}
+
+void Asteroid::update(float dt) {
+	position += velocity * dt;
+}
+
 void Asteroid::buildVertices() {
-	const float pi = M_PI;
+	const float pi = acos(-1);
 
 	float x, y, z, xy;
 	float nx, ny, nz;
@@ -27,8 +45,9 @@ void Asteroid::buildVertices() {
 
 	for (int i = 0; i <= stack_count; ++i) {
 		stack_angle = pi / 2 - i * stack_step;
-		xy = radius * cosf(stack_angle);
-		z = radius * sinf(stack_angle);
+		// radius = 1 to start with unit radius
+		xy = cosf(stack_angle);
+		z = sinf(stack_angle);
 
 		for (int j = 0; j <= sector_count; ++j) {
 			sector_angle = j * sector_step;
@@ -61,51 +80,14 @@ void Asteroid::buildVertices() {
 			}
 		}
 	}
-	buildInterleavedIndices();
-}
-
-void Asteroid::buildInterleavedIndices() {
-	// Swap?
-	// std::vector<float>().swap(interleaved_vertices);
-
-	std::size_t i;
-	std::size_t count = vertices.size();
-
-	for (i = 0; i < count; i += 3) {
-		interleaved_vertices.push_back(vertices[i]);
-		interleaved_vertices.push_back(vertices[i + 1]);
-		interleaved_vertices.push_back(vertices[i + 2]);
-
-		interleaved_vertices.push_back(normals[i]);
-		interleaved_vertices.push_back(normals[i + 1]);
-		interleaved_vertices.push_back(normals[i + 2]);
-	}
-}
-
-void Asteroid::draw() {
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-
-	glVertexPointer(3, GL_FLOAT, interleaved_stride, &interleaved_vertices[0]);
-	glNormalPointer(GL_FLOAT, interleaved_stride, &interleaved_vertices[3]);
-
-	glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, indices.data());
-
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
-
 }
 
 void Asteroid::addVertex(float x, float y, float z) {
-	vertices.push_back(x);
-	vertices.push_back(y);
-	vertices.push_back(z);
+	vertices.emplace_back(x, y, z);
 }
 
 void Asteroid::addNormal(float nx, float ny, float nz) {
-	normals.push_back(nx);
-	normals.push_back(ny);
-	normals.push_back(nz);
+	normals.emplace_back(nx, ny, nz);
 }
 
 void Asteroid::addIndices(unsigned int i1, unsigned int i2, unsigned int i3) {

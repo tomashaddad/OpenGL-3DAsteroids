@@ -5,6 +5,7 @@
 #include "Hardware/Mouse.h"
 #include "World/Window.h"
 #include "World/Camera.h"
+#include "Asteroids/AsteroidField.h"
 #include "Asteroids/Asteroid.h"
 #include "Arena/Arena.h"
 #include "Ship/Ship.h"
@@ -51,6 +52,7 @@ private:
 	std::unique_ptr<Window> window;
 	std::unique_ptr<Camera> camera;
 	std::unique_ptr<Arena> arena;
+	std::unique_ptr<AsteroidField> asteroid_field;
 };
 
 #endif // I3D_GAMEMANAGER_H

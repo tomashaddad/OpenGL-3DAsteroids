@@ -50,3 +50,14 @@ void utility::drawAxes(float size) {
 	glPopMatrix();
 	glEnable(GL_LIGHTING);
 }
+
+Vector3D utility::getRandomPointOnSphere(float radius) {
+	float theta = getRandomFloatBetween(0, 360);
+	float phi = getRandomFloatBetween(-90, 90);
+
+	float x = radius * cos(phi) * cos(theta);
+	float y = radius * cos(phi) * sin(theta);
+	float z = radius * sin(phi);
+
+	return Vector3D(x, y, z);
+}
