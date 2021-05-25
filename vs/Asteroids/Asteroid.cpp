@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES
 #include <cmath>
 
 #include "Asteroid.h"
@@ -9,28 +10,56 @@
 #include <iostream>
 
 Asteroid::Asteroid(Vector3D position, Vector3D velocity) :
+	id_num(nextID()),
 	position(position),
 	velocity(velocity),
 	interleaved_stride(24),
-	radius(utility::getRandomFloatBetween(ASTEROID_MIN_SIZE, ASTEROID_MAX_SIZE)),
+	inArena(false),
+	radius(utility::getRandomFloatBetween(ASTEROID_MIN_RADIUS, ASTEROID_MAX_RADIUS)),
+	mass((4.0f/3.0f) * M_PI * pow(radius, 3)), // set mass as volume of sphere
 	sector_count(ASTEROID_SECTOR_COUNT),
 	stack_count(ASTEROID_STACK_COUNT) {	
-	std::cout << "Asteroid spawned at: " << position << " with velocity " << velocity << std::endl;
 	buildVertices();
 }
+
+unsigned int Asteroid::nextID() {
+	static unsigned int i = 1;
+	return ++i;
+}
+
+const unsigned int Asteroid::id() const { return id_num; }
 
 void Asteroid::draw() {
 	glDisable(GL_LIGHTING);
 	glPushMatrix();
-	glTranslatef(position.X, position.Y, position.Z);
+		glTranslatef(position.X, position.Y, position.Z);
+		glScalef(radius, radius, radius);
 		glColor3f(1.0, 1.0, 1.0);
-		glutWireSphere(200, 20, 20);
+		glutWireSphere(1, 20, 20);
 	glPopMatrix();
 	glEnable(GL_LIGHTING);
 }
 
-void Asteroid::update(float dt) {
+void Asteroid::update(const float dt, const float arena_dimension) {
+	if (!inArena) {
+		inArena = checkIfInArena(arena_dimension);
+	}
+
 	position += velocity * dt;
+}
+
+bool Asteroid::checkIfInArena(const float arena_dimension) const {
+	return
+		position.X + radius < arena_dimension &&
+		position.X - radius > -arena_dimension &&
+		position.Y + radius < arena_dimension &&
+		position.Y - radius > -arena_dimension &&
+		position.Z + radius < arena_dimension &&
+		position.Z - radius > -arena_dimension;
+}
+
+void Asteroid::displace(const Vector3D& displacement) {
+	position += displacement;
 }
 
 void Asteroid::buildVertices() {
@@ -96,16 +125,24 @@ void Asteroid::addIndices(unsigned int i1, unsigned int i2, unsigned int i3) {
 	indices.push_back(i3);
 }
 
+// slightly nudge when reversing so they don't get stuck or jitter
 void Asteroid::reverseX() {
+	position.X = position.X < 0 ? position.X + 1 : position.X - 1;
 	velocity.X = -velocity.X;
 }
 void Asteroid::reverseY() {
+	position.Y = position.Y < 0 ? position.Y + 1 : position.Y - 1;
 	velocity.Y = -velocity.Y;
 }
 
 void Asteroid::reverseZ() {
+	position.Z = position.Z < 0 ? position.Z + 1 : position.Z - 1;
 	velocity.Z = -velocity.Z;
 }
 
 const Vector3D& Asteroid::getPosition() const { return position; }
-const float& Asteroid::getRadius() const { return radius; }
+const Vector3D& Asteroid::getVelocity() const { return velocity; }
+void Asteroid::setVelocity(const Vector3D& velocity) { this->velocity = velocity; }
+const float Asteroid::getRadius() const { return radius; }
+const float Asteroid::getMass() const { return mass; }
+const bool Asteroid::isInArena() const { return inArena; }

@@ -81,10 +81,10 @@ void Ship::move(Direction direction, float dt) {
 	Vector3D ship_forward = rotation * Vector3D::forward();
 
 	if (direction == Direction::forward) {
-		position += ship_forward * dt;
+		position += ship_forward * SHIP_SPEED * dt;
 	}
 	else if (direction == Direction::backward) {
-		position -= ship_forward * dt;
+		position -= ship_forward * SHIP_SPEED * dt;
 	}
 }
 

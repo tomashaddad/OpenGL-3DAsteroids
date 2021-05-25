@@ -2,6 +2,7 @@
 #define I3D_VECTOR_H
 
 #include <iostream>
+#include <array>
 
 class Vector3D {
 public:
@@ -17,13 +18,18 @@ public:
 	static Vector3D forward();
 
 	static float components_squared(Vector3D v);
-	static Vector3D cross(const Vector3D &lhs, const Vector3D &rhs);
+	static Vector3D cross(const Vector3D& lhs, const Vector3D& rhs);
+	static float distance(const Vector3D& lhs, const Vector3D& rhs);
 	static float dot(const Vector3D &lhs, const Vector3D &rhs);
 
 	// LERP a->b
 	static Vector3D lerp(const Vector3D &a, const Vector3D &b, const float t);
 	static Vector3D normalise(Vector3D v);
 	static float magnitude(Vector3D v);
+
+	static Vector3D red();
+	static Vector3D white();
+	static std::array<float, 3> toArray(Vector3D v);
 
 	// SLERP a->b
 	// Returns a normalised vector some point between the spherical interpolation

@@ -39,3 +39,32 @@ void collision::resolve(const Wall& wall, Asteroid& asteroid) {
 		asteroid.reverseZ();
 	}
 }
+
+bool collision::withAsteroid(const Vector3D& p1, const Vector3D& p2, float r1, float r2) {
+	return Vector3D::distance(p1, p2) < r1 + r2;
+}
+
+void collision::resolve(Asteroid& a1, Asteroid& a2) {
+	// resolve statically (move asteroids slightly away from each other)
+	Vector3D unit_normal = Vector3D::normalise(a2.getPosition() - a1.getPosition()); // from a1 to a2
+	
+	a1.displace(-2 * unit_normal);
+	a2.displace(2 * unit_normal);
+
+	// calculate new velocities
+
+	Vector3D x1 = a1.getPosition();
+	Vector3D x2 = a2.getPosition();
+	Vector3D v1 = a1.getVelocity();
+	Vector3D v2 = a2.getVelocity();
+	float m1 = a1.getMass();
+	float m2 = a2.getMass();
+	float distance = Vector3D::distance(a1.getPosition(), a2.getPosition());
+	float squared_distance = distance * distance;
+
+	Vector3D new_v1 = v1 - ((2 * m2 / (m1 + m2)) * (Vector3D::dot(v1 - v2, x1 - x2) / squared_distance) * (x1 - x2));
+	Vector3D new_v2 = v2 - ((2 * m1 / (m1 + m2)) * (Vector3D::dot(v2 - v1, x2 - x1) / squared_distance) * (x2 - x1));
+
+	a1.setVelocity(new_v1);
+	a2.setVelocity(new_v2);
+}

@@ -9,24 +9,36 @@ public:
 	Asteroid(Vector3D position, Vector3D velocity);
 	void buildVertices();
 	void draw();
-	void update(float dt);
+	void update(const float dt, const float arena_dimension);
+	bool checkIfInArena(const float arena_dimension) const;
+	void displace(const Vector3D& displacement);
 
 	void reverseX();
 	void reverseY();
 	void reverseZ();
 
+	const unsigned int id() const;
 	const Vector3D& getPosition() const;
-	const float& getRadius() const;
+	const Vector3D& getVelocity() const;
+	void setVelocity(const Vector3D& velocity);
+	const float getRadius() const;
+	const float getMass() const;
+	const bool isInArena() const;
 
 private:
+	static unsigned int nextID();
 	void addVertex(float x, float y, float z);
 	void addNormal(float nx, float ny, float nz);
 	void addIndices(unsigned int i1, unsigned int i2, unsigned int i3);
 
+	unsigned int id_num;
 	Vector3D position;
 	Vector3D velocity;
 
+	bool inArena;
+
 	float radius;
+	float mass;
 	int sector_count;
 	int stack_count;
 

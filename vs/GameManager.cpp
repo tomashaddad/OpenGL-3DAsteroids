@@ -177,24 +177,35 @@ void GameManager::handleCollisions() {
 void GameManager::handleShipCollisions() {
 	for (Wall& wall : arena->getWalls()) {
 		if (collision::withWall(wall, ship->getPosition(), ship->getWarningRadius())) {
-			wall.setColour(Colour::RED);
+			wall.setColour(Vector3D::white(), Vector3D::red());
 		}
 		else {
-			wall.setColour(Colour::WHITE);
+			wall.setColour(Vector3D::white());
 		}
 
-		if (collision::withWall(wall, ship->getPosition(), ship->getWarningRadius())) {
-			resetGame();
+		if (collision::withWall(wall, ship->getPosition(), ship->getCollisionRadius())) {
+			//resetGame();
 			break;
 		}
 	}
 }
 
 void GameManager::handleAsteroidCollisions() {
-	for (Asteroid& asteroid : asteroid_field->getAsteroids()) {
+	for (Asteroid& a1 : asteroid_field->getAsteroids()) {
 		for (const Wall& wall : arena->getWalls()) {
-			if (collision::withWall(wall, asteroid.getPosition(), asteroid.getRadius())) {
-				collision::resolve(wall, asteroid);
+			if (!a1.isInArena()) continue; // don't check asteroids not in the arena
+
+			if (collision::withWall(wall, a1.getPosition(), a1.getRadius())) {
+				collision::resolve(wall, a1);
+			}
+		}
+
+		for (Asteroid& a2 : asteroid_field->getAsteroids()) {
+			if (a1.id() != a2.id()) {
+				if (collision::withAsteroid(a1.getPosition(), a2.getPosition(), a1.getRadius(), a2.getRadius())) {
+					std::cout << "Collision!!" << std::endl;
+					collision::resolve(a1, a2);
+				}
 			}
 		}
 	}
@@ -215,11 +226,11 @@ void GameManager::onKeyUp(const unsigned char key, int x, int y) {
 void GameManager::handleKeyboardInput() {
 
 	if (keyboard->isPressed('w')) {
-		ship->move(Direction::forward, 100 * dt);
+		ship->move(Direction::forward, dt);
 	}
 
 	if (keyboard->isPressed('s')) {
-		ship->move(Direction::backward, 100 * dt);
+		ship->move(Direction::backward, dt);
 	}
 
 	if (keyboard->isPressed('a')) {
@@ -318,4 +329,6 @@ void GameManager::calculateTimeDelta() {
 	last_time = cur_time;
 }
 
-void GameManager::resetGame() { }
+void GameManager::resetGame() {
+	ship->reset();
+}

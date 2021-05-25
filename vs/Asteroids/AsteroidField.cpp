@@ -4,8 +4,8 @@
 #include "Constants/ArenaConstants.h"
 
 AsteroidField::AsteroidField() :
-	arena_radius(ARENA_DIM),
-	asteroid_count(1),
+	arena_radius(ARENA_DIM + 2 * ASTEROID_MAX_RADIUS), // spawn them a little far from arena
+	asteroid_count(2),
 	timer(0),
 	time_between_levels(20),
 	levelling_up(false) {}
@@ -21,7 +21,7 @@ void AsteroidField::launchAsteroidAtShip(Vector3D ship_position) {
 
 void AsteroidField::updateAsteroids(float dt) {
 	for (Asteroid& asteroid : asteroids) {
-		asteroid.update(dt);
+		asteroid.update(dt, ARENA_DIM - 0.5);
 	}
 }
 

@@ -21,6 +21,10 @@ Vector3D Vector3D::cross(const Vector3D& lhs, const Vector3D& rhs) {
 	};
 }
 
+float Vector3D::distance(const Vector3D& lhs, const Vector3D& rhs) {
+	return Vector3D::magnitude(lhs - rhs);
+}
+
 // Returns the dot product of two 3D vectors
 float Vector3D::dot(const Vector3D &lhs, const Vector3D &rhs) {
 	return (lhs.X * rhs.X) + (lhs.Y * rhs.Y) + (lhs.Z * rhs.Z);
@@ -43,10 +47,16 @@ Vector3D Vector3D::slerp(const Vector3D& a, const Vector3D& b, const float t) {
 	return (sin((1.0f - t) * theta) * a + sin(t * theta) * b) / sin(theta);
 }
 
-//def slerp(p0, p1, t) :
-//	omega = arccos(dot(p0 / norm(p0), p1 / norm(p1)))
-//	so = sin(omega)
-//	return sin((1.0 - t) * omega) / so * p0 + sin(t * omega) / so * p1
+Vector3D Vector3D::red() {
+	return Vector3D(1.0, 0.0, 0.0);
+}
+Vector3D Vector3D::white() {
+	return Vector3D(1.0, 1.0, 1.0);
+}
+
+std::array<float, 3> Vector3D::toArray(Vector3D v) {
+	return { v.X, v.Y, v.Z };
+}
 
 Vector3D& Vector3D::operator+=(const Vector3D& rhs) {
 	X += rhs.X;
