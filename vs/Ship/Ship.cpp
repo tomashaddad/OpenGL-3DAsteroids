@@ -38,42 +38,34 @@ void Ship::draw() const {
 		
 		glColor3f(1.0f, 1.0f, 1.0f);
 
+		glEnable(GL_TEXTURE_2D);
 		for (auto triangle = triangles.begin(); triangle != triangles.end(); ++triangle) {
 			glMaterialfv(GL_FRONT, GL_AMBIENT, materials[triangle->material_id].ambient.data());
 			glMaterialfv(GL_FRONT, GL_DIFFUSE, materials[triangle->material_id].diffuse.data());
 			glMaterialfv(GL_FRONT, GL_SPECULAR, materials[triangle->material_id].specular.data());
 			glMaterialf(GL_FRONT, GL_SHININESS, 128);
 
-			// phongE8 corresponds to the material that includes the logo
 			if (materials[triangle->material_id].name == "phongE8") {
-				glEnable(GL_TEXTURE_2D);
-				glBindTexture(GL_TEXTURE_2D, logo);
+				glBindTexture(GL_TEXTURE_2D, logo); // star fox logo
+			} else {
+				glBindTexture(GL_TEXTURE_2D, 0); // no texture
 			}
 
 			glBegin(GL_TRIANGLES);
-				if (materials[triangle->material_id].name == "phongE8") {
-					glTexCoord2f(uvs[triangle->uvs[0]].X, uvs[triangle->uvs[0]].Y);
-				}
+				glTexCoord2f(uvs[triangle->uvs[0]].X, uvs[triangle->uvs[0]].Y);
 				glNormal3f(normals[triangle->normals[0]].X, normals[triangle->normals[0]].Y, normals[triangle->normals[0]].Z);
 				glVertex3f(vertices[triangle->vertices[0]].X, vertices[triangle->vertices[0]].Y, vertices[triangle->vertices[0]].Z);
 
-				if (materials[triangle->material_id].name == "phongE8") {
-					glTexCoord2f(uvs[triangle->uvs[1]].X, uvs[triangle->uvs[1]].Y);
-				}
+				glTexCoord2f(uvs[triangle->uvs[1]].X, uvs[triangle->uvs[1]].Y);
 				glNormal3f(normals[triangle->normals[1]].X, normals[triangle->normals[1]].Y, normals[triangle->normals[1]].Z);
 				glVertex3f(vertices[triangle->vertices[1]].X, vertices[triangle->vertices[1]].Y, vertices[triangle->vertices[1]].Z);
 
-				if (materials[triangle->material_id].name == "phongE8") {
-					glTexCoord2f(uvs[triangle->uvs[2]].X, uvs[triangle->uvs[2]].Y);
-				}
+				glTexCoord2f(uvs[triangle->uvs[2]].X, uvs[triangle->uvs[2]].Y);
 				glNormal3f(normals[triangle->normals[2]].X, normals[triangle->normals[2]].Y, normals[triangle->normals[2]].Z);
 				glVertex3f(vertices[triangle->vertices[2]].X, vertices[triangle->vertices[2]].Y, vertices[triangle->vertices[2]].Z);
-			glEnd();
-
-			if (materials[triangle->material_id].name == "phongE8") {
-				glDisable(GL_TEXTURE_2D);
-			}
+			glEnd();	
 		}
+		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 }
 
