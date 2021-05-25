@@ -20,13 +20,19 @@ public:
 	void init();
 
 	void onDisplay();
-	void updateCamera();
+	void onIdle();
 	void onReshape(int w, int h);
+
+	void updateCamera();
+
+	void updateEntities();
+	void updateAsteroids();
+	void updateBullets();
 
 	void handleCollisions();
 	void handleShipCollisions();
-	void handleBulletCollisions();
 	void handleAsteroidCollisions();
+	void handleBulletCollisions();
 
 	void onKeyDown(unsigned char key, int x, int y);
 	void onKeyUp(unsigned char key, int x, int y);
@@ -42,8 +48,8 @@ public:
 	void resetGame();
 
 private:
-	double dt;
-	double last_time;
+	float dt;
+	float last_time;
 
 	std::unique_ptr<Ship> ship;
 	

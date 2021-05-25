@@ -15,6 +15,8 @@ public:
 	void drawAsteroids();
 	bool isEmpty() const;
 
+	std::vector<Asteroid>& getAsteroids();
+
 private:
 	float arena_radius;
 	float asteroid_count;

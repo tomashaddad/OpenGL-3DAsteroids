@@ -8,7 +8,7 @@
 #include <memory>
 
 namespace Collision {
-	bool shipWithWall(std::unique_ptr<Ship>& ship, std::unique_ptr<Wall>& wall, CollisionType type);
+	bool withWall(const Wall& wall, const Vector3D& position, float radius = 0);
 }
 
 #endif

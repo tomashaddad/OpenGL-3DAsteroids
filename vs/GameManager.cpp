@@ -40,6 +40,7 @@ void GameManager::init() {
 	ship->loadTextures();
 }
 
+// Draw everything
 void GameManager::onDisplay() {
 	updateCamera();
 
@@ -68,11 +69,6 @@ void GameManager::onDisplay() {
 	ship->draw();
 	arena->drawArena();
 	asteroid_field->drawAsteroids();
-	asteroid_field->updateAsteroids(dt);
-
-	if (asteroid_field->isEmpty()) {
-		asteroid_field->launchAsteroidAtShip(ship->getPosition());
-	}
 
 	int err;
 	while ((err = glGetError()) != GL_NO_ERROR)
@@ -81,39 +77,15 @@ void GameManager::onDisplay() {
 	glutSwapBuffers();
 }
 
-void GameManager::updateCamera() {
-	Vector3D position;
-	Quaternion rotation;
+// Calculations and updates that occur in the background
+void GameManager::onIdle() {
+	calculateTimeDelta();
 
-	if (camera->look_at == Look::AHEAD) {
-		rotation = ship->getRotation();
-		position = ship->getPosition() + camera->distanceFromShip() * (ship->getRotation() * Vector3D::forward());
-	}
-	else if (camera->look_at == Look::LEFT) {
-		rotation = ship->getRotation() * Quaternion(Vector3D::up(), 90);
-		position = ship->getPosition() - camera->distanceFromShip() * (ship->getRotation() * Vector3D::right());
-	}
-	else if (camera->look_at == Look::RIGHT) {
-		rotation = ship->getRotation() * Quaternion(Vector3D::up(), -90);
-		position = ship->getPosition() + camera->distanceFromShip() * (ship->getRotation() * Vector3D::right());
-	}
-	else if (camera->look_at == Look::BEHIND) {
-		rotation = ship->getRotation() * Quaternion(Vector3D::up(), 180);
-		position = ship->getPosition() - camera->distanceFromShip() * (ship->getRotation() * Vector3D::forward());
-	}
-	else if (camera->look_at == Look::ABOVE) {
-		rotation = ship->getRotation() * Quaternion(Vector3D::right(), -90);
-		position = ship->getPosition() - camera->distanceFromShip() * (ship->getRotation() * Vector3D::up());
-	}
-	else if (camera->look_at == Look::BELOW) {
-		rotation = ship->getRotation() * Quaternion(Vector3D::right(), 90);
-		position = ship->getPosition() + camera->distanceFromShip() * (ship->getRotation() * Vector3D::up());
-	}
-
-	camera->lerpPositionTo(position, 3 * dt);
-	camera->lerpRotationTo(rotation, 5 * dt);
-
-	glutPostRedisplay();
+	updateEntities();
+	handleCollisions();
+	
+	handleKeyboardInput();
+	handleMouseInput();
 }
 
 void GameManager::onReshape(const int w, const int h) {
@@ -134,6 +106,65 @@ void GameManager::onReshape(const int w, const int h) {
 	glLoadIdentity();
 }
 
+// The camera is placed depending on which key in the set {I, J, K, L, M} is pressed:
+//	I: The camera moves above the ship and looks below it
+//	J: The camera moves to the left of the ship and looks to its right
+//	K: The camera moves in front of the ship and looks behind it
+//	L: The camera moves to the right of the ship and looks to its left
+//	M: The camera moves below the ship and looks above it
+
+void GameManager::updateCamera() {
+	Vector3D position;
+	Quaternion rotation;
+
+	if (camera->look_at == Look::AHEAD) {
+		rotation = ship->getRotation();
+		position = ship->getPosition() + camera->distanceFromShip() * (ship->getRotation() * Vector3D::forward());
+	}
+	else if (camera->look_at == Look::LEFT) {
+		rotation = ship->getRotation() * Quaternion(Vector3D::up(), -90);
+		position = ship->getPosition() + camera->distanceFromShip() * (ship->getRotation() * Vector3D::right());
+	}
+	else if (camera->look_at == Look::RIGHT) {
+		rotation = ship->getRotation() * Quaternion(Vector3D::up(), 90);
+		position = ship->getPosition() - camera->distanceFromShip() * (ship->getRotation() * Vector3D::right());
+	}
+	else if (camera->look_at == Look::BEHIND) {
+		rotation = ship->getRotation() * Quaternion(Vector3D::up(), 180);
+		position = ship->getPosition() - camera->distanceFromShip() * (ship->getRotation() * Vector3D::forward());
+	}
+	else if (camera->look_at == Look::ABOVE) {
+		rotation = ship->getRotation() * Quaternion(Vector3D::right(), -90);
+		position = ship->getPosition() - camera->distanceFromShip() * (ship->getRotation() * Vector3D::up());
+	}
+	else if (camera->look_at == Look::BELOW) {
+		rotation = ship->getRotation() * Quaternion(Vector3D::right(), 90);
+		position = ship->getPosition() + camera->distanceFromShip() * (ship->getRotation() * Vector3D::up());
+	}
+
+	camera->lerpPositionTo(position, 3 * dt);
+	camera->lerpRotationTo(rotation, 5 * dt);
+
+	glutPostRedisplay();
+}
+
+void GameManager::updateEntities() {
+	updateAsteroids();
+	updateBullets();
+}
+
+void GameManager::updateAsteroids() {
+	asteroid_field->updateAsteroids(dt);
+
+	if (asteroid_field->isEmpty()) {
+		asteroid_field->launchAsteroidAtShip(ship->getPosition());
+	}
+}
+
+void GameManager::updateBullets() {
+
+}
+
 void GameManager::handleCollisions() {
 	handleShipCollisions();
 	handleBulletCollisions();
@@ -141,26 +172,32 @@ void GameManager::handleCollisions() {
 }
 
 void GameManager::handleShipCollisions() {
-	for (std::unique_ptr<Wall>& wall : arena->getWalls()) {
-		if (Collision::shipWithWall(ship, wall, CollisionType::WARNING)) {
-			wall->setColour(Colour::RED);
+	for (Wall& wall : arena->getWalls()) {
+		if (Collision::withWall(wall, ship->getPosition(), ship->getWarningRadius())) {
+			wall.setColour(Colour::RED);
 		}
 		else {
-			wall->setColour(Colour::WHITE);
+			wall.setColour(Colour::WHITE);
 		}
 
-		if (Collision::shipWithWall(ship, wall, CollisionType::COLLISION)) {
+		if (Collision::withWall(wall, ship->getPosition(), ship->getWarningRadius())) {
 			resetGame();
 			break;
 		}
 	}
 }
 
-void GameManager::handleBulletCollisions() {
+void GameManager::handleAsteroidCollisions() {
+	for (Asteroid& asteroid : asteroid_field->getAsteroids()) {
+		for (const Wall& wall : arena->getWalls()) {
+			if (Collision::withWall(wall, asteroid.getPosition(), asteroid.getRadius())) {
 
+			}
+		}
+	}
 }
 
-void GameManager::handleAsteroidCollisions() {
+void GameManager::handleBulletCollisions() {
 
 }
 
@@ -273,7 +310,7 @@ void GameManager::handleMouseInput() {
 
 void GameManager::calculateTimeDelta() {
 	// gives delta time in seconds
-	const double cur_time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
+	const float cur_time = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
 	dt = cur_time - last_time;
 	last_time = cur_time;
 }

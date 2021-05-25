@@ -5,6 +5,7 @@
 
 class Wall {
 public:
+	//Wall() = default;
 	Wall(Side side);
 	void draw() const;
 

@@ -33,3 +33,7 @@ void AsteroidField::drawAsteroids() {
 bool AsteroidField::isEmpty() const {
 	return asteroids.empty();
 }
+
+std::vector<Asteroid>& AsteroidField::getAsteroids() {
+	return asteroids;
+}

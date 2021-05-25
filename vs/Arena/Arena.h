@@ -5,7 +5,7 @@
 #include "Wall.h"
 #include "Skybox/Skybox.h"
 
-#include <array>
+#include <vector>
 #include <memory>
 
 class Arena {
@@ -16,11 +16,11 @@ public:
 
 	void loadTextures();
 
-	std::array<std::unique_ptr<Wall>, 6>& getWalls();
+	std::vector<Wall>& getWalls();
 
 private:
 	Skybox skybox;
-	std::array<std::unique_ptr<Wall>, 6> walls;
+	std::vector<Wall> walls;
 };
 
 #endif

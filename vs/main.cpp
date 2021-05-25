@@ -95,8 +95,5 @@ void displayCallback() {
 }
 
 void idleCallback() {
-	game->calculateTimeDelta();
-	game->handleKeyboardInput();
-	game->handleMouseInput();
-	game->handleCollisions();
+	game->onIdle();
 }

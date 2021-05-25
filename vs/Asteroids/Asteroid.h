@@ -11,6 +11,9 @@ public:
 	void draw();
 	void update(float dt);
 
+	const Vector3D& getPosition() const;
+	const float& getRadius() const;
+
 private:
 	void addVertex(float x, float y, float z);
 	void addNormal(float nx, float ny, float nz);

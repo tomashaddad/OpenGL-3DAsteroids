@@ -3,8 +3,6 @@
 
 class Skybox {
 public:
-	Skybox() = default;
-
 	void loadTextures();
 	void draw() const;
 

@@ -95,3 +95,6 @@ void Asteroid::addIndices(unsigned int i1, unsigned int i2, unsigned int i3) {
 	indices.push_back(i2);
 	indices.push_back(i3);
 }
+
+const Vector3D& Asteroid::getPosition() const { return position; }
+const float& Asteroid::getRadius() const { return radius; }
