@@ -96,5 +96,16 @@ void Asteroid::addIndices(unsigned int i1, unsigned int i2, unsigned int i3) {
 	indices.push_back(i3);
 }
 
+void Asteroid::reverseX() {
+	velocity.X = -velocity.X;
+}
+void Asteroid::reverseY() {
+	velocity.Y = -velocity.Y;
+}
+
+void Asteroid::reverseZ() {
+	velocity.Z = -velocity.Z;
+}
+
 const Vector3D& Asteroid::getPosition() const { return position; }
 const float& Asteroid::getRadius() const { return radius; }

@@ -9,8 +9,13 @@
 
 #include "GlutHeaders.h"
 
-Camera::Camera(float fov, float znear, float zfar) :
-	look_at(Look::AHEAD), z_offset(-50), fov(fov), znear(znear), zfar(zfar), aspect(0) {}
+Camera::Camera() :
+	look_at(Look::AHEAD),
+	z_offset(-50),
+	fov(CAMERA_FOV),
+	znear(CAMERA_ZNEAR),
+	zfar(CAMERA_ZFAR),
+	aspect(0) {}
 
 void Camera::lerpPositionTo(Vector3D new_position, float t) {
 	position = Vector3D::lerp(position, new_position, t);

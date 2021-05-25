@@ -1,10 +1,11 @@
 #include "AsteroidField.h"
 #include "Math/Utility.h"
 #include "Constants/AsteroidConstants.h"
+#include "Constants/ArenaConstants.h"
 
-AsteroidField::AsteroidField(float radius) :
+AsteroidField::AsteroidField() :
+	arena_radius(ARENA_DIM),
 	asteroid_count(1),
-	arena_radius(radius),
 	timer(0),
 	time_between_levels(20),
 	levelling_up(false) {}

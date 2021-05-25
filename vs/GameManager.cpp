@@ -18,9 +18,9 @@ GameManager::GameManager() :
 	keyboard(std::make_unique<Keyboard>()),
 	mouse(std::make_unique<Mouse>()),
 	window(std::make_unique<Window>()),
-	camera(std::make_unique<Camera>(45, 0.1f, 10000)),
+	camera(std::make_unique<Camera>()),
 	arena(std::make_unique<Arena>()),
-	asteroid_field(std::make_unique<AsteroidField>(ARENA_DIM)) {}
+	asteroid_field(std::make_unique<AsteroidField>()) {}
 
 // TODO: Separate/refactor
 void GameManager::start() {
@@ -33,9 +33,12 @@ void GameManager::init() {
 	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 
 	glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // TURNS EVERYTHING HALF TRANSPARENT?
+	// TODO: Turns everything half transparent, why?
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glEnable(GL_NORMALIZE);
+
+	// load textures after creating window, before glut main loop
 	arena->loadTextures();
 	ship->loadTextures();
 }
@@ -173,14 +176,14 @@ void GameManager::handleCollisions() {
 
 void GameManager::handleShipCollisions() {
 	for (Wall& wall : arena->getWalls()) {
-		if (Collision::withWall(wall, ship->getPosition(), ship->getWarningRadius())) {
+		if (collision::withWall(wall, ship->getPosition(), ship->getWarningRadius())) {
 			wall.setColour(Colour::RED);
 		}
 		else {
 			wall.setColour(Colour::WHITE);
 		}
 
-		if (Collision::withWall(wall, ship->getPosition(), ship->getWarningRadius())) {
+		if (collision::withWall(wall, ship->getPosition(), ship->getWarningRadius())) {
 			resetGame();
 			break;
 		}
@@ -190,8 +193,8 @@ void GameManager::handleShipCollisions() {
 void GameManager::handleAsteroidCollisions() {
 	for (Asteroid& asteroid : asteroid_field->getAsteroids()) {
 		for (const Wall& wall : arena->getWalls()) {
-			if (Collision::withWall(wall, asteroid.getPosition(), asteroid.getRadius())) {
-
+			if (collision::withWall(wall, asteroid.getPosition(), asteroid.getRadius())) {
+				collision::resolve(wall, asteroid);
 			}
 		}
 	}

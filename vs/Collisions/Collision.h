@@ -7,8 +7,10 @@
 
 #include <memory>
 
-namespace Collision {
+namespace collision {
 	bool withWall(const Wall& wall, const Vector3D& position, float radius = 0);
+
+	void resolve(const Wall& wall, Asteroid& asteroid);
 }
 
 #endif

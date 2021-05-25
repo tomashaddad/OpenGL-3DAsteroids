@@ -8,7 +8,7 @@
 
 class AsteroidField {
 public:
-	AsteroidField(float radius);
+	AsteroidField();
 
 	void launchAsteroidAtShip(Vector3D ship_position);
 	void updateAsteroids(float dt);

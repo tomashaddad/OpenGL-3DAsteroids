@@ -11,6 +11,10 @@ public:
 	void draw();
 	void update(float dt);
 
+	void reverseX();
+	void reverseY();
+	void reverseZ();
+
 	const Vector3D& getPosition() const;
 	const float& getRadius() const;
 
