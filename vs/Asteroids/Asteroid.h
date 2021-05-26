@@ -30,7 +30,7 @@ private:
 	void addNormal(float nx, float ny, float nz);
 	void addIndices(unsigned int i1, unsigned int i2, unsigned int i3);
 
-	unsigned int id_num;
+	unsigned int asteroid_id;
 	Vector3D position;
 	Vector3D velocity;
 

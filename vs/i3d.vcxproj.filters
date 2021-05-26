@@ -59,6 +59,8 @@
     <ClCompile Include="Texture\Texture.cpp" />
     <ClCompile Include="Asteroids\AsteroidField.cpp" />
     <ClCompile Include="Model\Material.cpp" />
+    <ClCompile Include="Ship\Bullets\Bullet.cpp" />
+    <ClCompile Include="Ship\Bullets\BulletStream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h" />
@@ -96,5 +98,8 @@
     <ClInclude Include="Asteroids\AsteroidField.h" />
     <ClInclude Include="Constants\AsteroidConstants.h" />
     <ClInclude Include="Model\Material.h" />
+    <ClInclude Include="Ship\Bullets\Bullet.h" />
+    <ClInclude Include="Ship\Bullets\BulletStream.h" />
+    <ClInclude Include="Constants\BulletConstants.h" />
   </ItemGroup>
 </Project>

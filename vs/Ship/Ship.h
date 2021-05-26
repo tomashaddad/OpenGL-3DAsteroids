@@ -14,6 +14,8 @@
 #include "Model/Model.h"
 #include "Model/Material.h"
 
+#include "Bullets/BulletStream.h"
+
 enum class Axis {
 	x,
 	y,
@@ -31,12 +33,17 @@ public:
 
 	void loadTextures();
 
+	void update(const float dt);
 	void draw() const;
+	void updateBullets(const float dt);
+	void drawBullets() const;
 
 	void move(Direction direction, float dt);
+	void setAccelerationToZero();
 	void roll(const Axis axis, const float dt);
 	void rotate(const Axis axis, const float dt,
 		 const float map, const float speed = MOUSE_ROTATION_SPEED);
+	void shoot(float dt);
 
 	const Vector3D& getPosition() const;
 	const Quaternion& getRotation() const;
@@ -47,10 +54,16 @@ public:
 
 private:
 	Vector3D position;
+	Vector3D velocity;
+	Vector3D acceleration;
 	Quaternion rotation;
+
+	BulletStream bullet_stream;
 
 	float warning_radius;
 	float collision_radius;
+	float fire_timer;
+	float fire_rate;
 
 	unsigned int logo;
 	std::vector<Vector3D> vertices;

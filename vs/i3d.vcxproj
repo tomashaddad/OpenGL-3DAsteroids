@@ -160,6 +160,8 @@
     <ClCompile Include="Arena\Wall.cpp" />
     <ClCompile Include="Asteroids\AsteroidField.cpp" />
     <ClCompile Include="Model\Material.cpp" />
+    <ClCompile Include="Ship\Bullets\Bullet.cpp" />
+    <ClCompile Include="Ship\Bullets\BulletStream.cpp" />
     <ClCompile Include="Texture\Texture.cpp" />
     <ClCompile Include="Collisions\Collision.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -182,8 +184,11 @@
     <ClInclude Include="Arena\Wall.h" />
     <ClInclude Include="Asteroids\AsteroidField.h" />
     <ClInclude Include="Constants\AsteroidConstants.h" />
+    <ClInclude Include="Constants\BulletConstants.h" />
     <ClInclude Include="Constants\CameraConstants.h" />
     <ClInclude Include="Model\Material.h" />
+    <ClInclude Include="Ship\Bullets\Bullet.h" />
+    <ClInclude Include="Ship\Bullets\BulletStream.h" />
     <ClInclude Include="Texture\stb_image.h" />
     <ClInclude Include="Texture\Texture.h" />
     <ClInclude Include="Asteroids\Asteroid.h" />

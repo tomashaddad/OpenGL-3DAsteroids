@@ -70,6 +70,7 @@ void GameManager::onDisplay() {
 	glLightfv(GL_LIGHT0, GL_POSITION, position);
 
 	ship->draw();
+	ship->drawBullets();
 	arena->drawArena();
 	asteroid_field->drawAsteroids();
 
@@ -152,8 +153,13 @@ void GameManager::updateCamera() {
 }
 
 void GameManager::updateEntities() {
+	updateShip();
 	updateAsteroids();
 	updateBullets();
+}
+
+void GameManager::updateShip() {
+	ship->update(dt);
 }
 
 void GameManager::updateAsteroids() {
@@ -165,7 +171,7 @@ void GameManager::updateAsteroids() {
 }
 
 void GameManager::updateBullets() {
-
+	ship->updateBullets(dt);
 }
 
 void GameManager::handleCollisions() {
@@ -201,12 +207,10 @@ void GameManager::handleAsteroidCollisions() {
 		}
 
 		// ASTEROID->ASTEROID COLLISIONS ///////////////////////////
-		// Resolve the collision by calculating new velocities
-		// Updating each asteroid once prevents them from triggering another collision before they
-		// move away from each other far enough before the next set of collision checks
 		for (Asteroid& a2 : asteroid_field->getAsteroids()) {
 			if (a1.id() != a2.id()) {
 				if (collision::withAsteroid(a1.getPosition(), a2.getPosition(), a1.getRadius(), a2.getRadius())) {
+					// Calculate new velocities, then move slightly apart
 					collision::resolve(a1, a2);
 					a1.update(dt);
 					a2.update(dt);
@@ -233,9 +237,11 @@ void GameManager::handleKeyboardInput() {
 	if (keyboard->isPressed('w')) {
 		ship->move(Direction::forward, dt);
 	}
-
-	if (keyboard->isPressed('s')) {
+	else if (keyboard->isPressed('s')) {
 		ship->move(Direction::backward, dt);
+	}
+	else {
+		ship->setAccelerationToZero();
 	}
 
 	if (keyboard->isPressed('a')) {
@@ -244,6 +250,10 @@ void GameManager::handleKeyboardInput() {
 
 	if (keyboard->isPressed('d')) {
 		ship->roll(Axis::z, dt);
+	}
+
+	if (keyboard->isPressed(' ')) {
+		ship->shoot(dt);
 	}
 
 	if (keyboard->isPressed('r')) {

@@ -26,6 +26,7 @@ public:
 	void updateCamera();
 
 	void updateEntities();
+	void updateShip();
 	void updateAsteroids();
 	void updateBullets();
 

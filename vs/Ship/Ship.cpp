@@ -15,6 +15,8 @@
 Ship::Ship() :
 	warning_radius(WARNING_RADIUS),
 	collision_radius(COLLISION_RADIUS),
+	fire_timer(0),
+	fire_rate(SHIP_FIRE_RATE),
 	logo(0) {	
 	Model::loadOBJ("./Assets/Ship/airwing_triangulated_centered_scaled.obj",
 		vertices, uvs, normals, triangles, materials); // vectors passed by reference
@@ -22,6 +24,17 @@ Ship::Ship() :
 
 void Ship::loadTextures() {
 	logo = Texture::loadTexture("./Assets/Ship/Star_Fox_logo_2015.jpeg");
+}
+
+void Ship::update(const float dt) {
+	// Uncomment if you want realistic physics
+	//Vector3D drag = -velocity * 0.5;
+	//velocity += (acceleration + drag) * dt;
+	//position += velocity * dt;
+
+	if (fire_timer < fire_rate) {
+		fire_timer += dt;
+	}
 }
 
 void Ship::draw() const {
@@ -69,15 +82,31 @@ void Ship::draw() const {
 	glPopMatrix();
 }
 
+void Ship::updateBullets(const float dt) {
+	bullet_stream.updateBullets(dt);
+}
+
+void Ship::drawBullets() const {
+	bullet_stream.drawBullets();
+}
+
+// If you are using realistic physics in ship::update, uncomment acceleration
+// and comment out position lines (and vise versa)
 void Ship::move(Direction direction, float dt) {
 	Vector3D ship_forward = rotation * Vector3D::forward();
 
 	if (direction == Direction::forward) {
+		//acceleration = ship_forward * SHIP_ACCELERATION;
 		position += ship_forward * SHIP_SPEED * dt;
 	}
 	else if (direction == Direction::backward) {
+		//acceleration = -ship_forward * SHIP_ACCELERATION;
 		position -= ship_forward * SHIP_SPEED * dt;
 	}
+}
+
+void Ship::setAccelerationToZero() {
+	acceleration = Vector3D(0, 0, 0);
 }
 
 // This is called if the rotation came from a mouse movement
@@ -98,6 +127,13 @@ void Ship::rotate(const Axis axis, const float dt, const float map, const float 
 void Ship::roll(const Axis axis, const float dt) {
 	// we forward the call to rotate but with 
 	rotate(axis, dt, 1, BARREL_ROLL_SPEED);
+}
+
+void Ship::shoot(float dt) {
+	if (fire_timer >= fire_rate) {
+		bullet_stream.addBullet(position, rotation * Vector3D::forward());
+		fire_timer = 0;
+	}
 }
 
 const Vector3D& Ship::getPosition() const { return position; }

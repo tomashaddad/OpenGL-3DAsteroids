@@ -10,7 +10,7 @@
 #include <iostream>
 
 Asteroid::Asteroid(Vector3D position, Vector3D velocity) :
-	id_num(nextID()),
+	asteroid_id(nextID()),
 	position(position),
 	velocity(velocity),
 	interleaved_stride(24),
@@ -23,11 +23,11 @@ Asteroid::Asteroid(Vector3D position, Vector3D velocity) :
 }
 
 unsigned int Asteroid::nextID() {
-	static unsigned int i = 1;
+	static unsigned int i = 0;
 	return ++i;
 }
 
-const unsigned int Asteroid::id() const { return id_num; }
+const unsigned int Asteroid::id() const { return asteroid_id; }
 
 void Asteroid::draw() {
 	glDisable(GL_LIGHTING);
