@@ -2,6 +2,7 @@
 #define I3D_ASTEROID_H
 
 #include "Math/Vector3D.h"
+#include "Math/Quaternion.h"
 #include <vector>
 
 class Asteroid {
@@ -38,6 +39,10 @@ private:
 
 	float radius;
 	float mass;
+	Quaternion rotation;
+	float rotation_speed;
+	int rotation_direction;
+
 	int sector_count;
 	int stack_count;
 

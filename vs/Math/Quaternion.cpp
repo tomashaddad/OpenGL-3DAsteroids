@@ -43,6 +43,15 @@ Quaternion Quaternion::normalise(const Quaternion &q) {
 	return Quaternion(q.X / mag, q.Y / mag, q.Z / mag, q.W / mag);
 }
 
+// from https://stackoverflow.com/questions/31600717/how-to-generate-a-random-quaternion-quickly/44031492
+Quaternion Quaternion::random() {
+	float x, y, z, u, v, w, s;
+	do { x = utility::randFloat(-1, 1); y = utility::randFloat(-1, 1); z = x * x + y * y; } while (z > 1);
+	do { u = utility::randFloat(-1, 1); v = utility::randFloat(-1, 1); w = u * u + v * v; } while (w > 1);
+	s = sqrt((1 - z) / w);
+	return Quaternion(x, y, s * u, s * v);
+}
+
 std::array<float, 16> Quaternion::toMatrix(const Quaternion& q) {
 	float X = q.X;
 	float Y = q.Y;

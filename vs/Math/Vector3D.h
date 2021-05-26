@@ -21,11 +21,14 @@ public:
 	static Vector3D cross(const Vector3D& lhs, const Vector3D& rhs);
 	static float distance(const Vector3D& lhs, const Vector3D& rhs);
 	static float dot(const Vector3D &lhs, const Vector3D &rhs);
+	static Vector3D fromAngles(float theta, float phi, float magnitude);
 
 	// LERP a->b
 	static Vector3D lerp(const Vector3D &a, const Vector3D &b, const float t);
 	static Vector3D normalise(Vector3D v);
 	static float magnitude(Vector3D v);
+
+	static Vector3D randomUnit();
 
 	static Vector3D red();
 	static Vector3D white();

@@ -9,14 +9,23 @@
 
 #include <iostream>
 
+//float radius;
+//float mass;
+//Quaternion rotation;
+//float rotation_speed;
+//Vector3D rotation_axis;
+
 Asteroid::Asteroid(Vector3D position, Vector3D velocity) :
 	asteroid_id(nextID()),
 	position(position),
 	velocity(velocity),
 	interleaved_stride(24),
 	inArena(false),
-	radius(utility::getRandomFloatBetween(ASTEROID_MIN_RADIUS, ASTEROID_MAX_RADIUS)),
+	radius(utility::randFloat(ASTEROID_MIN_RADIUS, ASTEROID_MAX_RADIUS)),
 	mass((4.0f/3.0f) * M_PI * pow(radius, 3)), // set mass as volume of sphere
+	rotation(Quaternion::random()),
+	rotation_speed(utility::randFloat(ASTEROID_MIN_ROTATION_SPEED, ASTEROID_MAX_ROTATION_SPEED)),
+	rotation_direction(utility::randSign()),
 	sector_count(ASTEROID_SECTOR_COUNT),
 	stack_count(ASTEROID_STACK_COUNT) {	
 	buildVertices();
@@ -33,6 +42,7 @@ void Asteroid::draw() {
 	glDisable(GL_LIGHTING);
 	glPushMatrix();
 		glTranslatef(position.X, position.Y, position.Z);
+		glMultMatrixf(Quaternion::toMatrix(rotation).data());
 		glScalef(radius, radius, radius);
 		glColor3f(1.0, 1.0, 1.0);
 		glutWireSphere(1, 20, 20);
@@ -41,7 +51,11 @@ void Asteroid::draw() {
 }
 
 void Asteroid::update(const float dt) {
-	position += velocity * dt;
+	//position += velocity * dt;
+
+	// rotate asteroid according to its local up axis
+
+	rotation *= Quaternion(Vector3D::up(), rotation_speed * rotation_direction * dt);
 }
 
 void Asteroid::checkIfInArena(const float arena_dimension) {

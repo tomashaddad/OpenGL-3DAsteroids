@@ -146,6 +146,9 @@ void GameManager::updateCamera() {
 		position = ship->getPosition() + camera->distanceFromShip() * (ship->getRotation() * Vector3D::up());
 	}
 
+	// raise the position of the camera slightly up
+	position += 5.0f * (ship->getRotation() * Vector3D::up());
+
 	camera->lerpPositionTo(position, 3 * dt);
 	camera->lerpRotationTo(rotation, 5 * dt);
 
@@ -198,8 +201,11 @@ void GameManager::handleShipCollisions() {
 
 void GameManager::handleAsteroidCollisions() {
 	for (Asteroid& a1 : asteroid_field->getAsteroids()) {
+		if (!a1.isInArena()) {
+			continue;
+		}
+
 		for (const Wall& wall : arena->getWalls()) {
-			if (!a1.isInArena()) continue; // don't check asteroids not in the arena
 
 			if (collision::withWall(wall, a1.getPosition(), a1.getRadius())) {
 				collision::resolve(wall, a1);
@@ -221,7 +227,7 @@ void GameManager::handleAsteroidCollisions() {
 }
 
 void GameManager::handleBulletCollisions() {
-
+	
 }
 
 void GameManager::onKeyDown(const unsigned char key, int x, int y) {

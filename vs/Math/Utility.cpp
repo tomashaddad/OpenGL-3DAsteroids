@@ -3,8 +3,14 @@
 
 #include <random>
 
+int utility::randSign() {
+	std::random_device engine;
+	const std::discrete_distribution<int> int_dist{ 1,2 };
+	return int_dist(engine) % 2 == 0 ? 1 : -1;
+}
+
 // a must be less than b
-float utility::getRandomFloatBetween(float a, float b) {
+float utility::randFloat(float a, float b) {
 	std::random_device engine;
 	std::uniform_real_distribution<float> real_dist =
 		std::uniform_real_distribution<float>{ a, b };
@@ -49,15 +55,4 @@ void utility::drawAxes(float size) {
 		glEnd();
 	glPopMatrix();
 	glEnable(GL_LIGHTING);
-}
-
-Vector3D utility::getRandomPointOnSphere(float radius) {
-	float theta = getRandomFloatBetween(0, 360);
-	float phi = getRandomFloatBetween(-90, 90);
-
-	float x = radius * cos(phi) * cos(theta);
-	float y = radius * cos(phi) * sin(theta);
-	float z = radius * sin(phi);
-
-	return Vector3D(x, y, z);
 }

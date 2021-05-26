@@ -13,11 +13,11 @@ void Bullet::update(float dt) {
 
 void Bullet::draw() const {
 	glDisable(GL_LIGHTING);
-	glPointSize(BULLET_SIZE);
 	glColor3f(1.0, 1.0, 1.0);
 	glPushMatrix();
 		glTranslatef(position.X, position.Y, position.Z);
-		glutWireSphere(2, 20, 20);
+		glScalef(0.5, 0.5, 0.5);
+		glutSolidSphere(1, 5, 5);
 	glPopMatrix();
 	glEnable(GL_LIGHTING);
 }

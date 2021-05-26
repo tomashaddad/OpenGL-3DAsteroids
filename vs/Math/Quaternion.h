@@ -11,16 +11,15 @@ public:
 	Quaternion(Vector3D axis, float angle);
 	Quaternion(float x, float y, float z, float w);
 
+	static Quaternion conjugate(const Quaternion& q);
 	static float dot(Quaternion lhs, Quaternion rhs);
 	static Quaternion inverse(const Quaternion& q);
 	static float magnitude(const Quaternion& q);
 	static Quaternion normalise(const Quaternion& q);
-	static std::array<float, 16> toMatrix(const Quaternion& q);
-	static Quaternion conjugate(const Quaternion& q);
-
+	static Quaternion random();
 	static Quaternion slerp(Quaternion a, Quaternion b, double t);
 	static Quaternion slerpUnclamped(Quaternion a, Quaternion b, double t);
-
+	static std::array<float, 16> toMatrix(const Quaternion& q);
 
 	float getX() const;
 	float getY() const;

@@ -9,7 +9,8 @@
 namespace utility {
 	const float pi = std::acosf(-1.0);
 
-	float getRandomFloatBetween(float a, float b);
+	int randSign();
+	float randFloat(float a, float b);
 	
 	float toRadians(float angle);
 	float toDegrees(float angle);
@@ -17,8 +18,6 @@ namespace utility {
 	float mapToRange(float value, float old_min, float old_max, float new_min, float new_max);
 
 	void drawAxes(float size);
-
-	Vector3D getRandomPointOnSphere(float radius);
 }
 
 #endif

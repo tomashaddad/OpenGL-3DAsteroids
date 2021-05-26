@@ -1,6 +1,7 @@
 #define _USING_MATH_DEFINES
 #include <cmath>
 #include "Vector3D.h"
+#include "Utility.h"
 
 Vector3D::Vector3D() : X(0), Y(0), Z(0) {}
 Vector3D::Vector3D(float x, float y, float z) : X(x), Y(y), Z(z) {}
@@ -30,12 +31,31 @@ float Vector3D::dot(const Vector3D &lhs, const Vector3D &rhs) {
 	return (lhs.X * rhs.X) + (lhs.Y * rhs.Y) + (lhs.Z * rhs.Z);
 }
 
+// angles given in degrees
+Vector3D Vector3D::fromAngles(float theta, float phi, float magnitude) {
+	float pi = acos(-1);
+	theta *= pi / 180.0f;
+	phi *= pi / 180.0f;
+
+	float x = magnitude * cos(phi) * cos(theta);
+	float y = magnitude * cos(phi) * sin(theta);
+	float z = magnitude * sin(phi);
+
+	return Vector3D(x, y, z);
+}
+
 Vector3D Vector3D::lerp(const Vector3D& a, const Vector3D& b, const float t) {
 	return (b - a) * t + a;
 }
 
 float Vector3D::magnitude(Vector3D v) {
 	return sqrt(components_squared(v));
+}
+
+Vector3D Vector3D::randomUnit() {
+	float theta = utility::randFloat(0, 360);
+	float phi = utility::randFloat(-180, 180);
+	return fromAngles(theta, phi, 1);
 }
 
 Vector3D Vector3D::normalise(Vector3D v) {
