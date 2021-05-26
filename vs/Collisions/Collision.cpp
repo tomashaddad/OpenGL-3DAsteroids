@@ -45,14 +45,6 @@ bool collision::withAsteroid(const Vector3D& p1, const Vector3D& p2, float r1, f
 }
 
 void collision::resolve(Asteroid& a1, Asteroid& a2) {
-	// resolve statically (move asteroids slightly away from each other)
-	Vector3D unit_normal = Vector3D::normalise(a2.getPosition() - a1.getPosition()); // from a1 to a2
-	
-	a1.displace(-2 * unit_normal);
-	a2.displace(2 * unit_normal);
-
-	// calculate new velocities
-
 	Vector3D x1 = a1.getPosition();
 	Vector3D x2 = a2.getPosition();
 	Vector3D v1 = a1.getVelocity();

@@ -9,9 +9,8 @@ public:
 	Asteroid(Vector3D position, Vector3D velocity);
 	void buildVertices();
 	void draw();
-	void update(const float dt, const float arena_dimension);
-	bool checkIfInArena(const float arena_dimension) const;
-	void displace(const Vector3D& displacement);
+	void update(const float dt);
+	void checkIfInArena(const float arena_dimension);
 
 	void reverseX();
 	void reverseY();

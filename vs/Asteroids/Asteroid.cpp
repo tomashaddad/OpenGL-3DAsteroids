@@ -40,26 +40,20 @@ void Asteroid::draw() {
 	glEnable(GL_LIGHTING);
 }
 
-void Asteroid::update(const float dt, const float arena_dimension) {
-	if (!inArena) {
-		inArena = checkIfInArena(arena_dimension);
-	}
-
+void Asteroid::update(const float dt) {
 	position += velocity * dt;
 }
 
-bool Asteroid::checkIfInArena(const float arena_dimension) const {
-	return
-		position.X + radius < arena_dimension &&
-		position.X - radius > -arena_dimension &&
-		position.Y + radius < arena_dimension &&
-		position.Y - radius > -arena_dimension &&
-		position.Z + radius < arena_dimension &&
-		position.Z - radius > -arena_dimension;
-}
-
-void Asteroid::displace(const Vector3D& displacement) {
-	position += displacement;
+void Asteroid::checkIfInArena(const float arena_dimension) {
+	if (!inArena) {
+		inArena =
+			position.X + radius < arena_dimension&&
+			position.X - radius > -arena_dimension &&
+			position.Y + radius < arena_dimension&&
+			position.Y - radius > -arena_dimension &&
+			position.Z + radius < arena_dimension&&
+			position.Z - radius > -arena_dimension;
+	}
 }
 
 void Asteroid::buildVertices() {

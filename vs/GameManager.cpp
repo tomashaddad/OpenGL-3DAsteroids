@@ -200,11 +200,16 @@ void GameManager::handleAsteroidCollisions() {
 			}
 		}
 
+		// ASTEROID->ASTEROID COLLISIONS ///////////////////////////
+		// Resolve the collision by calculating new velocities
+		// Updating each asteroid once prevents them from triggering another collision before they
+		// move away from each other far enough before the next set of collision checks
 		for (Asteroid& a2 : asteroid_field->getAsteroids()) {
 			if (a1.id() != a2.id()) {
 				if (collision::withAsteroid(a1.getPosition(), a2.getPosition(), a1.getRadius(), a2.getRadius())) {
-					std::cout << "Collision!!" << std::endl;
 					collision::resolve(a1, a2);
+					a1.update(dt);
+					a2.update(dt);
 				}
 			}
 		}
