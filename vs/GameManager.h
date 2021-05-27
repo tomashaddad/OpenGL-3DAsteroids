@@ -29,6 +29,7 @@ public:
 	void updateShip();
 	void updateAsteroids();
 	void updateBullets();
+	void updateSatellite();
 
 	void handleCollisions();
 	void handleShipCollisions();

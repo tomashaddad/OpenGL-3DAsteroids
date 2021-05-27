@@ -13,6 +13,7 @@
 #include <string>
 
 Ship::Ship() :
+	realistic_physics(false),
 	warning_radius(WARNING_RADIUS),
 	collision_radius(COLLISION_RADIUS),
 	fire_timer(0),
@@ -27,10 +28,11 @@ void Ship::loadTextures() {
 }
 
 void Ship::update(const float dt) {
-	// Uncomment if you want realistic physics
-	//Vector3D drag = -velocity * 0.5;
-	//velocity += (acceleration + drag) * dt;
-	//position += velocity * dt;
+	if (realistic_physics) {
+		Vector3D drag = -velocity * 0.5;
+		velocity += (acceleration + drag) * dt;
+		position += velocity * dt;
+	}
 
 	if (fire_timer < fire_rate) {
 		fire_timer += dt;
@@ -96,12 +98,20 @@ void Ship::move(Direction direction, float dt) {
 	Vector3D ship_forward = rotation * Vector3D::forward();
 
 	if (direction == Direction::forward) {
-		//acceleration = ship_forward * SHIP_ACCELERATION;
-		position += ship_forward * SHIP_SPEED * dt;
+		if (realistic_physics) {
+			acceleration = ship_forward * SHIP_ACCELERATION;
+		}
+		else {
+			position += ship_forward * SHIP_SPEED * dt;
+		}
 	}
 	else if (direction == Direction::backward) {
-		//acceleration = -ship_forward * SHIP_ACCELERATION;
-		position -= ship_forward * SHIP_SPEED * dt;
+		if (realistic_physics) {
+			acceleration = -ship_forward * SHIP_ACCELERATION;
+		}
+		else {
+			position -= ship_forward * SHIP_SPEED * dt;
+		}
 	}
 }
 
@@ -135,6 +145,9 @@ void Ship::shoot(float dt) {
 		fire_timer = 0;
 	}
 }
+
+void Ship::turnOffPhysics() { realistic_physics = false; }
+void Ship::useRealisticPhysics() { realistic_physics = true; }
 
 const Vector3D& Ship::getPosition() const { return position; }
 const Quaternion& Ship::getRotation() const { return rotation; }

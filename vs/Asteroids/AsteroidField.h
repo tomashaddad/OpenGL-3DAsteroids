@@ -10,6 +10,7 @@ class AsteroidField {
 public:
 	AsteroidField();
 
+	void loadTextures();
 	void launchAsteroidAtShip(Vector3D ship_position);
 	void updateAsteroids(float dt);
 	void drawAsteroids();
@@ -18,6 +19,7 @@ public:
 	std::vector<Asteroid>& getAsteroids();
 
 private:
+	std::vector<unsigned int> textures;
 	float arena_radius;
 	float asteroid_count;
 	float timer;

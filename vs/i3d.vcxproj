@@ -156,7 +156,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Arena\Arena.cpp" />
-    <ClCompile Include="Arena\Skybox\Skybox.cpp" />
+    <ClCompile Include="Arena\Satellite.cpp" />
+    <ClCompile Include="Arena\Skybox.cpp" />
     <ClCompile Include="Arena\Wall.cpp" />
     <ClCompile Include="Asteroids\AsteroidField.cpp" />
     <ClCompile Include="Model\Material.cpp" />
@@ -180,7 +181,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Arena\Arena.h" />
-    <ClInclude Include="Arena\Skybox\Skybox.h" />
+    <ClInclude Include="Arena\Satellite.h" />
+    <ClInclude Include="Arena\Skybox.h" />
     <ClInclude Include="Arena\Wall.h" />
     <ClInclude Include="Asteroids\AsteroidField.h" />
     <ClInclude Include="Constants\AsteroidConstants.h" />

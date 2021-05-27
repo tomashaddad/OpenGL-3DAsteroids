@@ -57,8 +57,7 @@ void initCallbacks() {
 }
 
 void initFeatures() {
-	//glShadeModel(GL_SMOOTH);
-
+	glShadeModel(GL_SMOOTH);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);

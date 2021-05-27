@@ -3,7 +3,8 @@
 
 #include "Constants/ArenaConstants.h"
 #include "Wall.h"
-#include "Skybox/Skybox.h"
+#include "Satellite.h"
+#include "Skybox.h"
 
 #include <vector>
 #include <memory>
@@ -14,12 +15,16 @@ public:
 	void drawArena() const;
 	void drawSkybox() const;
 
+	void drawSatellite() const;
+	void updateSatellite(float dt);
+
 	void loadTextures();
 
 	std::vector<Wall>& getWalls();
 
 private:
 	Skybox skybox;
+	Satellite satellite;
 	std::vector<Wall> walls;
 };
 

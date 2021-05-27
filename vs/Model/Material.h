@@ -22,15 +22,20 @@ public:
 			this->specular[i] = specular[i];
 			this->emission[i] = emission[i];
 		}
+
+		this->ambient[3] = transparency;
+		this->diffuse[3] = transparency;
+		this->specular[3] = transparency;
+		this->emission[3] = transparency;
 	}
 
 	std::string name;
 
 	float Ns; // specular exponent, aka shininess
-	std::array<float, 3> ambient; // Ka
-	std::array<float, 3> diffuse; // Kd
-	std::array<float, 3> specular; // Ks
-	std::array<float, 3> emission; // Ke
+	std::array<float, 4> ambient; // Ka
+	std::array<float, 4> diffuse; // Kd
+	std::array<float, 4> specular; // Ks
+	std::array<float, 4> emission; // Ke
 	float Ni; // index of refraction
 	float transparency; // d
 

@@ -29,11 +29,19 @@ void GameManager::start() {
 }
 
 void GameManager::init() {
-	glEnable(GL_LIGHT0);
 	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 
+	float ambient[] = { 0.0, 0.0, 0.0, 1.0 };
+	float diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+	float specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	float position[] = { 1000.0, 0.0, 0.0, 0.0 };
+
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+	glEnable(GL_LIGHT0);
 	glEnable(GL_BLEND);
-	// TODO: Turns everything half transparent, why?
+
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glEnable(GL_NORMALIZE);
@@ -41,6 +49,7 @@ void GameManager::init() {
 	// load textures after creating window, before glut main loop
 	arena->loadTextures();
 	ship->loadTextures();
+	asteroid_field->loadTextures();
 }
 
 // Draw everything
@@ -57,21 +66,13 @@ void GameManager::onDisplay() {
 	arena->drawSkybox();
 	camera->translate();
 
-	glEnable(GL_LIGHTING);
-
-	float ambient[] = { 0.0, 0.0, 0.0, 1.0 };
-	float diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
-	float specular[] = { 1.0, 1.0, 1.0, 1.0 };
-	float position[] = { 1000.0, 0.0, 0.0, 0.0 };
-
-	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
-	glLightfv(GL_LIGHT0, GL_POSITION, position);
-
+	// Drawing scene objects
 	ship->draw();
 	ship->drawBullets();
+
 	arena->drawArena();
+	arena->drawSatellite();
+
 	asteroid_field->drawAsteroids();
 
 	int err;
@@ -159,6 +160,7 @@ void GameManager::updateEntities() {
 	updateShip();
 	updateAsteroids();
 	updateBullets();
+	updateSatellite();
 }
 
 void GameManager::updateShip() {
@@ -175,6 +177,10 @@ void GameManager::updateAsteroids() {
 
 void GameManager::updateBullets() {
 	ship->updateBullets(dt);
+}
+
+void GameManager::updateSatellite() {
+	arena->updateSatellite(dt);
 }
 
 void GameManager::handleCollisions() {
@@ -230,10 +236,12 @@ void GameManager::handleBulletCollisions() {
 	
 }
 
+// glutKeyboardFunc(keyboardDownCallback);
 void GameManager::onKeyDown(const unsigned char key, int x, int y) {
 	keyboard->setPressed(key, true);
 }
 
+// glutKeyboardUpFunc(keyboardUpCallback);
 void GameManager::onKeyUp(const unsigned char key, int x, int y) {
 	keyboard->setPressed(key, false);
 }
@@ -260,6 +268,13 @@ void GameManager::handleKeyboardInput() {
 
 	if (keyboard->isPressed(' ')) {
 		ship->shoot(dt);
+	}
+
+	if (keyboard->isPressed('p')) {
+		ship->useRealisticPhysics();
+	}
+	else if (keyboard->isPressed('o')) {
+		ship->turnOffPhysics();
 	}
 
 	if (keyboard->isPressed('r')) {

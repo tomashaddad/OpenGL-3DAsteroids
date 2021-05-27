@@ -45,6 +45,9 @@ public:
 		 const float map, const float speed = MOUSE_ROTATION_SPEED);
 	void shoot(float dt);
 
+	void turnOffPhysics();
+	void useRealisticPhysics();
+
 	const Vector3D& getPosition() const;
 	const Quaternion& getRotation() const;
 	const float& getWarningRadius() const;
@@ -59,6 +62,8 @@ private:
 	Quaternion rotation;
 
 	BulletStream bullet_stream;
+
+	bool realistic_physics;
 
 	float warning_radius;
 	float collision_radius;

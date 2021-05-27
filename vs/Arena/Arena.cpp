@@ -56,4 +56,11 @@ void Arena::drawSkybox() const {
 	skybox.draw();
 }
 
+void Arena::drawSatellite() const {
+	satellite.draw();
+}
+void Arena::updateSatellite(float dt) {
+	satellite.update(dt);
+}
+
 std::vector<Wall>& Arena::getWalls() { return walls; }

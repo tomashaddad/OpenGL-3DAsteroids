@@ -7,27 +7,23 @@
 
 #include "Constants/AsteroidConstants.h"
 
+#include "Texture/Texture.h"
+
 #include <iostream>
 
-//float radius;
-//float mass;
-//Quaternion rotation;
-//float rotation_speed;
-//Vector3D rotation_axis;
-
-Asteroid::Asteroid(Vector3D position, Vector3D velocity) :
+Asteroid::Asteroid(Vector3D position, Vector3D velocity, unsigned int texture) :
 	asteroid_id(nextID()),
 	position(position),
 	velocity(velocity),
-	interleaved_stride(24),
 	inArena(false),
-	radius(utility::randFloat(ASTEROID_MIN_RADIUS, ASTEROID_MAX_RADIUS)),
-	mass((4.0f/3.0f) * M_PI * pow(radius, 3)), // set mass as volume of sphere
+	texture(texture),
+	radius(utility::randFloat(ASTEROID_MIN_RADIUS, ASTEROID_MAX_RADIUS)), // used in glScalef(. . .)
+	mass((4.0f/3.0f) * M_PI * pow(radius, 3)), // set mass as volume of sphere (4/3*pi*r^3)
 	rotation(Quaternion::random()),
 	rotation_speed(utility::randFloat(ASTEROID_MIN_ROTATION_SPEED, ASTEROID_MAX_ROTATION_SPEED)),
 	rotation_direction(utility::randSign()),
-	sector_count(ASTEROID_SECTOR_COUNT),
-	stack_count(ASTEROID_STACK_COUNT) {	
+	sectors(ASTEROID_SECTOR_COUNT),
+	stacks(ASTEROID_STACK_COUNT) {	
 	buildVertices();
 }
 
@@ -39,19 +35,45 @@ unsigned int Asteroid::nextID() {
 const unsigned int Asteroid::id() const { return asteroid_id; }
 
 void Asteroid::draw() {
-	glDisable(GL_LIGHTING);
+	glPointSize(10);
 	glPushMatrix();
 		glTranslatef(position.X, position.Y, position.Z);
 		glMultMatrixf(Quaternion::toMatrix(rotation).data());
 		glScalef(radius, radius, radius);
 		glColor3f(1.0, 1.0, 1.0);
-		glutWireSphere(1, 20, 20);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texture);
+
+		float ambient[] = { 0.0, 0.0, 0.0, 1.0 };
+		float diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+		float specular[] = { 1.0, 1.0, 1.0, 1.0 };
+		glMaterialfv(GL_FRONT, GL_AMBIENT, ambient);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
+		glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
+		glMaterialf(GL_FRONT, GL_SHININESS, 128);
+
+		glBegin(GL_TRIANGLES);
+		for (int i = 0; i <= indices.size() - 3; i += 3) {
+			glTexCoord2f(uvs[indices[i]].X, uvs[indices[i]].Y);
+			glNormal3f(normals[indices[i]].X, normals[indices[i]].Y, normals[indices[i]].Z);
+			glVertex3f(vertices[indices[i]].X, vertices[indices[i]].Y, vertices[indices[i]].Z);
+
+			glTexCoord2f(uvs[indices[i + 1]].X, uvs[indices[i + 1]].Y);
+			glNormal3f(normals[indices[i + 1]].X, normals[indices[i + 1]].Y, normals[indices[i + 1]].Z);
+			glVertex3f(vertices[indices[i + 1]].X, vertices[indices[i + 1]].Y, vertices[indices[i + 1]].Z);
+
+			glTexCoord2f(uvs[indices[i + 2]].X, uvs[indices[i + 2]].Y);
+			glNormal3f(normals[indices[i + 2]].X, normals[indices[i + 2]].Y, normals[indices[i + 2]].Z);
+			glVertex3f(vertices[indices[i + 2]].X, vertices[indices[i + 2]].Y, vertices[indices[i + 2]].Z);
+		}
+		glEnd();
+
+		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
-	glEnable(GL_LIGHTING);
 }
 
 void Asteroid::update(const float dt) {
-	//position += velocity * dt;
+	position += velocity * dt;
 
 	// rotate asteroid according to its local up axis
 
@@ -73,48 +95,46 @@ void Asteroid::checkIfInArena(const float arena_dimension) {
 void Asteroid::buildVertices() {
 	const float pi = acos(-1);
 
-	float x, y, z, xy;
+	float x, y, z, xz;
 	float nx, ny, nz;
 
-	float sector_step = 2 * pi / sector_count; // number of vertical slices
-	float stack_step = pi / stack_count; // number of horizontal slices
-	float sector_angle, stack_angle;
+	float sector_step = 2 * pi / sectors; // THETA STEP
+	float stack_step = pi / stacks; // PHI STEP
 
-	for (int i = 0; i <= stack_count; ++i) {
-		stack_angle = pi / 2 - i * stack_step;
-		// radius = 1 to start with unit radius
-		xy = cosf(stack_angle);
-		z = sinf(stack_angle);
+	float theta, phi;
 
-		for (int j = 0; j <= sector_count; ++j) {
-			sector_angle = j * sector_step;
+	// adds sector# of vertices at poles
+	for (int i = 0; i <= stacks; ++i) {
+		phi = pi / 2 - i * stack_step;
+		y = sin(phi);
+		xz = cos(phi);
+		for (int j = 0; j <= sectors; ++j) {
+			theta = j * sector_step;
+			x = sin(theta) * cos(phi);
+			z = cos(theta) * cos(phi);
 
-			x = xy * cosf(sector_angle);
-			y = xy * sinf(sector_angle);
 			addVertex(x, y, z);
-
-			float length_inv = 1.0f / radius;
-			nx = x * length_inv;
-			ny = y * length_inv;
-			nz = z * length_inv;
-
-			addNormal(nx, ny, nz);
+			addNormal(x, y, z);
+			addUV((float)j / sectors, (float)i / sectors);
 		}
 	}
 
 	unsigned int k1, k2;
-	for (int i = 0; i < stack_count; ++i) {
-		k1 = i * (sector_count + 1);
-		k2 = k1 + sector_count + 1;
+	for (int i = 0; i < stacks; ++i) {
+		k1 = i * (sectors + 1);
+		k2 = k1 + sectors + 1;
 
-		for (int j = 0; j < sector_count; ++j, ++k1, ++k2) {
+		for (int j = 0; j < sectors; ++j, ++k1, ++k2) {
+			// two triangles per face excluding first and last stacks
 			if (i != 0) {
 				addIndices(k1, k2, k1 + 1);
 			}
 
-			if (i != (stack_count - 1)) {
+			// k1+1 => k2 => k2+1
+			if (i != (stacks - 1)) {
 				addIndices(k1 + 1, k2, k2 + 1);
 			}
+
 		}
 	}
 }
@@ -123,6 +143,9 @@ void Asteroid::addVertex(float x, float y, float z) {
 	vertices.emplace_back(x, y, z);
 }
 
+void Asteroid::addUV(float u, float v) {
+	uvs.emplace_back(u, v, 0);
+}
 void Asteroid::addNormal(float nx, float ny, float nz) {
 	normals.emplace_back(nx, ny, nz);
 }

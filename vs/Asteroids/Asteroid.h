@@ -7,7 +7,7 @@
 
 class Asteroid {
 public:
-	Asteroid(Vector3D position, Vector3D velocity);
+	Asteroid(Vector3D position, Vector3D velocity, unsigned int texture);
 	void buildVertices();
 	void draw();
 	void update(const float dt);
@@ -28,6 +28,7 @@ public:
 private:
 	static unsigned int nextID();
 	void addVertex(float x, float y, float z);
+	void addUV(float u, float v);
 	void addNormal(float nx, float ny, float nz);
 	void addIndices(unsigned int i1, unsigned int i2, unsigned int i3);
 
@@ -37,25 +38,20 @@ private:
 
 	bool inArena;
 
+	unsigned int texture;
 	float radius;
 	float mass;
 	Quaternion rotation;
 	float rotation_speed;
 	int rotation_direction;
 
-	int sector_count;
-	int stack_count;
+	int sectors;
+	int stacks;
 
 	std::vector<Vector3D> vertices;
+	std::vector<Vector3D> uvs;
 	std::vector<Vector3D> normals;
 	std::vector<unsigned int> indices;
-
-	std::vector<float> interleaved_vertices;
-
-	// Vertices are floats, so 4 bytes
-	// Interleaved vertices have 3 vertices, 3 normals, so 6 * 4 = 24 bytes per 3 + 3 vertices
-	// If you had 2 more floats for texture you would want 32 as in original Sphere.cpp
-	int interleaved_stride;
 };
 
 #endif // I3D_ASTEROID_H
