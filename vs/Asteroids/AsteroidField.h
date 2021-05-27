@@ -27,7 +27,6 @@ private:
 	bool levelling_up;
 
 	std::vector<Asteroid> asteroids;
-
 };
 
 #endif // I3D_ASTEROIDFIELD_H

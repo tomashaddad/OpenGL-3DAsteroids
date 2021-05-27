@@ -11,7 +11,6 @@ public:
 
 	Side getSide() const;
 	void setColour(const Vector3D& colour);
-	void setColour(const Vector3D& from, const Vector3D& to);
 
 private:
 	Side side;

@@ -1,19 +1,21 @@
 #include "Utility.h"
 #include "GlutHeaders.h"
 
-#include <random>
-
 int utility::randSign() {
-	std::random_device engine;
 	const std::discrete_distribution<int> int_dist{ 1,2 };
 	return int_dist(engine) % 2 == 0 ? 1 : -1;
 }
 
 // a must be less than b
 float utility::randFloat(float a, float b) {
-	std::random_device engine;
 	std::uniform_real_distribution<float> real_dist =
 		std::uniform_real_distribution<float>{ a, b };
+	return real_dist(engine);
+}
+
+int utility::randInt(int a, int b) {
+	std::uniform_int_distribution<int> real_dist =
+		std::uniform_int_distribution<int>{ a, b };
 	return real_dist(engine);
 }
 

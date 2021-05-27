@@ -3,6 +3,8 @@
 
 #include "Math/Vector3D.h"
 
+#include <array>
+
 class Satellite {
 public:
 	Satellite();

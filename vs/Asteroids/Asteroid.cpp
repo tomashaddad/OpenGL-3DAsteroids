@@ -35,6 +35,7 @@ unsigned int Asteroid::nextID() {
 const unsigned int Asteroid::id() const { return asteroid_id; }
 
 void Asteroid::draw() {
+	glEnable(GL_LIGHTING);
 	glPointSize(10);
 	glPushMatrix();
 		glTranslatef(position.X, position.Y, position.Z);
@@ -70,6 +71,7 @@ void Asteroid::draw() {
 
 		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
+	glDisable(GL_LIGHTING);
 }
 
 void Asteroid::update(const float dt) {

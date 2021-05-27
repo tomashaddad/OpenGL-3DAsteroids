@@ -29,6 +29,3 @@ void Wall::draw() const {
 
 Side Wall::getSide() const { return side; }
 void Wall::setColour(const Vector3D& colour) { this->colour = colour; }
-void Wall::setColour(const Vector3D& from, const Vector3D& to) {
-	this->colour = Vector3D::slerp(from, to, 0.5);
-}

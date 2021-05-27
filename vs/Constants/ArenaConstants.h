@@ -4,6 +4,6 @@
 #include <cmath>
 
 float constexpr WALL_SEGMENTS = 20;
-float constexpr ARENA_DIM = 200;
+float constexpr ARENA_DIM = 1000;
 
 #endif

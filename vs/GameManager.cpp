@@ -31,15 +31,26 @@ void GameManager::start() {
 void GameManager::init() {
 	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 
-	float ambient[] = { 0.0, 0.0, 0.0, 1.0 };
-	float diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
-	float specular[] = { 1.0, 1.0, 1.0, 1.0 };
-	float position[] = { 1000.0, 0.0, 0.0, 0.0 };
+	float ambient0[] = { 0.0, 0.0, 0.0, 1.0 };
+	float diffuse0[] = { 1.0, 1.0, 1.0, 1.0 };
+	float specular0[] = { 1.0, 1.0, 1.0, 1.0 };
+	float position0[] = { 1000.0, 0.0, 0.0, 0.0 };
 
-	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient0);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse0);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specular0);
+	glLightfv(GL_LIGHT0, GL_POSITION, position0);
 	glEnable(GL_LIGHT0);
+
+	float ambient1[] = { 0.0, 0.0, 0.0, 1.0 };
+	float diffuse1[] = { 1.0, 1.0, 1.0, 1.0 };
+	float specular1[] = { 1.0, 1.0, 1.0, 1.0 };
+
+	glLightfv(GL_LIGHT1, GL_AMBIENT, ambient1);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse1);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, specular1);
+	glEnable(GL_LIGHT1);
+
 	glEnable(GL_BLEND);
 
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -192,7 +203,7 @@ void GameManager::handleCollisions() {
 void GameManager::handleShipCollisions() {
 	for (Wall& wall : arena->getWalls()) {
 		if (collision::withWall(wall, ship->getPosition(), ship->getWarningRadius())) {
-			wall.setColour(Vector3D::white(), Vector3D::red());
+			wall.setColour(Vector3D::red());
 		}
 		else {
 			wall.setColour(Vector3D::white());

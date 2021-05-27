@@ -6,7 +6,7 @@
 
 AsteroidField::AsteroidField() :
 	arena_radius(sqrt(3 * ARENA_DIM * ARENA_DIM)),
-	asteroid_count(1),
+	asteroid_count(10),
 	timer(0),
 	time_between_levels(20),
 	levelling_up(false) {}
@@ -23,7 +23,7 @@ void AsteroidField::launchAsteroidAtShip(Vector3D ship_position) {
 		float speed = utility::randFloat(ASTEROID_MIN_SPEED, ASTEROID_MAX_SPEED);
 		Vector3D asteroid_position = Vector3D::randomUnit() * arena_radius;
 		Vector3D asteroid_velocity = speed * Vector3D::normalise(ship_position - asteroid_position);
-		asteroids.emplace_back(asteroid_position, asteroid_velocity, textures[0]);
+		asteroids.emplace_back(asteroid_position, asteroid_velocity, textures[utility::randInt(0, textures.size() - 1)]);
 	}
 }
 
