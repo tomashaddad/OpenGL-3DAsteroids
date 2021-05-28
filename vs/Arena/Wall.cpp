@@ -2,7 +2,7 @@
 #include "Wall.h"
 #include "Constants/ArenaConstants.h"
 
-Wall::Wall(Side side) : side(side), colour(Vector3D::white()) {
+Wall::Wall(Side side) : side(side), colour(Colour::WHITE) {
 	// minimum two outside edges per face
 	this->segments = WALL_SEGMENTS < 2 ? 2 : WALL_SEGMENTS;
 
@@ -12,9 +12,17 @@ Wall::Wall(Side side) : side(side), colour(Vector3D::white()) {
 
 // Each wall is drawn as a unit square
 void Wall::draw() const {
+	glDisable(GL_LIGHTING);
+
+	if (colour == Colour::RED) {
+		glColor4f(1.0, 0.0, 0.0, 0.5);
+	}
+	else if (colour == Colour::WHITE) {
+		glColor4f(1.0, 1.0, 1.0, 0.1);
+	}
+
 	glBegin(GL_LINES);
-		glColor3fv(Vector3D::toArray(colour).data());
-		for (int i = 0; i < segments + 1; ++i) {
+		for (int i = 0; i <= segments; ++i) {
 			// x-dim
 			glVertex3f(-1 + spacing * i, -1, 0);
 			glVertex3f(-1 + spacing * i, 1, 0);
@@ -23,9 +31,9 @@ void Wall::draw() const {
 			glVertex3f(1, -1 + spacing * i, 0);
 		}
 	glEnd();
-
+	glEnable(GL_LIGHTING);
 	glColor3f(1.0, 1.0, 1.0);
 }
 
 Side Wall::getSide() const { return side; }
-void Wall::setColour(const Vector3D& colour) { this->colour = colour; }
+void Wall::setColour(const Colour colour) { this->colour = colour; }

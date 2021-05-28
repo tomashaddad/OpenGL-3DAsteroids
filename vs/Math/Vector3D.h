@@ -31,8 +31,11 @@ public:
 	static Vector3D randomUnit();
 
 	static Vector3D red();
+	static Vector3D green();
+	static Vector3D blue();
 	static Vector3D white();
 	static std::array<float, 3> toArray(Vector3D v);
+	static std::array<float, 4> toArrayWithAlpha(Vector3D v, float a);
 
 	// SLERP a->b
 	// Returns a normalised vector some point between the spherical interpolation

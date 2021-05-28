@@ -149,6 +149,7 @@ void Ship::shoot(float dt) {
 void Ship::turnOffPhysics() { realistic_physics = false; }
 void Ship::useRealisticPhysics() { realistic_physics = true; }
 
+std::vector<Bullet>& Ship::getBullets() { return bullet_stream.getBullets(); }
 const Vector3D& Ship::getPosition() const { return position; }
 const Quaternion& Ship::getRotation() const { return rotation; }
 const float& Ship::getWarningRadius() const { return warning_radius; }

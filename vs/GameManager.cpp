@@ -4,7 +4,6 @@
 #include "GameManager.h"
 #include "GlutHeaders.h"
 #include "Math/Utility.h"
-#include "Constants/ShipConstants.h"
 
 #include "Collisions/Collision.h"
 
@@ -34,7 +33,7 @@ void GameManager::init() {
 	float ambient0[] = { 0.0, 0.0, 0.0, 1.0 };
 	float diffuse0[] = { 1.0, 1.0, 1.0, 1.0 };
 	float specular0[] = { 1.0, 1.0, 1.0, 1.0 };
-	float position0[] = { 1000.0, 0.0, 0.0, 0.0 };
+	float position0[] = { 1000.0, 0.0, 0.0, 1.0 };
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient0);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse0);
@@ -52,8 +51,7 @@ void GameManager::init() {
 	glEnable(GL_LIGHT1);
 
 	glEnable(GL_BLEND);
-
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glEnable(GL_NORMALIZE);
 
@@ -76,6 +74,9 @@ void GameManager::onDisplay() {
 	camera->rotate();
 	arena->drawSkybox();
 	camera->translate();
+
+	float position0[] = { 1000.0, 0.0, 0.0, 1.0 };
+	glLightfv(GL_LIGHT0, GL_POSITION, position0);
 
 	// Drawing scene objects
 	ship->draw();
@@ -159,10 +160,10 @@ void GameManager::updateCamera() {
 	}
 
 	// raise the position of the camera slightly up
-	position += 5.0f * (ship->getRotation() * Vector3D::up());
+	position += 10.0f * (ship->getRotation() * Vector3D::up());
 
-	camera->lerpPositionTo(position, 3 * dt);
-	camera->lerpRotationTo(rotation, 5 * dt);
+	camera->lerpPositionTo(position);
+	camera->lerpRotationTo(rotation);
 
 	glutPostRedisplay();
 }
@@ -203,10 +204,10 @@ void GameManager::handleCollisions() {
 void GameManager::handleShipCollisions() {
 	for (Wall& wall : arena->getWalls()) {
 		if (collision::withWall(wall, ship->getPosition(), ship->getWarningRadius())) {
-			wall.setColour(Vector3D::red());
+			wall.setColour(Colour::RED);
 		}
 		else {
-			wall.setColour(Vector3D::white());
+			wall.setColour(Colour::WHITE);
 		}
 
 		if (collision::withWall(wall, ship->getPosition(), ship->getCollisionRadius())) {
@@ -244,7 +245,13 @@ void GameManager::handleAsteroidCollisions() {
 }
 
 void GameManager::handleBulletCollisions() {
-	
+	for (Bullet& bullet : ship->getBullets()) {
+		for (Wall& wall : arena->getWalls()) {
+			if (collision::withWall(wall, bullet.getPosition())) {
+				bullet.markForDeletion();
+			}
+		}
+	}
 }
 
 // glutKeyboardFunc(keyboardDownCallback);

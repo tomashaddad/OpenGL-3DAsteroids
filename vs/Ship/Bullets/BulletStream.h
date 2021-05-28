@@ -13,6 +13,8 @@ public:
 	void deleteBulletByIndex(unsigned int index);
 	void clearBullets();
 
+	std::vector<Bullet>& getBullets();
+
 private:
 	std::vector<Bullet> bullets;
 };

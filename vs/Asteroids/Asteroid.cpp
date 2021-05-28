@@ -45,7 +45,7 @@ void Asteroid::draw() {
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, texture);
 
-		float ambient[] = { 0.0, 0.0, 0.0, 1.0 };
+		float ambient[] = { 1.0, 1.0, 1.0, 1.0 };
 		float diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
 		float specular[] = { 1.0, 1.0, 1.0, 1.0 };
 		glMaterialfv(GL_FRONT, GL_AMBIENT, ambient);

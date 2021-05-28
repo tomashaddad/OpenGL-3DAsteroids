@@ -48,6 +48,7 @@ public:
 	void turnOffPhysics();
 	void useRealisticPhysics();
 
+	std::vector<Bullet>& getBullets();
 	const Vector3D& getPosition() const;
 	const Quaternion& getRotation() const;
 	const float& getWarningRadius() const;

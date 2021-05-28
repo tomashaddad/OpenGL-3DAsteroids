@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-float constexpr WALL_SEGMENTS = 20;
-float constexpr ARENA_DIM = 1000;
+float constexpr WALL_SEGMENTS = 100;
+float constexpr ARENA_DIM = 2000;
 
 #endif

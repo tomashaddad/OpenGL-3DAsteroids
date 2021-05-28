@@ -6,8 +6,12 @@ void BulletStream::addBullet(Vector3D position, Vector3D velocity) {
 }
 
 void BulletStream::updateBullets(float dt) {
-	for (auto i = 0; i != bullets.size(); ++i) {
+	for (auto i = 0; i < bullets.size(); ++i) {
 		bullets[i].update(dt);
+
+		if (bullets[i].markedForDeletion()) {
+			deleteBulletByIndex(i);
+		}
 	}
 }
 
@@ -21,6 +25,9 @@ void BulletStream::deleteBulletByIndex(unsigned int index) {
 	std::swap(bullets[index], bullets.back());
 	bullets.pop_back();
 }
+
+
+std::vector<Bullet>& BulletStream::getBullets() { return bullets; }
 
 void BulletStream::clearBullets() {
 	bullets.clear();

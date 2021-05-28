@@ -10,11 +10,11 @@ public:
 	void draw() const;
 
 	Side getSide() const;
-	void setColour(const Vector3D& colour);
+	void setColour(const Colour colour);
 
 private:
 	Side side;
-	Vector3D colour;
+	Colour colour;
 	float segments;
 	float spacing;
 };

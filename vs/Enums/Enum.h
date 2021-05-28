@@ -1,6 +1,13 @@
 #ifndef I3D_ENUM_H
 #define I3D_ENUM_H
 
+enum class Colour {
+	RED,
+	GREEN,
+	BLUE,
+	WHITE
+};
+
 enum class Side {
 	TOP,
 	BOTTOM,

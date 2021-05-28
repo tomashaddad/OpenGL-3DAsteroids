@@ -70,12 +70,26 @@ Vector3D Vector3D::slerp(const Vector3D& a, const Vector3D& b, const float t) {
 Vector3D Vector3D::red() {
 	return Vector3D(1.0, 0.0, 0.0);
 }
+
+Vector3D Vector3D::green() {
+	return Vector3D(0.0, 1.0, 0.0);
+}
+
+Vector3D Vector3D::blue() {
+	return Vector3D(0.0, 0.0, 1.0);
+}
+
 Vector3D Vector3D::white() {
 	return Vector3D(1.0, 1.0, 1.0);
 }
 
 std::array<float, 3> Vector3D::toArray(Vector3D v) {
 	return { v.X, v.Y, v.Z };
+}
+
+// Helper function for colours with alpha values
+std::array<float, 4> Vector3D::toArrayWithAlpha(Vector3D v, float a) {
+	return { v.X, v.Y, v.Z, a};
 }
 
 Vector3D& Vector3D::operator+=(const Vector3D& rhs) {

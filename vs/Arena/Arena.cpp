@@ -12,7 +12,6 @@ Arena::Arena() : skybox(Skybox()) {
 }
 
 void Arena::drawArena() const {
-	glDisable(GL_LIGHTING);
 	glPushMatrix();
 	for (const Wall& wall : walls) {
 		glPushMatrix();
@@ -45,7 +44,6 @@ void Arena::drawArena() const {
 		glPopMatrix();
 	}
 	glPopMatrix();
-	glEnable(GL_LIGHTING);
 }
 
 void Arena::loadTextures() {

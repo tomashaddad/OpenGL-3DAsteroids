@@ -10,8 +10,8 @@ class Camera {
 public:
 	Camera();
 
-	void lerpPositionTo(Vector3D new_position, float t);
-	void lerpRotationTo(Quaternion new_rotation, float t);
+	void lerpPositionTo(Vector3D new_position);
+	void lerpRotationTo(Quaternion new_rotation);
 
 	void look(const Look& look);
 
