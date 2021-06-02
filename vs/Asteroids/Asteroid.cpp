@@ -9,19 +9,21 @@
 
 #include <iostream>
 
-Asteroid::Asteroid(Vector3D position, Vector3D velocity, unsigned int texture) :
-	asteroid_id(nextID()),
-	position(position),
-	velocity(velocity),
-	inArena(false),
-	texture(texture),
-	radius(utility::randFloat(ASTEROID_MIN_RADIUS, ASTEROID_MAX_RADIUS)), // used in glScalef(. . .)
-	mass((4.0f/3.0f) * M_PI * pow(radius, 3)), // set mass as volume of sphere (4/3*pi*r^3)
-	rotation(Quaternion::random()),
-	rotation_speed(utility::randFloat(ASTEROID_MIN_ROTATION_SPEED, ASTEROID_MAX_ROTATION_SPEED)),
-	rotation_direction(utility::randSign()),
-	sectors(ASTEROID_SECTOR_COUNT),
-	stacks(ASTEROID_STACK_COUNT) {	
+Asteroid::Asteroid(Vector3D position, Vector3D velocity, unsigned int texture)
+	: asteroid_id(nextID())
+	, position(position)
+	, velocity(velocity)
+	, inArena(false)
+	, texture(texture)
+	, radius(utility::randFloat(ASTEROID_MIN_RADIUS, ASTEROID_MAX_RADIUS))
+	, mass((4.0f/3.0f) * M_PI * pow(radius, 3))
+	, rotation(Quaternion::random())
+	, rotation_speed(utility::randFloat(ASTEROID_MIN_ROTATION_SPEED, ASTEROID_MAX_ROTATION_SPEED))
+	, rotation_direction(utility::randSign())
+	, health(utility::mapToRange(radius, ASTEROID_MIN_RADIUS, ASTEROID_MAX_RADIUS, ASTEROID_MIN_HEALTH, ASTEROID_MAX_HEALTH))
+	, to_delete(false)
+	, sectors(ASTEROID_SECTOR_COUNT)
+	, stacks(ASTEROID_STACK_COUNT) {	
 	buildVertices();
 }
 
@@ -76,8 +78,11 @@ void Asteroid::update(const float dt) {
 	position += velocity * dt;
 
 	// rotate asteroid according to its local up axis
-
 	rotation *= Quaternion(Vector3D::up(), rotation_speed * rotation_direction * dt);
+
+	if (health <= 0) {
+		markForDeletion();
+	}
 }
 
 void Asteroid::checkIfInArena(const float arena_dimension) {
@@ -154,6 +159,18 @@ void Asteroid::addIndices(unsigned int i1, unsigned int i2, unsigned int i3) {
 	indices.push_back(i1);
 	indices.push_back(i2);
 	indices.push_back(i3);
+}
+
+void Asteroid::decrementHealthBy(int num) {
+	health -= num;
+}
+
+void Asteroid::markForDeletion() {
+	to_delete = true;
+}
+
+bool Asteroid::isMarkedForDeletion() const {
+	return to_delete;
 }
 
 // slightly nudge when reversing so they don't get stuck or jitter

@@ -28,7 +28,7 @@ class Asset {
 public:
 	static void loadAsset(Entity type, std::string path);
 	static unsigned int getTextureId(Entity type);
-	static std::map<Entity, unsigned int>& get_texture_map();
+	inline static std::map<Entity, unsigned int> textures;
 };
 
 #endif // I3D_ASSET_H

@@ -13,6 +13,10 @@ public:
 	void update(const float dt);
 	void checkIfInArena(const float arena_dimension);
 
+	void decrementHealthBy(int num);
+	void markForDeletion();
+	bool isMarkedForDeletion() const;
+
 	void reverseX();
 	void reverseY();
 	void reverseZ();
@@ -44,6 +48,8 @@ private:
 	Quaternion rotation;
 	float rotation_speed;
 	int rotation_direction;
+	int health;
+	bool to_delete;
 
 	int sectors;
 	int stacks;

@@ -229,7 +229,7 @@ void GameManager::handleAsteroidCollisions() {
 		// ASTEROID->ASTEROID COLLISIONS ///////////////////////////
 		for (Asteroid& a2 : asteroid_field->getAsteroids()) {
 			if (a1.id() != a2.id()) {
-				if (collision::withAsteroid(a1.getPosition(), a2.getPosition(), a1.getRadius(), a2.getRadius())) {
+				if (collision::withAsteroid(a1.getPosition(), a1.getRadius(), a2.getPosition(), a2.getRadius())) {
 					// Calculate new velocities, then move slightly apart
 					collision::resolve(a1, a2);
 					a1.update(dt);
@@ -242,9 +242,23 @@ void GameManager::handleAsteroidCollisions() {
 
 void GameManager::handleBulletCollisions() {
 	for (Bullet& bullet : ship->getBullets()) {
+		// Bullet->Wall
 		for (Wall& wall : arena->getWalls()) {
 			if (collision::withWall(wall, bullet.getPosition())) {
 				bullet.markForDeletion();
+			}
+		}
+
+		// Why check asteroids if bullet died on a wall?
+		if (bullet.markedForDeletion()) {
+			continue;
+		}
+
+		for (Asteroid& asteroid : asteroid_field->getAsteroids()) {
+			if (collision::withAsteroid(asteroid.getPosition(), asteroid.getRadius(), bullet.getPosition())) {
+				bullet.markForDeletion();
+				asteroid.decrementHealthBy(1);
+				break;
 			}
 		}
 	}

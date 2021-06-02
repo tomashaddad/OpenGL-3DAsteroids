@@ -15,6 +15,8 @@ public:
 	void drawAsteroids();
 	bool isEmpty() const;
 
+	void deleteAsteroidByIndex(unsigned int index);
+
 	std::vector<Asteroid>& getAsteroids();
 
 private:

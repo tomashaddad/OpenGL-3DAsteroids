@@ -11,7 +11,7 @@ namespace collision {
 	bool withWall(const Wall& wall, const Vector3D& position, float radius = 0);
 	void resolve(const Wall& wall, Asteroid& asteroid);
 
-	bool withAsteroid(const Vector3D& p1, const Vector3D& p2, float r1, float r2);
+	bool withAsteroid(const Vector3D& asteroid_pos, float asteroid_radius, const Vector3D& other_position, float other_radius = 0);
 	void resolve(Asteroid& a1, Asteroid& a2);
 }
 

@@ -40,8 +40,8 @@ void collision::resolve(const Wall& wall, Asteroid& asteroid) {
 	}
 }
 
-bool collision::withAsteroid(const Vector3D& p1, const Vector3D& p2, float r1, float r2) {
-	return Vector3D::distance(p1, p2) < r1 + r2;
+bool collision::withAsteroid(const Vector3D& asteroid_pos, float asteroid_radius, const Vector3D& other_position, float other_radius) {
+	return Vector3D::distance(asteroid_pos, other_position) < asteroid_radius + other_radius;
 }
 
 void collision::resolve(Asteroid& a1, Asteroid& a2) {

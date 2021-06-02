@@ -4,6 +4,7 @@
 #include "Constants/ArenaConstants.h"
 
 #include "Assets/Asset.h"
+#include <algorithm>
 
 AsteroidField::AsteroidField() :
 	arena_radius(sqrt(3 * ARENA_DIM * ARENA_DIM)),
@@ -27,9 +28,17 @@ void AsteroidField::launchAsteroidAtShip(Vector3D ship_position) {
 }
 
 void AsteroidField::updateAsteroids(float dt) {
-	for (Asteroid& asteroid : asteroids) {
-		asteroid.checkIfInArena(ARENA_DIM - 0.5);
-		asteroid.update(dt);
+	for (auto i = 0; i < asteroids.size(); ++i) {
+		asteroids[i].update(dt);
+
+		if (!asteroids[i].isInArena()) {
+			asteroids[i].checkIfInArena(ARENA_DIM - 0.5);
+		}
+
+		if (asteroids[i].isMarkedForDeletion()) {
+			deleteAsteroidByIndex(i);
+			std::cout << "Deleted!" << std::endl;
+		}
 	}
 }
 
@@ -41,6 +50,11 @@ void AsteroidField::drawAsteroids() {
 
 bool AsteroidField::isEmpty() const {
 	return asteroids.empty();
+}
+
+void AsteroidField::deleteAsteroidByIndex(unsigned int index) {
+	std::swap(asteroids[index], asteroids.back());
+	asteroids.pop_back();
 }
 
 std::vector<Asteroid>& AsteroidField::getAsteroids() {
