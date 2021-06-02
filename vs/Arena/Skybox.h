@@ -3,7 +3,7 @@
 
 class Skybox {
 public:
-	void loadTextures();
+	Skybox();
 	void draw() const;
 
 private:

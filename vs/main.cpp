@@ -4,15 +4,18 @@
 #include "Math/Quaternion.h"
 #include "Math/Vector3D.h"
 
+#include "Assets/Asset.h"
+
 #include <iostream>
 #include <memory>
 
 // Global game manager pointer
-std::unique_ptr<GameManager> game = std::make_unique<GameManager>();
+std::unique_ptr<GameManager> game;
 
 void initGlut(int argc, char** argv);
 void initCallbacks();
 void initFeatures();
+void initTextures();
 
 // Callback functions
 void reshapeCallback(int w, int h);
@@ -30,7 +33,9 @@ int main(int argc, char** argv) {
 	initGlut(argc, argv);
 	initCallbacks();
 	initFeatures();
+	initTextures();
 
+	game = std::make_unique<GameManager>();
 	game->start();
 
 	return EXIT_SUCCESS;
@@ -61,8 +66,24 @@ void initFeatures() {
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+	glutSetCursor(GLUT_CURSOR_NONE);
 
 	glClearColor(0, 0, 0, 0);
+}
+
+void initTextures() {
+	Asset::loadAsset(Entity::ship, "./Assets/Ship/Star_Fox_logo_2015.jpeg");
+	Asset::loadAsset(Entity::skybox_top, "./Assets/Skybox/top.png");
+	Asset::loadAsset(Entity::skybox_bottom, "./Assets/Skybox/bottom.png");
+	Asset::loadAsset(Entity::skybox_left, "./Assets/Skybox/left.png");
+	Asset::loadAsset(Entity::skybox_right, "./Assets/Skybox/right.png");
+	Asset::loadAsset(Entity::skybox_front, "./Assets/Skybox/front.png");
+	Asset::loadAsset(Entity::skybox_back, "./Assets/Skybox/back.png");
+	Asset::loadAsset(Entity::asteroid_1, "./Assets/Asteroids/asteroid1.jpg");
+	Asset::loadAsset(Entity::asteroid_2, "./Assets/Asteroids/asteroid2.jpg");
+	Asset::loadAsset(Entity::asteroid_3, "./Assets/Asteroids/asteroid3.jpg");
+	Asset::loadAsset(Entity::asteroid_4, "./Assets/Asteroids/asteroid4.jpg");
+	Asset::loadAsset(Entity::bullets, "./Assets/Bullets/fireball_ani.png");
 }
 
 void reshapeCallback(int w, int h) {

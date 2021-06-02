@@ -56,12 +56,13 @@
     <ClCompile Include="Model\Triangle.cpp" />
     <ClCompile Include="Model\Model.cpp" />
     <ClCompile Include="Arena\Skybox.cpp" />
-    <ClCompile Include="Texture\Texture.cpp" />
+    <ClCompile Include="Assets\Texture.cpp" />
     <ClCompile Include="Asteroids\AsteroidField.cpp" />
     <ClCompile Include="Model\Material.cpp" />
     <ClCompile Include="Ship\Bullets\Bullet.cpp" />
     <ClCompile Include="Ship\Bullets\BulletStream.cpp" />
     <ClCompile Include="Arena\Satellite.cpp" />
+    <ClCompile Include="Assets\Asset.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h" />
@@ -93,8 +94,8 @@
     <ClInclude Include="Model\Triangle.h" />
     <ClInclude Include="Model\Model.h" />
     <ClInclude Include="Arena\Skybox.h" />
-    <ClInclude Include="Texture\Texture.h" />
-    <ClInclude Include="Texture\stb_image.h" />
+    <ClInclude Include="Assets\Texture.h" />
+    <ClInclude Include="Assets\stb_image.h" />
     <ClInclude Include="Constants\CameraConstants.h" />
     <ClInclude Include="Asteroids\AsteroidField.h" />
     <ClInclude Include="Constants\AsteroidConstants.h" />
@@ -103,5 +104,6 @@
     <ClInclude Include="Ship\Bullets\BulletStream.h" />
     <ClInclude Include="Constants\BulletConstants.h" />
     <ClInclude Include="Arena\Satellite.h" />
+    <ClInclude Include="Assets\Asset.h" />
   </ItemGroup>
 </Project>

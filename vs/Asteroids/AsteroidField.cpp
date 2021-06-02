@@ -2,20 +2,19 @@
 #include "Math/Utility.h"
 #include "Constants/AsteroidConstants.h"
 #include "Constants/ArenaConstants.h"
-#include "Texture/Texture.h"
+
+#include "Assets/Asset.h"
 
 AsteroidField::AsteroidField() :
 	arena_radius(sqrt(3 * ARENA_DIM * ARENA_DIM)),
 	asteroid_count(10),
 	timer(0),
 	time_between_levels(20),
-	levelling_up(false) {}
-
-void AsteroidField::loadTextures() {
-	textures.push_back(Texture::loadTexture("./Assets/Asteroids/asteroid1.jpg"));
-	textures.push_back(Texture::loadTexture("./Assets/Asteroids/asteroid2.jpg"));
-	textures.push_back(Texture::loadTexture("./Assets/Asteroids/asteroid3.jpg"));
-	textures.push_back(Texture::loadTexture("./Assets/Asteroids/asteroid4.jpg"));
+	levelling_up(false) {
+	textures.push_back(Asset::getTextureId(Entity::asteroid_1));
+	textures.push_back(Asset::getTextureId(Entity::asteroid_2));
+	textures.push_back(Asset::getTextureId(Entity::asteroid_3));
+	textures.push_back(Asset::getTextureId(Entity::asteroid_4));
 }
 
 void AsteroidField::launchAsteroidAtShip(Vector3D ship_position) {

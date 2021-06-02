@@ -10,7 +10,6 @@ class AsteroidField {
 public:
 	AsteroidField();
 
-	void loadTextures();
 	void launchAsteroidAtShip(Vector3D ship_position);
 	void updateAsteroids(float dt);
 	void drawAsteroids();

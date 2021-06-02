@@ -9,6 +9,8 @@
 
 #include "GlutHeaders.h"
 
+Quaternion Camera::rotation = Quaternion::identity();
+
 Camera::Camera() :
 	look_at(Look::AHEAD),
 	z_offset(-50),
@@ -28,7 +30,7 @@ void Camera::lerpRotationTo(Quaternion new_rotation) {
 void Camera::look(const Look& look) { look_at = look; }
 
 Vector3D Camera::getPosition() const { return position; }
-
+const Quaternion& Camera::getRotation() { return rotation; }
 const float& Camera::distanceFromShip() const { return z_offset; }
 const float& Camera::getFov() const { return fov; }
 const float& Camera::getZNear() const { return znear; }

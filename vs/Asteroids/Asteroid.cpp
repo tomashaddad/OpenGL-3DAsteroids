@@ -7,8 +7,6 @@
 
 #include "Constants/AsteroidConstants.h"
 
-#include "Texture/Texture.h"
-
 #include <iostream>
 
 Asteroid::Asteroid(Vector3D position, Vector3D velocity, unsigned int texture) :

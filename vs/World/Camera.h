@@ -16,6 +16,7 @@ public:
 	void look(const Look& look);
 
 	Vector3D getPosition() const;
+	const static Quaternion& getRotation();
 	const float& distanceFromShip() const;
 	const float& getFov() const;
 	const float& getZNear() const;
@@ -24,14 +25,14 @@ public:
 	const float& getAspect() const;
 	void setAspect(const float& aspect);
 
+
 	void translate();
 	void rotate();
 	Look look_at;
 
 private:
-	Quaternion rotation;
+	static Quaternion rotation;
 	Vector3D position;
-
 
 	float z_offset;
 

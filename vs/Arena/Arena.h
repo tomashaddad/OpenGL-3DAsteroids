@@ -18,8 +18,6 @@ public:
 	void drawSatellite() const;
 	void updateSatellite(float dt);
 
-	void loadTextures();
-
 	std::vector<Wall>& getWalls();
 
 private:

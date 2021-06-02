@@ -1,6 +1,10 @@
 #include "BulletStream.h"
 #include <algorithm>
 
+BulletStream::BulletStream() {
+	Bullet::initUVMap();
+}
+
 void BulletStream::addBullet(Vector3D position, Vector3D velocity) {
 	bullets.emplace_back(position, velocity);
 }

@@ -31,8 +31,6 @@ class Ship {
 public:
 	Ship();
 
-	void loadTextures();
-
 	void update(const float dt);
 	void draw() const;
 	void updateBullets(const float dt);
@@ -44,9 +42,6 @@ public:
 	void rotate(const Axis axis, const float dt,
 		 const float map, const float speed = MOUSE_ROTATION_SPEED);
 	void shoot(float dt);
-
-	void turnOffPhysics();
-	void useRealisticPhysics();
 
 	std::vector<Bullet>& getBullets();
 	const Vector3D& getPosition() const;
@@ -63,8 +58,6 @@ private:
 	Quaternion rotation;
 
 	BulletStream bullet_stream;
-
-	bool realistic_physics;
 
 	float warning_radius;
 	float collision_radius;

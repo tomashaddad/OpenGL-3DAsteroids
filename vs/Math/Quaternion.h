@@ -11,6 +11,8 @@ public:
 	Quaternion(Vector3D axis, float angle);
 	Quaternion(float x, float y, float z, float w);
 
+	static Quaternion identity();
+
 	static Quaternion conjugate(const Quaternion& q);
 	static float dot(Quaternion lhs, Quaternion rhs);
 	static Quaternion inverse(const Quaternion& q);

@@ -24,6 +24,8 @@ Quaternion::Quaternion(Vector3D axis, float angle) {
 Quaternion::Quaternion(float x, float y, float z, float w) :
 	X(x), Y(y), Z(z), W(w) {}
 
+Quaternion Quaternion::identity() { return Quaternion(); }
+
 float Quaternion::dot(Quaternion lhs, Quaternion rhs) {
 	return lhs.X * rhs.X + lhs.Y * rhs.Y + lhs.Z * rhs.Z + lhs.W * rhs.W;
 }

@@ -7,6 +7,8 @@
 
 #include "Collisions/Collision.h"
 
+#include "Assets/Asset.h"
+
 #include <iostream>
 #include <memory>
 
@@ -54,11 +56,6 @@ void GameManager::init() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glEnable(GL_NORMALIZE);
-
-	// load textures after creating window, before glut main loop
-	arena->loadTextures();
-	ship->loadTextures();
-	asteroid_field->loadTextures();
 }
 
 // Draw everything
@@ -80,12 +77,12 @@ void GameManager::onDisplay() {
 
 	// Drawing scene objects
 	ship->draw();
-	ship->drawBullets();
 
 	arena->drawArena();
 	arena->drawSatellite();
 
 	asteroid_field->drawAsteroids();
+	ship->drawBullets();
 
 	int err;
 	while ((err = glGetError()) != GL_NO_ERROR)
@@ -224,7 +221,6 @@ void GameManager::handleAsteroidCollisions() {
 		}
 
 		for (const Wall& wall : arena->getWalls()) {
-
 			if (collision::withWall(wall, a1.getPosition(), a1.getRadius())) {
 				collision::resolve(wall, a1);
 			}
@@ -286,13 +282,6 @@ void GameManager::handleKeyboardInput() {
 
 	if (keyboard->isPressed(' ')) {
 		ship->shoot(dt);
-	}
-
-	if (keyboard->isPressed('p')) {
-		ship->useRealisticPhysics();
-	}
-	else if (keyboard->isPressed('o')) {
-		ship->turnOffPhysics();
 	}
 
 	if (keyboard->isPressed('r')) {

@@ -7,6 +7,7 @@
 
 class BulletStream {
 public:
+	BulletStream();
 	void addBullet(Vector3D position, Vector3D velocity);
 	void updateBullets(float dt);
 	void drawBullets() const;

@@ -46,10 +46,6 @@ void Arena::drawArena() const {
 	glPopMatrix();
 }
 
-void Arena::loadTextures() {
-	skybox.loadTextures();
-}
-
 void Arena::drawSkybox() const {
 	skybox.draw();
 }

@@ -1,16 +1,17 @@
 #include "Skybox.h"
 
-#include "Texture/Texture.h"
+#include "Assets/Asset.h"
+#include "GlutHeaders.h"
 
 #include <iostream>
 
-void Skybox::loadTextures() {
-	top = Texture::loadTexture("./Assets/Skybox/top.png");
-	bottom = Texture::loadTexture("./Assets/Skybox/bottom.png");
-	left = Texture::loadTexture("./Assets/Skybox/left.png");
-	right = Texture::loadTexture("./Assets/Skybox/right.png");
-	front = Texture::loadTexture("./Assets/Skybox/front.png");
-	back = Texture::loadTexture("./Assets/Skybox/back.png");
+Skybox::Skybox() {
+	top = Asset::getTextureId(Entity::skybox_top);
+	bottom = Asset::getTextureId(Entity::skybox_bottom);
+	left = Asset::getTextureId(Entity::skybox_left);
+	right = Asset::getTextureId(Entity::skybox_right);
+	front = Asset::getTextureId(Entity::skybox_front);
+	back = Asset::getTextureId(Entity::skybox_back);
 }
 
 void Skybox::draw() const {
