@@ -34,7 +34,6 @@ public:
 	void update(const float dt);
 	void draw() const;
 	void updateBullets(const float dt);
-	void drawBullets() const;
 
 	void move(Direction direction, float dt);
 	void setAccelerationToZero();
@@ -43,7 +42,7 @@ public:
 		 const float map, const float speed = MOUSE_ROTATION_SPEED);
 	void shoot(float dt);
 
-	std::vector<Bullet>& getBullets();
+	std::vector<std::shared_ptr<Bullet>>& getBullets();
 	const Vector3D& getPosition() const;
 	const Quaternion& getRotation() const;
 	const float& getWarningRadius() const;

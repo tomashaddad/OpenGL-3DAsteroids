@@ -5,6 +5,8 @@
 #include "GlutHeaders.h"
 #include "Math/Utility.h"
 
+#include "Transparent/Transparent.h"
+
 #include "Collisions/Collision.h"
 
 #include "Assets/Asset.h"
@@ -80,9 +82,9 @@ void GameManager::onDisplay() {
 
 	arena->drawArena();
 	arena->drawSatellite();
-
 	asteroid_field->drawAsteroids();
-	ship->drawBullets();
+
+	Transparent::drawAll(); // draws bullets and explosions (if any)
 
 	int err;
 	while ((err = glGetError()) != GL_NO_ERROR)
@@ -179,13 +181,19 @@ void GameManager::updateShip() {
 void GameManager::updateAsteroids() {
 	asteroid_field->updateAsteroids(dt);
 
-	if (asteroid_field->isEmpty()) {
-		asteroid_field->launchAsteroidAtShip(ship->getPosition());
+	if (asteroid_field->isEmpty() || asteroid_field->levellingUp()) {
+		// Reset timer if empty to prevent two waves spawning back to back
+		if (asteroid_field->isEmpty()) {
+			asteroid_field->resetTimer();
+		}
+		asteroid_field->increaseAsteroidCountBy(1);
+		asteroid_field->launchAsteroidsAtShip(ship->getPosition());
 	}
 }
 
 void GameManager::updateBullets() {
 	ship->updateBullets(dt);
+	Transparent::sort(camera->getPosition());
 }
 
 void GameManager::updateSatellite() {
@@ -193,12 +201,13 @@ void GameManager::updateSatellite() {
 }
 
 void GameManager::handleCollisions() {
-	handleShipCollisions();
+	handleWallCollisions();
 	handleBulletCollisions();
 	handleAsteroidCollisions();
 }
 
-void GameManager::handleShipCollisions() {
+// Ship -> Wall
+void GameManager::handleWallCollisions() {
 	for (Wall& wall : arena->getWalls()) {
 		if (collision::withWall(wall, ship->getPosition(), ship->getWarningRadius())) {
 			wall.setColour(Colour::RED);
@@ -208,16 +217,23 @@ void GameManager::handleShipCollisions() {
 		}
 
 		if (collision::withWall(wall, ship->getPosition(), ship->getCollisionRadius())) {
-			//resetGame();
+			resetGame();
 			break;
 		}
 	}
 }
 
+// Asteroid -> Ship
+// Asteroid -> Wall
+// Asteroid -> Asteroid
 void GameManager::handleAsteroidCollisions() {
 	for (Asteroid& a1 : asteroid_field->getAsteroids()) {
 		if (!a1.isInArena()) {
 			continue;
+		}
+
+		if (collision::withAsteroid(a1.getPosition(), a1.getRadius(), ship->getPosition(), ship->getCollisionRadius())) {
+			resetGame();
 		}
 
 		for (const Wall& wall : arena->getWalls()) {
@@ -240,24 +256,28 @@ void GameManager::handleAsteroidCollisions() {
 	}
 }
 
+// Bullet -> Wall
+// Bullet -> Asteroid
 void GameManager::handleBulletCollisions() {
-	for (Bullet& bullet : ship->getBullets()) {
+	for (std::shared_ptr<Bullet>& bullet : ship->getBullets()) {
 		// Bullet->Wall
 		for (Wall& wall : arena->getWalls()) {
-			if (collision::withWall(wall, bullet.getPosition())) {
-				bullet.markForDeletion();
+			if (collision::withWall(wall, bullet->getPosition())) {
+				bullet->markForDeletion();
+				Transparent::remove(bullet);
 			}
 		}
 
 		// Why check asteroids if bullet died on a wall?
-		if (bullet.markedForDeletion()) {
+		if (bullet->markedForDeletion()) {
 			continue;
 		}
 
 		for (Asteroid& asteroid : asteroid_field->getAsteroids()) {
-			if (collision::withAsteroid(asteroid.getPosition(), asteroid.getRadius(), bullet.getPosition())) {
-				bullet.markForDeletion();
+			if (collision::withAsteroid(asteroid.getPosition(), asteroid.getRadius(), bullet->getPosition())) {
+				bullet->markForDeletion();
 				asteroid.decrementHealthBy(1);
+				Transparent::remove(bullet);
 				break;
 			}
 		}
@@ -388,4 +408,6 @@ void GameManager::calculateTimeDelta() {
 
 void GameManager::resetGame() {
 	ship->reset();
+	asteroid_field->reset();
+	Transparent::reset();
 }

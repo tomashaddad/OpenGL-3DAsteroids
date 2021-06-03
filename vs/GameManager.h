@@ -32,7 +32,7 @@ public:
 	void updateSatellite();
 
 	void handleCollisions();
-	void handleShipCollisions();
+	void handleWallCollisions();
 	void handleAsteroidCollisions();
 	void handleBulletCollisions();
 

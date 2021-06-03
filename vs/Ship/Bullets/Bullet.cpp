@@ -67,7 +67,7 @@ void Bullet::draw() const {
 	glPushMatrix();
 		glTranslatef(position.X, position.Y, position.Z);
 		glMultMatrixf(Quaternion::toMatrix(Camera::getRotation()).data());
-		glScalef(2, 2, 2);
+		glScalef(BULLET_SIZE, BULLET_SIZE, BULLET_SIZE);
 
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glBegin(GL_QUADS);

@@ -87,13 +87,13 @@ void Asteroid::update(const float dt) {
 
 void Asteroid::checkIfInArena(const float arena_dimension) {
 	if (!inArena) {
-		inArena =
-			position.X + radius < arena_dimension&&
-			position.X - radius > -arena_dimension &&
-			position.Y + radius < arena_dimension&&
-			position.Y - radius > -arena_dimension &&
-			position.Z + radius < arena_dimension&&
-			position.Z - radius > -arena_dimension;
+		inArena
+			 = position.X + radius < arena_dimension
+			&& position.X - radius > -arena_dimension
+			&& position.Y + radius < arena_dimension
+			&& position.Y - radius > -arena_dimension
+			&& position.Z + radius < arena_dimension
+			&& position.Z - radius > -arena_dimension;
 	}
 }
 

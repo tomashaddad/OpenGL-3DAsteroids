@@ -10,8 +10,8 @@ float constexpr ASTEROID_MAX_ROTATION_SPEED = 100;
 float constexpr ASTEROID_MIN_RADIUS = 90;
 float constexpr ASTEROID_MAX_RADIUS = 180;
 
-int constexpr ASTEROID_MIN_HEALTH = 5;
-int constexpr ASTEROID_MAX_HEALTH = 15;
+int constexpr ASTEROID_MIN_HEALTH = 20;
+int constexpr ASTEROID_MAX_HEALTH = 40;
 
 float constexpr ASTEROID_STACK_COUNT = 30;
 float constexpr ASTEROID_SECTOR_COUNT = 30;

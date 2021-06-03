@@ -181,6 +181,7 @@
     <ClCompile Include="Model\Model.cpp" />
     <ClCompile Include="Ship\Ship.cpp" />
     <ClCompile Include="Model\Triangle.cpp" />
+    <ClCompile Include="Transparent\Transparent.cpp" />
     <ClCompile Include="World\Camera.cpp" />
     <ClCompile Include="World\Window.cpp" />
   </ItemGroup>
@@ -215,6 +216,7 @@
     <ClInclude Include="Model\Model.h" />
     <ClInclude Include="Ship\Ship.h" />
     <ClInclude Include="Model\Triangle.h" />
+    <ClInclude Include="Transparent\Transparent.h" />
     <ClInclude Include="World\Camera.h" />
     <ClInclude Include="World\Window.h" />
   </ItemGroup>

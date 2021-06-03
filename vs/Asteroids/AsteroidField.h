@@ -10,14 +10,17 @@ class AsteroidField {
 public:
 	AsteroidField();
 
-	void launchAsteroidAtShip(Vector3D ship_position);
+	void launchAsteroidsAtShip(Vector3D ship_position);
 	void updateAsteroids(float dt);
 	void drawAsteroids();
 	bool isEmpty() const;
-
+	bool levellingUp() const;
+	void increaseAsteroidCountBy(int counter);
+	void resetTimer();
 	void deleteAsteroidByIndex(unsigned int index);
-
 	std::vector<Asteroid>& getAsteroids();
+	
+	void reset();
 
 private:
 	std::vector<unsigned int> textures;

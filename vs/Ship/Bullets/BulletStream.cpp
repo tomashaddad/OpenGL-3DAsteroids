@@ -1,4 +1,5 @@
 #include "BulletStream.h"
+#include "Transparent/Transparent.h"
 #include <algorithm>
 
 BulletStream::BulletStream() {
@@ -6,22 +7,18 @@ BulletStream::BulletStream() {
 }
 
 void BulletStream::addBullet(Vector3D position, Vector3D velocity) {
-	bullets.emplace_back(position, velocity);
+	std::shared_ptr<Bullet> bullet = std::make_shared<Bullet>(position, velocity);
+	bullets.emplace_back(bullet);
+	Transparent::add(bullet);
 }
 
 void BulletStream::updateBullets(float dt) {
 	for (auto i = 0; i < bullets.size(); ++i) {
-		bullets[i].update(dt);
+		bullets[i]->update(dt);
 
-		if (bullets[i].markedForDeletion()) {
+		if (bullets[i]->markedForDeletion()) {
 			deleteBulletByIndex(i);
 		}
-	}
-}
-
-void BulletStream::drawBullets() const {
-	for (const Bullet& bullet : bullets) {
-		bullet.draw();
 	}
 }
 
@@ -30,8 +27,7 @@ void BulletStream::deleteBulletByIndex(unsigned int index) {
 	bullets.pop_back();
 }
 
-
-std::vector<Bullet>& BulletStream::getBullets() { return bullets; }
+std::vector<std::shared_ptr<Bullet>>& BulletStream::getBullets() { return bullets; }
 
 void BulletStream::clearBullets() {
 	bullets.clear();

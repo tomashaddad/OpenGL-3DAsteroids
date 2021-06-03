@@ -77,10 +77,6 @@ void Ship::updateBullets(const float dt) {
 	bullet_stream.updateBullets(dt);
 }
 
-void Ship::drawBullets() const {
-	bullet_stream.drawBullets();
-}
-
 // If you are using realistic physics in ship::update, uncomment acceleration
 // and comment out position lines (and vise versa)
 void Ship::move(Direction direction, float dt) {
@@ -125,7 +121,7 @@ void Ship::shoot(float dt) {
 	}
 }
 
-std::vector<Bullet>& Ship::getBullets() { return bullet_stream.getBullets(); }
+std::vector<std::shared_ptr<Bullet>>& Ship::getBullets() { return bullet_stream.getBullets(); }
 const Vector3D& Ship::getPosition() const { return position; }
 const Quaternion& Ship::getRotation() const { return rotation; }
 const float& Ship::getWarningRadius() const { return warning_radius; }
@@ -134,4 +130,5 @@ const float& Ship::getCollisionRadius() const { return collision_radius; }
 void Ship::reset() {
 	position = Vector3D();
 	rotation = Quaternion();
+	bullet_stream.clearBullets();
 }
