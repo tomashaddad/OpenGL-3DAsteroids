@@ -63,18 +63,18 @@ void Model::flatten2(std::vector<float> collection, std::vector<Vector3D>& vecto
 }
 
 void Model::processTriangles(const tinyobj::shape_t& shape, std::vector<Triangle>& triangles) {
-		const std::vector<tinyobj::index_t>& indices = shape.mesh.indices;
-		const std::vector<int>& material_ids = shape.mesh.material_ids;
+	const std::vector<tinyobj::index_t>& indices = shape.mesh.indices;
+	const std::vector<int>& material_ids = shape.mesh.material_ids;
 
-		for (size_t index = 0; index < material_ids.size(); ++index) {
-			// offset by 3 because values are grouped as vertex/normal/texture
-			triangles.push_back(Triangle(
-				{ indices[3 * index].vertex_index, indices[3 * index + 1].vertex_index, indices[3 * index + 2].vertex_index },
-				{ indices[3 * index].texcoord_index, indices[3 * index + 1].texcoord_index, indices[3 * index + 2].texcoord_index },
-				{ indices[3 * index].normal_index, indices[3 * index + 1].normal_index, indices[3 * index + 2].normal_index },
-				material_ids[index])
-			);
-		}
+	for (size_t index = 0; index < material_ids.size(); ++index) {
+		// offset by 3 because values are grouped as vertex/normal/texture
+		triangles.push_back(Triangle(
+			{ indices[3 * index].vertex_index, indices[3 * index + 1].vertex_index, indices[3 * index + 2].vertex_index },
+			{ indices[3 * index].texcoord_index, indices[3 * index + 1].texcoord_index, indices[3 * index + 2].texcoord_index },
+			{ indices[3 * index].normal_index, indices[3 * index + 1].normal_index, indices[3 * index + 2].normal_index },
+			material_ids[index])
+		);
+	}
 }
 
 void Model::processMaterials(const std::vector<tinyobj::material_t>& objmaterials, std::vector<Material>& materials) {

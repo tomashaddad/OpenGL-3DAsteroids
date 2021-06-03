@@ -39,12 +39,12 @@ const float& Camera::getZFar() const { return zfar; }
 const float& Camera::getAspect() const { return aspect; };
 void Camera::setAspect(const float& aspect) { this->aspect = aspect; }
 
-void Camera::translate() {
-	glTranslatef(-position.X, -position.Y, -position.Z);
-}
-
 // If we want to look up, then we rotate the world down, so we need the camera's
 // inverse quaternion to use with glMultMatrixf
 void Camera::rotate() {
 	glMultMatrixf(Quaternion::toMatrix(Quaternion::inverse(rotation)).data());
+}
+
+void Camera::translate() {
+	glTranslatef(-position.X, -position.Y, -position.Z);
 }

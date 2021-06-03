@@ -9,6 +9,6 @@ float constexpr SHIP_SPEED = 200;
 
 float constexpr SHIP_ACCELERATION = 200;
 
-float constexpr SHIP_FIRE_RATE = 0.1; // seconds per bullet
+float constexpr SHIP_FIRE_RATE = 0.01; // seconds per bullet
 
 #endif

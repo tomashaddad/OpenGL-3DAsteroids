@@ -37,7 +37,7 @@ void GameManager::init() {
 	float ambient0[] = { 0.0, 0.0, 0.0, 1.0 };
 	float diffuse0[] = { 1.0, 1.0, 1.0, 1.0 };
 	float specular0[] = { 1.0, 1.0, 1.0, 1.0 };
-	float position0[] = { 1000.0, 0.0, 0.0, 1.0 };
+	float position0[] = { 1.0, 0.0, 0.0, 0.0 };
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient0);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse0);
@@ -74,7 +74,7 @@ void GameManager::onDisplay() {
 	arena->drawSkybox();
 	camera->translate();
 
-	float position0[] = { 1000.0, 0.0, 0.0, 1.0 };
+	float position0[] = { 1.0, 0.0, 0.0, 0.0 };
 	glLightfv(GL_LIGHT0, GL_POSITION, position0);
 
 	// Drawing scene objects
@@ -319,7 +319,7 @@ void GameManager::handleKeyboardInput() {
 	}
 
 	if (keyboard->isPressed('r')) {
-		ship->reset();
+		resetGame();
 	}
 
 	if (keyboard->isPressed('i')) {
