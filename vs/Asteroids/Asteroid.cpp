@@ -16,8 +16,10 @@ Asteroid::Asteroid(Vector3D position, Vector3D velocity, unsigned int texture)
 	, inArena(false)
 	, texture(texture)
 	, radius(utility::randFloat(ASTEROID_MIN_RADIUS, ASTEROID_MAX_RADIUS))
-	, mass((4.0f/3.0f) * M_PI * pow(radius, 3))
-	, rotation(Quaternion::random())
+	, mass((4.0f / 3.0f)* M_PI* pow(radius, 3))
+	//, rotation(Quaternion::random())
+	, rotation_axis(Vector3D::randomUnit())
+	, angle(0)
 	, rotation_speed(utility::randFloat(ASTEROID_MIN_ROTATION_SPEED, ASTEROID_MAX_ROTATION_SPEED))
 	, rotation_direction(utility::randSign())
 	, health(utility::mapToRange(radius, ASTEROID_MIN_RADIUS, ASTEROID_MAX_RADIUS, ASTEROID_MIN_HEALTH, ASTEROID_MAX_HEALTH))
@@ -39,7 +41,8 @@ void Asteroid::draw() {
 	glPointSize(10);
 	glPushMatrix();
 		glTranslatef(position.X, position.Y, position.Z);
-		glMultMatrixf(Quaternion::toMatrix(rotation).data());
+		//glMultMatrixf(Quaternion::toMatrix(rotation).data());
+		glRotatef(angle, rotation_axis.X, rotation_axis.Y, rotation_axis.Z);
 		glScalef(radius, radius, radius);
 		glColor3f(1.0, 1.0, 1.0);
 		glEnable(GL_TEXTURE_2D);
@@ -53,21 +56,19 @@ void Asteroid::draw() {
 		glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
 		glMaterialf(GL_FRONT, GL_SHININESS, 128);
 
-		glBegin(GL_TRIANGLES);
-		for (int i = 0; i <= indices.size() - 3; i += 3) {
-			glTexCoord2f(uvs[indices[i]].X, uvs[indices[i]].Y);
-			glNormal3f(normals[indices[i]].X, normals[indices[i]].Y, normals[indices[i]].Z);
-			glVertex3f(vertices[indices[i]].X, vertices[indices[i]].Y, vertices[indices[i]].Z);
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_NORMAL_ARRAY);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-			glTexCoord2f(uvs[indices[i + 1]].X, uvs[indices[i + 1]].Y);
-			glNormal3f(normals[indices[i + 1]].X, normals[indices[i + 1]].Y, normals[indices[i + 1]].Z);
-			glVertex3f(vertices[indices[i + 1]].X, vertices[indices[i + 1]].Y, vertices[indices[i + 1]].Z);
+		glTexCoordPointer(2, GL_FLOAT, 2 * sizeof(float), &uvs[0]); // 2 tex coords per 8 bytes
+		glNormalPointer(GL_FLOAT, 0, &vertices[0]); // unit sphere, so norms = verts
+		glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
 
-			glTexCoord2f(uvs[indices[i + 2]].X, uvs[indices[i + 2]].Y);
-			glNormal3f(normals[indices[i + 2]].X, normals[indices[i + 2]].Y, normals[indices[i + 2]].Z);
-			glVertex3f(vertices[indices[i + 2]].X, vertices[indices[i + 2]].Y, vertices[indices[i + 2]].Z);
-		}
-		glEnd();
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, &indices[0]);
+
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_NORMAL_ARRAY);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
@@ -77,8 +78,7 @@ void Asteroid::draw() {
 void Asteroid::update(const float dt) {
 	position += velocity * dt;
 
-	// rotate asteroid according to its local up axis
-	rotation *= Quaternion(Vector3D::up(), rotation_speed * rotation_direction * dt);
+	angle += rotation_speed * dt;
 
 	if (health <= 0) {
 		markForDeletion();
@@ -118,8 +118,14 @@ void Asteroid::buildVertices() {
 			x = sin(theta) * cos(phi);
 			z = cos(theta) * cos(phi);
 
+			float fudge = utility::randFloat(0.90, 1.1);
+
+			if (j > 0 && j < stacks && i > 0 && i < sectors) {
+				x *= fudge;
+				z *= fudge;
+			}
+
 			addVertex(x, y, z);
-			addNormal(x, y, z);
 			addUV((float)j / sectors, (float)i / sectors);
 		}
 	}
@@ -145,14 +151,21 @@ void Asteroid::buildVertices() {
 }
 
 void Asteroid::addVertex(float x, float y, float z) {
-	vertices.emplace_back(x, y, z);
+	vertices.push_back(x);
+	vertices.push_back(y);
+	vertices.push_back(z);
 }
 
 void Asteroid::addUV(float u, float v) {
-	uvs.emplace_back(u, v, 0);
+	uvs.push_back(u);
+	uvs.push_back(v);
 }
+
+// Technically not needed but I'm leaving it anyway
 void Asteroid::addNormal(float nx, float ny, float nz) {
-	normals.emplace_back(nx, ny, nz);
+	normals.push_back(nx);
+	normals.push_back(ny);
+	normals.push_back(nz);
 }
 
 void Asteroid::addIndices(unsigned int i1, unsigned int i2, unsigned int i3) {
@@ -190,6 +203,7 @@ void Asteroid::reverseZ() {
 
 const Vector3D& Asteroid::getPosition() const { return position; }
 const Vector3D& Asteroid::getVelocity() const { return velocity; }
+const int Asteroid::getHealth() const { return health; }
 void Asteroid::setVelocity(const Vector3D& velocity) { this->velocity = velocity; }
 const float Asteroid::getRadius() const { return radius; }
 const float Asteroid::getMass() const { return mass; }

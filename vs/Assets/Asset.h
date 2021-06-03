@@ -21,7 +21,9 @@ enum class Entity {
 	skybox_front,
 	skybox_back,
 
-	bullets
+	bullets,
+
+	explosion
 };
 
 class Asset {

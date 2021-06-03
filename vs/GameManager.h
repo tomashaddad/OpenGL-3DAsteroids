@@ -9,6 +9,7 @@
 #include "Asteroids/Asteroid.h"
 #include "Arena/Arena.h"
 #include "Ship/Ship.h"
+#include "Explosion/ExplosionManager.h"
 
 #include <memory>
 
@@ -30,6 +31,7 @@ public:
 	void updateAsteroids();
 	void updateBullets();
 	void updateSatellite();
+	void updateExplosions();
 
 	void handleCollisions();
 	void handleWallCollisions();
@@ -61,6 +63,7 @@ private:
 	std::unique_ptr<Camera> camera;
 	std::unique_ptr<Arena> arena;
 	std::unique_ptr<AsteroidField> asteroid_field;
+	std::unique_ptr<ExplosionManager> explosion_manager;
 };
 
 #endif // I3D_GAMEMANAGER_H

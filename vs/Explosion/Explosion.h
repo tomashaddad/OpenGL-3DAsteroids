@@ -1,18 +1,17 @@
-#ifndef I3D_BULLET_H
-#define I3D_BULLET_H
+#ifndef I3D_EXPLOSION_H
+#define I3D_EXPLOSION_H
 
-#include "Math/Vector3D.h"
-#include "Math/Quaternion.h"
-#include "World/Camera.h"
 #include "Transparent/Transparent.h"
-#include "Constants/BulletConstants.h"
+#include "Constants/ExplosionConstants.h"
+#include "Math/Vector3D.h"
+#include "World/Camera.h"
 
 #include <array>
 #include <utility>
 
-class Bullet : public Transparent {
+class Explosion : public Transparent {
 public:
-	Bullet(Vector3D position, Vector3D velocity);
+	Explosion(Vector3D position, Vector3D velocity);
 	static void initUVMap();
 
 	void update(float dt);
@@ -26,7 +25,7 @@ public:
 	bool markedForDeletion();
 
 private:
-	inline static std::array<std::array<std::pair<float, float>, BULLET_GRID_SIZE>, BULLET_GRID_SIZE> uvs;
+	inline static std::array<std::array<std::pair<float, float>, EXPLOSION_GRID_SIZE>, EXPLOSION_GRID_SIZE> uvs;
 
 	int row;
 	int col;
@@ -40,4 +39,4 @@ private:
 	bool to_delete;
 };
 
-#endif // I3D_BULLET_H
+#endif // I3D_EXPLOSION_H

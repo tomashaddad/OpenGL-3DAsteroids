@@ -16,9 +16,9 @@ Bullet::Bullet(Vector3D position, Vector3D velocity) :
 
 // init one UV 2D array for all bullets to use
 void Bullet::initUVMap() {
-	float step_size = 1.0f / 6;
-	for (int r = 0; r < BULLET_VCOUNT; ++r) {
-		for (int c = 0; c < BULLET_UCOUNT; ++c) {
+	float step_size = 1.0f / (BULLET_GRID_SIZE - 1);
+	for (int r = 0; r < BULLET_GRID_SIZE; ++r) {
+		for (int c = 0; c < BULLET_GRID_SIZE; ++c) {
 			float u = (float)c * step_size;
 			float v = 1 - (float)r * step_size; // store top to bottom
 			uvs[r][c] = std::make_pair(u, v);
@@ -39,23 +39,14 @@ void Bullet::update(float dt) {
 // the texture is drawn in backwards order because it looks like
 // it rolls backwards if you draw it top left to bottom right
 void Bullet::next_texture() {
-	// if the window has reached the left side of the 2D array
-	// reset its position to the right side
-	// and move 2x2 window one up
-	if (col == 0) {
+	--col;
+	if (col < 0) {
 		col = 5;
 		--row;
-
-		// if the window has reached the top of the 2D array
-		// reset its position to the bottom side
-		if (row == 0) {
+		if (row < 0) {
 			row = 3;
 		}
 	}
-	// move 2x2 window one to the left
-	--col;
-	
-	// draw on next loop
 }
 
 void Bullet::draw() const {

@@ -1,0 +1,7 @@
+#ifndef I3D_EXPLOSION_CONSTANTS
+#define I3D_EXPLOSION_CONSTANTS
+
+constexpr int EXPLOSION_GRID_SIZE = 9;
+constexpr float EXPLOSION_SIZE = 100;
+
+#endif

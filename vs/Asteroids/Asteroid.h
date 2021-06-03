@@ -24,6 +24,7 @@ public:
 	const unsigned int id() const;
 	const Vector3D& getPosition() const;
 	const Vector3D& getVelocity() const;
+	const int getHealth() const;
 	void setVelocity(const Vector3D& velocity);
 	const float getRadius() const;
 	const float getMass() const;
@@ -45,7 +46,8 @@ private:
 	unsigned int texture;
 	float radius;
 	float mass;
-	Quaternion rotation;
+	Vector3D rotation_axis;
+	float angle;
 	float rotation_speed;
 	int rotation_direction;
 	int health;
@@ -54,9 +56,9 @@ private:
 	int sectors;
 	int stacks;
 
-	std::vector<Vector3D> vertices;
-	std::vector<Vector3D> uvs;
-	std::vector<Vector3D> normals;
+	std::vector<float> vertices;
+	std::vector<float> uvs;
+	std::vector<float> normals;
 	std::vector<unsigned int> indices;
 };
 

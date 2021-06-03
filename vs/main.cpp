@@ -84,6 +84,7 @@ void initTextures() {
 	Asset::loadAsset(Entity::asteroid_3, "./Assets/Asteroids/asteroid3.jpg");
 	Asset::loadAsset(Entity::asteroid_4, "./Assets/Asteroids/asteroid4.jpg");
 	Asset::loadAsset(Entity::bullets, "./Assets/Bullets/fireball_ani.png");
+	Asset::loadAsset(Entity::explosion, "./Assets/Explosion/explosion.png");
 }
 
 void reshapeCallback(int w, int h) {

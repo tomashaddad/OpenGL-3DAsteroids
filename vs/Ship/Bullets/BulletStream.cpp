@@ -1,6 +1,9 @@
 #include "BulletStream.h"
+
 #include "Transparent/Transparent.h"
 #include <algorithm>
+
+#include <iostream>
 
 BulletStream::BulletStream() {
 	Bullet::initUVMap();
@@ -17,6 +20,7 @@ void BulletStream::updateBullets(float dt) {
 		bullets[i]->update(dt);
 
 		if (bullets[i]->markedForDeletion()) {
+			Transparent::remove(bullets[i]);
 			deleteBulletByIndex(i);
 		}
 	}

@@ -64,6 +64,8 @@
     <ClCompile Include="Arena\Satellite.cpp" />
     <ClCompile Include="Assets\Asset.cpp" />
     <ClCompile Include="Transparent\Transparent.cpp" />
+    <ClCompile Include="Explosion\Explosion.cpp" />
+    <ClCompile Include="Explosion\ExplosionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h" />
@@ -107,5 +109,8 @@
     <ClInclude Include="Arena\Satellite.h" />
     <ClInclude Include="Assets\Asset.h" />
     <ClInclude Include="Transparent\Transparent.h" />
+    <ClInclude Include="Explosion\Explosion.h" />
+    <ClInclude Include="Constants\ExplosionConstants.h" />
+    <ClInclude Include="Explosion\ExplosionManager.h" />
   </ItemGroup>
 </Project>

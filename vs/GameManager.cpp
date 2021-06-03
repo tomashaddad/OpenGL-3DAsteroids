@@ -23,7 +23,8 @@ GameManager::GameManager() :
 	window(std::make_unique<Window>()),
 	camera(std::make_unique<Camera>()),
 	arena(std::make_unique<Arena>()),
-	asteroid_field(std::make_unique<AsteroidField>()) {}
+	asteroid_field(std::make_unique<AsteroidField>()),
+	explosion_manager(std::make_unique<ExplosionManager>()) {}
 
 // TODO: Separate/refactor
 void GameManager::start() {
@@ -172,6 +173,7 @@ void GameManager::updateEntities() {
 	updateAsteroids();
 	updateBullets();
 	updateSatellite();
+	updateExplosions();
 }
 
 void GameManager::updateShip() {
@@ -198,6 +200,10 @@ void GameManager::updateBullets() {
 
 void GameManager::updateSatellite() {
 	arena->updateSatellite(dt);
+}
+
+void GameManager::updateExplosions() {
+	explosion_manager->updateExplosions(dt);
 }
 
 void GameManager::handleCollisions() {
@@ -264,7 +270,6 @@ void GameManager::handleBulletCollisions() {
 		for (Wall& wall : arena->getWalls()) {
 			if (collision::withWall(wall, bullet->getPosition())) {
 				bullet->markForDeletion();
-				Transparent::remove(bullet);
 			}
 		}
 
@@ -277,7 +282,9 @@ void GameManager::handleBulletCollisions() {
 			if (collision::withAsteroid(asteroid.getPosition(), asteroid.getRadius(), bullet->getPosition())) {
 				bullet->markForDeletion();
 				asteroid.decrementHealthBy(1);
-				Transparent::remove(bullet);
+				if (asteroid.getHealth() <= 0) {
+					explosion_manager->populate(asteroid.getPosition());
+				}
 				break;
 			}
 		}
