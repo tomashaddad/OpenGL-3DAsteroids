@@ -7,7 +7,7 @@
 #include <algorithm>
 
 AsteroidField::AsteroidField() :
-	arena_radius(sqrt(3 * ARENA_DIM * ARENA_DIM)),
+	arena_radius(sqrt(3) * ARENA_DIM),
 	asteroid_count(1),
 	timer(0),
 	time_between_levels(45),

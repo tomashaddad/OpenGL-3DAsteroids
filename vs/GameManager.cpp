@@ -26,7 +26,6 @@ GameManager::GameManager() :
 	asteroid_field(std::make_unique<AsteroidField>()),
 	explosion_manager(std::make_unique<ExplosionManager>()) {}
 
-// TODO: Separate/refactor
 void GameManager::start() {
 	init();
 	glutMainLoop();
@@ -64,6 +63,8 @@ void GameManager::init() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
+
+
 
 // Draw everything
 void GameManager::onDisplay() {

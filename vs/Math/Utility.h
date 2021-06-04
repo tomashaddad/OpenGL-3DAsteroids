@@ -19,8 +19,6 @@ namespace utility {
 
 	float mapToRange(float value, float old_min, float old_max, float new_min, float new_max);
 
-	void drawAxes(float size);
-
 	static std::random_device engine;
 }
 

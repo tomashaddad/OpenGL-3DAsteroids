@@ -7,7 +7,7 @@
 #include <iostream>
 
 Satellite::Satellite() :
-	position(sqrt(3 * ARENA_DIM * ARENA_DIM) * Vector3D::randomUnit()), // random position on the arena's bounding sphere
+	position(sqrt(3) * ARENA_DIM * Vector3D::randomUnit()), // random position on the arena's bounding sphere
 	rotation_axis(Vector3D::cross(position, Vector3D::randomUnit())),
 	angle(utility::randFloat(0, 360)),
 	speed(10) { }

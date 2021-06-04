@@ -72,14 +72,18 @@ void initFeatures() {
 	glClearColor(0, 0, 0, 0);
 }
 
+// bool rgba, bool clamp)
 void initTextures() {
-	Asset::loadAsset(Entity::ship, "./Assets/Ship/Star_Fox_logo_2015.jpeg");
+	Asset::setClamp(true);
 	Asset::loadAsset(Entity::skybox_top, "./Assets/Skybox/top.png");
 	Asset::loadAsset(Entity::skybox_bottom, "./Assets/Skybox/bottom.png");
 	Asset::loadAsset(Entity::skybox_left, "./Assets/Skybox/left.png");
 	Asset::loadAsset(Entity::skybox_right, "./Assets/Skybox/right.png");
 	Asset::loadAsset(Entity::skybox_front, "./Assets/Skybox/front.png");
 	Asset::loadAsset(Entity::skybox_back, "./Assets/Skybox/back.png");
+
+	Asset::setClamp(false);
+	Asset::loadAsset(Entity::ship, "./Assets/Ship/Star_Fox_logo_2015.jpeg");
 	Asset::loadAsset(Entity::asteroid_1, "./Assets/Asteroids/asteroid1.jpg");
 	Asset::loadAsset(Entity::asteroid_2, "./Assets/Asteroids/asteroid2.jpg");
 	Asset::loadAsset(Entity::asteroid_3, "./Assets/Asteroids/asteroid3.jpg");

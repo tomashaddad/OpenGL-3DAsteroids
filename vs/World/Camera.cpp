@@ -20,11 +20,11 @@ Camera::Camera() :
 	aspect(0) {}
 
 void Camera::lerpPositionTo(Vector3D new_position) {
-	position = Vector3D::lerp(position, new_position, CAMERA_LERP_T);
+	position = Vector3D::lerp(position, new_position, CAMERA_TRANSLATION_LERP_T);
 }
 
 void Camera::lerpRotationTo(Quaternion new_rotation) {
-	rotation = Quaternion::slerp(rotation, new_rotation, CAMERA_LERP_T);
+	rotation = Quaternion::slerp(rotation, new_rotation, CAMERA_ROTATION_LERP_T);
 }
 
 void Camera::look(const Look& look) { look_at = look; }

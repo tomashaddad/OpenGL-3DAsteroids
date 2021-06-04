@@ -6,7 +6,7 @@
 
 class Texture {
 public:
-	static unsigned int loadTexture(std::string filename);
+	static unsigned int loadTexture(std::string filename, bool clamp);
 	
 };
 
