@@ -8,8 +8,7 @@
 
 class BulletStream {
 public:
-	BulletStream();
-	void addBullet(Vector3D position, Vector3D velocity);
+	void addBullet(Vector3D position, Vector3D forward);
 	void updateBullets(float dt);
 	void deleteBulletByIndex(unsigned int index);
 	void clearBullets();

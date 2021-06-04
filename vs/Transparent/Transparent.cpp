@@ -7,6 +7,7 @@ void Transparent::drawAll() {
 	}
 }
 
+// From https://stackoverflow.com/questions/5122804/how-to-sort-with-a-lambda
 void Transparent::sort(const Vector3D& camera_position) {
 	// sort elements in descending order based on distance to camera
 	std::sort(transparent_entities.begin(), transparent_entities.end(),

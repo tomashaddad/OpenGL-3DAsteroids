@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Animation\AnimationDrawer.cpp" />
     <ClCompile Include="Arena\Arena.cpp" />
     <ClCompile Include="Arena\Satellite.cpp" />
     <ClCompile Include="Arena\Skybox.cpp" />
@@ -168,8 +169,8 @@
     <ClCompile Include="Explosion\Explosion.cpp" />
     <ClCompile Include="Explosion\ExplosionManager.cpp" />
     <ClCompile Include="Model\Material.cpp" />
-    <ClCompile Include="Ship\Bullets\Bullet.cpp" />
-    <ClCompile Include="Ship\Bullets\BulletStream.cpp" />
+    <ClCompile Include="Bullets\Bullet.cpp" />
+    <ClCompile Include="Bullets\BulletStream.cpp" />
     <ClCompile Include="Assets\Texture.cpp" />
     <ClCompile Include="Collisions\Collision.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -188,6 +189,7 @@
     <ClCompile Include="World\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation\AnimationDrawer.h" />
     <ClInclude Include="Arena\Arena.h" />
     <ClInclude Include="Arena\Satellite.h" />
     <ClInclude Include="Arena\Skybox.h" />
@@ -201,8 +203,8 @@
     <ClInclude Include="Explosion\Explosion.h" />
     <ClInclude Include="Explosion\ExplosionManager.h" />
     <ClInclude Include="Model\Material.h" />
-    <ClInclude Include="Ship\Bullets\Bullet.h" />
-    <ClInclude Include="Ship\Bullets\BulletStream.h" />
+    <ClInclude Include="Bullets\Bullet.h" />
+    <ClInclude Include="Bullets\BulletStream.h" />
     <ClInclude Include="Assets\stb_image.h" />
     <ClInclude Include="Assets\Texture.h" />
     <ClInclude Include="Asteroids\Asteroid.h" />

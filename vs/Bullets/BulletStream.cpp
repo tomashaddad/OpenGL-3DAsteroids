@@ -5,12 +5,8 @@
 
 #include <iostream>
 
-BulletStream::BulletStream() {
-	Bullet::initUVMap();
-}
-
-void BulletStream::addBullet(Vector3D position, Vector3D velocity) {
-	std::shared_ptr<Bullet> bullet = std::make_shared<Bullet>(position, velocity);
+void BulletStream::addBullet(Vector3D position, Vector3D forward) {
+	std::shared_ptr<Bullet> bullet = std::make_shared<Bullet>(position + 10 * forward, BULLET_SPEED * forward);
 	bullets.emplace_back(bullet);
 	Transparent::add(bullet);
 }

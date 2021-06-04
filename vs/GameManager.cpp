@@ -35,6 +35,11 @@ void GameManager::start() {
 void GameManager::init() {
 	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 
+	// small amount of ambient light
+	float worldAmbient[] = { 0.1, 0.1, 0.1, 1.0 };
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, worldAmbient);
+
+	// directional light source
 	float ambient0[] = { 0.0, 0.0, 0.0, 1.0 };
 	float diffuse0[] = { 1.0, 1.0, 1.0, 1.0 };
 	float specular0[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -46,6 +51,7 @@ void GameManager::init() {
 	glLightfv(GL_LIGHT0, GL_POSITION, position0);
 	glEnable(GL_LIGHT0);
 
+	// satellite light source orbiting arena
 	float ambient1[] = { 0.0, 0.0, 0.0, 1.0 };
 	float diffuse1[] = { 1.0, 1.0, 1.0, 1.0 };
 	float specular1[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -57,8 +63,6 @@ void GameManager::init() {
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glEnable(GL_NORMALIZE);
 }
 
 // Draw everything
@@ -169,6 +173,7 @@ void GameManager::updateCamera() {
 }
 
 void GameManager::updateEntities() {
+	Transparent::sort(camera->getPosition()); // sort transparent entities after updating everything
 	updateShip();
 	updateAsteroids();
 	updateBullets();
@@ -195,7 +200,6 @@ void GameManager::updateAsteroids() {
 
 void GameManager::updateBullets() {
 	ship->updateBullets(dt);
-	Transparent::sort(camera->getPosition());
 }
 
 void GameManager::updateSatellite() {
@@ -239,7 +243,10 @@ void GameManager::handleAsteroidCollisions() {
 		}
 
 		if (collision::withAsteroid(a1.getPosition(), a1.getRadius(), ship->getPosition(), ship->getCollisionRadius())) {
+			// Persist ship explosions after resetting the game
+			Vector3D ship_position = ship->getPosition();
 			resetGame();
+			explosion_manager->populate(ship_position);
 		}
 
 		for (const Wall& wall : arena->getWalls()) {

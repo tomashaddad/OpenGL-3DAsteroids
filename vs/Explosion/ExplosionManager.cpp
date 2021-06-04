@@ -6,15 +6,11 @@
 
 #include <iostream>
 
-ExplosionManager::ExplosionManager() {
-	Explosion::initUVMap();
-}
-
-void ExplosionManager::populate(const Vector3D& asteroid_position) {
+void ExplosionManager::populate(const Vector3D& position) {
 	// Generate velocities such that they are perpendicular to where the camera is currently facing
-	for (int i = 0; i < 5; ++i) {
-		Vector3D velocity = utility::randFloat(60, 80) * Vector3D::randomUnit();
-		addExplosion(asteroid_position, velocity);
+	for (int i = 0; i < EXPLOSION_NUMBER; ++i) {
+		Vector3D velocity = utility::randFloat(EXPLOSION_MIN_VELOCITY, EXPLOSION_MAX_VELOCITY) * Vector3D::randomUnit();
+		addExplosion(position, velocity);
 	}
 }
 

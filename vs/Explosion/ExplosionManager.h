@@ -8,8 +8,7 @@
 
 class ExplosionManager {
 public:
-	ExplosionManager();
-	void populate(const Vector3D& asteroid_position);
+	void populate(const Vector3D& position);
 	void addExplosion(Vector3D position, Vector3D velocity);
 	void updateExplosions(float dt);
 	void deleteExplosionByIndex(unsigned int index);

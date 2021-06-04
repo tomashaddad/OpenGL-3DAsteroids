@@ -38,8 +38,7 @@ public:
 	void move(Direction direction, float dt);
 	void setAccelerationToZero();
 	void roll(const Axis axis, const float dt);
-	void rotate(const Axis axis, const float dt,
-		 const float map, const float speed = MOUSE_ROTATION_SPEED);
+	void rotate(const Axis axis, const float dt, const float map, const float speed = MOUSE_ROTATION_SPEED);
 	void shoot(float dt);
 
 	std::vector<std::shared_ptr<Bullet>>& getBullets();

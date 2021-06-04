@@ -29,20 +29,16 @@ void Ship::update(const float dt) {
 }
 
 void Ship::draw() const {
+	glEnable(GL_LIGHTING);
+	glEnable(GL_TEXTURE_2D);
+	
+	glColor3f(1.0f, 1.0f, 1.0f);
 	glPushMatrix();
 		glTranslatef(position.X, position.Y, position.Z);
 		glMultMatrixf(Quaternion::toMatrix(rotation).data());
 		glRotatef(180, 0, 1, 0); // ship model is backwards lol 
-		glScalef(10, 10, 10);
-		
-		glPushMatrix();
-		glRotatef(-180, 0, 1, 0); // undo fixing ship TODO: JUST FIX THE MODEL
-		utility::drawAxes(1.0f);
-		glPopMatrix();
-		
-		glColor3f(1.0f, 1.0f, 1.0f);
+		glScalef(SHIP_SCALE, SHIP_SCALE, SHIP_SCALE);
 
-		glEnable(GL_TEXTURE_2D);
 		for (auto triangle = triangles.begin(); triangle != triangles.end(); ++triangle) {
 			glMaterialfv(GL_FRONT, GL_AMBIENT, materials[triangle->material_id].ambient.data());
 			glMaterialfv(GL_FRONT, GL_DIFFUSE, materials[triangle->material_id].diffuse.data());
@@ -69,8 +65,10 @@ void Ship::draw() const {
 				glVertex3f(vertices[triangle->vertices[2]].X, vertices[triangle->vertices[2]].Y, vertices[triangle->vertices[2]].Z);
 			glEnd();	
 		}
-		glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
+	
+	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_LIGHTING);
 }
 
 void Ship::updateBullets(const float dt) {

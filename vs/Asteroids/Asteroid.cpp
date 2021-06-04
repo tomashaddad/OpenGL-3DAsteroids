@@ -16,8 +16,7 @@ Asteroid::Asteroid(Vector3D position, Vector3D velocity, unsigned int texture)
 	, inArena(false)
 	, texture(texture)
 	, radius(utility::randFloat(ASTEROID_MIN_RADIUS, ASTEROID_MAX_RADIUS))
-	, mass((4.0f / 3.0f)* M_PI* pow(radius, 3))
-	//, rotation(Quaternion::random())
+	, mass((4.0f / 3.0f)* M_PI* pow(radius, 3)) // mass = volume
 	, rotation_axis(Vector3D::randomUnit())
 	, angle(0)
 	, rotation_speed(utility::randFloat(ASTEROID_MIN_ROTATION_SPEED, ASTEROID_MAX_ROTATION_SPEED))
@@ -118,8 +117,9 @@ void Asteroid::buildVertices() {
 			x = sin(theta) * cos(phi);
 			z = cos(theta) * cos(phi);
 
-			float fudge = utility::randFloat(0.90, 1.1);
+			float fudge = utility::randFloat(1 - ASTEROID_FUDGE, 1 + ASTEROID_FUDGE);
 
+			// Make sure we're not fudging the poles
 			if (j > 0 && j < stacks && i > 0 && i < sectors) {
 				x *= fudge;
 				z *= fudge;
